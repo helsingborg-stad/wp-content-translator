@@ -1,4 +1,4 @@
-<?php
+tr<?php
 
 namespace ContentTranslate;
 

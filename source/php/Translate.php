@@ -5,6 +5,11 @@ namespace ContentTranslate;
 abstract class Translate
 {
 
+    // Force abstraction of these functions
+    abstract protected function get();
+    abstract protected function save();
+
+    // DB connection
     private $db;
 
     public function __construct()
