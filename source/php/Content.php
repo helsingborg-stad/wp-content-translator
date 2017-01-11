@@ -2,7 +2,7 @@
 
 namespace ContentTranslate;
 
-class Content Extends Translate
+class Content Extends Entity\Translate
 {
     public function __construct()
     {
