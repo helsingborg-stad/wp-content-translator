@@ -15,16 +15,19 @@ class App
             global $wpdb;
 
 
+            $lang = "";
+
             //Avabile
             //var $ms_global_tables = array( 'blogs', 'signups', 'site', 'sitemeta', 'sitecategories', 'registration_log', 'blog_versions' );
-            //var $ms_global_tables = array( 'blogs', 'signups', 'site', 'sitemeta','sitecategories', 'registration_log', 'blog_versions' );
+            //var $tables = array( 'posts', 'comments', 'links', 'options', 'postmeta','terms', 'term_taxonomy', 'term_relationships', 'termmeta', 'commentmeta' );
+            //$global_tables = array( 'users', 'usermeta' );
 
 
             //Filter: query add_filter('query', function($sql) {});
 
-            var_dump($wpdb->tables);
+            /*var_dump($wpdb->tables);
             $wpdb->tables[0] = "test";
-            var_dump($wpdb->tables);
+            var_dump($wpdb->tables);*/
         });
     }
 
