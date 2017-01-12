@@ -4,7 +4,7 @@ namespace ContentTranslator;
 
 class Switcher
 {
-    public static $currentLanguage = '';
+    public static $currentLanguage;
 
     public function __construct()
     {

@@ -6,12 +6,14 @@ class Post
 {
     public function __construct()
     {
-        add_action('admin_enqueue_scripts', function () {
-            global $post;
-            $post = $this->get($post);
-        });
+        if (isset(\ContentTranslator\Switcher::$currentLanguage) && !is_null(\ContentTranslator\Switcher::$currentLanguage) && !empty(\ContentTranslator\Switcher::$currentLanguage)) {
+            add_action('admin_enqueue_scripts', function () {
+                global $post;
+                $post = $this->get($post);
+            });
 
-        add_filter('posts_results', array($this, 'postsResults'));
+            add_filter('posts_results', array($this, 'postsResults'));
+        }
     }
 
     /**
