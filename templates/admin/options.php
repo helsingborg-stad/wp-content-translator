@@ -48,14 +48,14 @@
                                         <td><strong><?php _e('Default (WP Setting)', 'wp-content-translator'); ?>:</strong> <?php echo $defaultLang->name; ?></td>
                                         <td><?php echo $defaultLang->code; ?></td>
                                     </tr>
-                                    <!--
+                                    <?php foreach ($installed as $lang) : ?>
                                     <tr>
-                                        <td class="cb"><input type="checkbox" name="active[]" value="sv"></td>
-                                        <td>Swedish</td>
-                                        <td>sv</td>
-                                        <td class="actions"><a href="#" class="submitdelete deletion" name="remove" value="1"><?php _e('Remove'); ?></a></td>
+                                        <td class="cb"><input type="checkbox" name="active[]" value="<?php echo $lang->code; ?>"></td>
+                                        <td><?php echo $lang->name; ?></td>
+                                        <td><?php echo $lang->code; ?></td>
+                                        <td class="actions"><a href="#" class="submitdelete deletion"><?php _e('Remove'); ?></a></td>
                                     </tr>
-                                    -->
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -81,7 +81,7 @@
                                         <td>
                                             <select name="newlang[{num}][lang]" class="widefat">
                                                 <option value=""><?php _e('Select language', 'wp-content-translator'); ?>…</option>
-                                                <?php foreach (\ContentTranslator\Language::unused() as $language) : ?>
+                                                <?php foreach (\ContentTranslator\Language::uninstalled() as $language) : ?>
                                                 <option value="<?php echo $language->code; ?>"><?php echo $language->name; ?></option>
                                                 <?php endforeach; ?>
                                             </select>
