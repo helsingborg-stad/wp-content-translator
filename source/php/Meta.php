@@ -20,8 +20,8 @@ class Meta Extends Entity\Translate
     }
 
     public function get(null, $object_id, $meta_key, $single ) {
-        if(!$this->isLangualMeta()) {
-            return get_metadata('post', $object_id, $meta_key."_".$this->lang, $single);
+        if(!$this->isLangualMeta($meta_key)) {
+            return get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
         }
         return null;
     }
@@ -29,4 +29,9 @@ class Meta Extends Entity\Translate
     private function isLangualMeta($meta_key) {
         return substr($meta_key, -strlen("_".$this->lang)) == "_".$this->lang ? true : false;
     }
+
+    private function createLangualMetaKey ($meta_key) {
+        return $meta_key."_".$this->lang;
+    }
+
 }
