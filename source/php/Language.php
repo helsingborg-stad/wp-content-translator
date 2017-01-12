@@ -170,7 +170,7 @@ class Language
      */
     public static function installed() : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['installed']);
+        $keys = get_option(\ContentTranslator\Language::$optionKey['installed'], array());
         $installed = array();
 
         foreach ($keys as $key) {
@@ -206,7 +206,7 @@ class Language
      */
     public static function active() : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['active']);
+        $keys = get_option(\ContentTranslator\Language::$optionKey['active'], array());
         $active = array();
 
         foreach ($keys as $key) {
