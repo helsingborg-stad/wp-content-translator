@@ -13,16 +13,31 @@ var plumber = require('gulp-plumber');
 // Compile Our Sass
 gulp.task('sass-dist', function() {
     gulp.src('source/sass/wp-content-translator.scss')
-            .pipe(plumber())
-            .pipe(sass())
-            .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
-            .pipe(rename({suffix: '.min'}))
-            .pipe(cssnano())
-            .pipe(gulp.dest('dist/css'));
+        .pipe(plumber())
+        .pipe(sass())
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(cssnano())
+        .pipe(gulp.dest('dist/css'));
+
+    gulp.src('source/sass/wp-content-translator-admin.scss')
+        .pipe(plumber())
+        .pipe(sass())
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(cssnano())
+        .pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('sass-dev', function() {
     gulp.src('source/sass/wp-content-translator.scss')
+        .pipe(plumber())
+        .pipe(sass())
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
+        .pipe(rename({suffix: '.dev'}))
+        .pipe(gulp.dest('dist/css'));
+
+    gulp.src('source/sass/wp-content-translator-admin.scss')
         .pipe(plumber())
         .pipe(sass())
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
@@ -34,10 +49,20 @@ gulp.task('sass-dev', function() {
 gulp.task('scripts-dist', function() {
     gulp.src([
             'source/js/**/*.js',
+            '!source/js/admin/*.js'
         ])
         .pipe(concat('wp-content-translator.dev.js'))
         .pipe(gulp.dest('dist/js'))
         .pipe(rename('wp-content-translator.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/js'));
+
+    gulp.src([
+            'source/js/admin/**/*.js'
+        ])
+        .pipe(concat('wp-content-translator-admin.dev.js'))
+        .pipe(gulp.dest('dist/js'))
+        .pipe(rename('wp-content-translator-admin.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist/js'));
 });

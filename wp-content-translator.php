@@ -21,6 +21,7 @@ if (! defined('WPINC')) {
 define('WPCONTENTTRANSLATOR_PATH', plugin_dir_path(__FILE__));
 define('WPCONTENTTRANSLATOR_URL', plugins_url('', __FILE__));
 define('WPCONTENTTRANSLATOR_TEMPLATE_PATH', WPCONTENTTRANSLATOR_PATH . 'templates/');
+define('WPCONTENTTRANSLATOR_LANGUAGES_JSON_PATH', WPCONTENTTRANSLATOR_PATH . 'source/languages.json');
 
 load_plugin_textdomain('wp-content-translator', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
@@ -28,10 +29,10 @@ require_once WPCONTENTTRANSLATOR_PATH . 'source/php/Vendor/Psr4ClassLoader.php';
 require_once WPCONTENTTRANSLATOR_PATH . 'Public.php';
 
 // Instantiate and register the autoloader
-$loader = new ContentTranslate\Vendor\Psr4ClassLoader();
-$loader->addPrefix('ContentTranslate', WPCONTENTTRANSLATOR_PATH);
-$loader->addPrefix('ContentTranslate', WPCONTENTTRANSLATOR_PATH . 'source/php/');
+$loader = new ContentTranslator\Vendor\Psr4ClassLoader();
+$loader->addPrefix('ContentTranslator', WPCONTENTTRANSLATOR_PATH);
+$loader->addPrefix('ContentTranslator', WPCONTENTTRANSLATOR_PATH . 'source/php/');
 $loader->register();
 
 // Start application
-new ContentTranslate\App();
+new ContentTranslator\App();

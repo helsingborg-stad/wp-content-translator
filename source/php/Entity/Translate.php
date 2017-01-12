@@ -1,6 +1,6 @@
 <?php
 
-namespace ContentTranslate\Entity;
+namespace ContentTranslator\Entity;
 
 abstract class Translate
 {

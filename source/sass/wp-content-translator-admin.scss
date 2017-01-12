@@ -1,0 +1,58 @@
+#poststuff .wp-content-translator-admin__manage-languages.inside {
+    margin: 0;
+    padding: 0;
+}
+
+.wp-content-translator-admin__table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    thead {
+        border-bottom: 1px solid #EEE;
+        text-align: left;
+
+        td, th {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    }
+
+    thead tr {
+        background-color: #F5F5F5;
+    }
+
+    tbody tr + tr {
+        border-top: 1px solid #eee;
+    }
+
+    tr.new {
+        background-color: #f9f9f9;
+    }
+
+    th, td {
+        padding: 10px 12px;
+    }
+
+    .cb {
+        text-align: center;
+        width: 1%;
+    }
+
+    .actions {
+        text-align: right;
+    }
+
+    .submitdelete {
+        color: #a00;
+
+        &:hover {
+            color: #ff0000;
+        }
+    }
+}
+
+.wp-content-translator-admin__footer-actions {
+    border-top: 1px solid #eee;
+    padding: 12px;
+}

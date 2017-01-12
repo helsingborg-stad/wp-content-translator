@@ -1,6 +1,6 @@
 <?php
 
-namespace ContentTranslate;
+namespace ContentTranslator;
 
 class SiteOption Extends Entity\Translate
 {

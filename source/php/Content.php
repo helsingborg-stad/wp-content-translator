@@ -1,6 +1,6 @@
 <?php
 
-namespace ContentTranslate;
+namespace ContentTranslator;
 
 class Content Extends Entity\Translate
 {

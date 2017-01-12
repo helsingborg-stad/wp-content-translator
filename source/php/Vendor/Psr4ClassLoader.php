@@ -1,6 +1,6 @@
 <?php
 
-namespace ContentTranslate\Vendor;
+namespace ContentTranslator\Vendor;
 
 /**
  * A PSR-4 compatible class loader.
