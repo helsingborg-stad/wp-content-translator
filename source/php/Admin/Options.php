@@ -32,7 +32,7 @@ class Options
         do_action('wp-content-translator/after_add_options_page');
     }
 
-    public function saveOptions($args)
+    public function saveOptions()
     {
         if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'wp-content-translator-options')) {
             return;
@@ -43,5 +43,18 @@ class Options
                 new \ContentTranslator\Language($lang['lang']);
             }
         }
+
+        if (isset($_POST['active-languages'])) {
+            $this->setActiveLanguages($_POST['active-languages']);
+        }
+    }
+
+    /**
+     * Sets the list of activated languages
+     * @param array $languages Activated languages
+     */
+    public function setActiveLanguages(array $active) : bool
+    {
+        return update_option(\ContentTranslator\Language::$optionKey['active'], $active);
     }
 }

@@ -48,9 +48,10 @@
                                         <td><strong><?php _e('Default (WP Setting)', 'wp-content-translator'); ?>:</strong> <?php echo $defaultLang->name; ?></td>
                                         <td><?php echo $defaultLang->code; ?></td>
                                     </tr>
+
                                     <?php foreach ($installed as $lang) : ?>
                                     <tr>
-                                        <td class="cb"><input type="checkbox" name="active[]" value="<?php echo $lang->code; ?>"></td>
+                                        <td class="cb"><input type="checkbox" name="active-languages[]" value="<?php echo $lang->code; ?>" <?php echo \ContentTranslator\Language::isActive($lang->code) ? 'checked' : ''; ?>></td>
                                         <td><?php echo $lang->name; ?></td>
                                         <td><?php echo $lang->code; ?></td>
                                         <td class="actions"><a href="#" class="submitdelete deletion"><?php _e('Remove'); ?></a></td>
