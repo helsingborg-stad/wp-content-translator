@@ -182,7 +182,13 @@ class Language
      */
     public static function uninstalled() : array
     {
+        $defaultLang = self::default();
+
         $uninstalled = array_diff_key((array)self::all(), self::installed());
+        if (isset($uninstalled[$defaultLang->code])) {
+            unset($uninstalled[$defaultLang->code]);
+        }
+
         return $uninstalled;
     }
 
