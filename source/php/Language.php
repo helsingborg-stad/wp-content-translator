@@ -206,7 +206,7 @@ class Language
      */
     public static function active() : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['active']);
+        $keys = get_option(\ContentTranslator\Language::$optionKey['active'], array());
         $active = array();
 
         foreach ($keys as $key) {
