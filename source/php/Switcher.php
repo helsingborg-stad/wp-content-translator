@@ -4,7 +4,7 @@ namespace ContentTranslator;
 
 class Switcher
 {
-    public static $currentLanguage;
+    public static $currentLanguage = '';
 
     public function __construct()
     {
@@ -19,22 +19,5 @@ class Switcher
         }
 
         self::$currentLanguage = \ContentTranslator\Language::find($code);
-
-        add_action('init', array($this, 'wpdbSwitch'));
-        //add_filter('query', array($this, 'filterQuery'));
-    }
-
-    public function wpdbSwitch()
-    {
-        global $wpdb;
-
-        $wpdb->posts .= '_' . self::$currentLanguage->code;
-        $wpdb->postmeta .= '_' . self::$currentLanguage->code;
-    }
-
-    public function filterQuery($sql)
-    {
-        var_dump($sql);
-        exit;
     }
 }

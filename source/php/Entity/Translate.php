@@ -4,6 +4,10 @@ namespace ContentTranslator\Entity;
 
 abstract class Translate
 {
-    abstract protected function get();
-    abstract protected function save();
+    protected function get() {
+
+    }
+    protected function save() {
+
+    }
 }

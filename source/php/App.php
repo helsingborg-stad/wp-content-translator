@@ -10,6 +10,7 @@ class App
 
         // Core
         new Switcher();
+        new Post();
 
         // Admin
         new Admin\Options();
