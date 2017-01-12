@@ -1,6 +1,6 @@
 <?php
 
-namespace ContentTranslator;
+namespace ContentTranslator\Admin;
 
 class Options
 {

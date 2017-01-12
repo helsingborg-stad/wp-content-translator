@@ -8,7 +8,7 @@ class App
     {
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
-        new Options();
+        new Admin\Options();
     }
 
     public function adminEnqueue()
