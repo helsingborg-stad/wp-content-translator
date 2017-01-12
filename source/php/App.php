@@ -13,9 +13,13 @@ class App
 
         add_action('init', function() {
             global $wpdb;
+            $lang = "en";
+            $wpdb->posts = $wpdb->prefix . "post_".$lang;
 
-
-            $lang = "";
+            if(!empty($lang)) {
+                $wpdb->tables[array_search('posts', $wpdb->tables)] = "posts_".$lang;
+                $wpdb->tables[array_search('postmeta', $wpdb->tables)] = "postmeta_".$lang;
+            }
 
             //Avabile
             //var $ms_global_tables = array( 'blogs', 'signups', 'site', 'sitemeta', 'sitecategories', 'registration_log', 'blog_versions' );
@@ -25,10 +29,8 @@ class App
 
             //Filter: query add_filter('query', function($sql) {});
 
-            /*var_dump($wpdb->tables);
-            $wpdb->tables[0] = "test";
-            var_dump($wpdb->tables);*/
-        });
+            var_dump($wpdb->tables);
+        },0,1);
     }
 
     public function adminEnqueue()
