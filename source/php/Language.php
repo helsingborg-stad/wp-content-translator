@@ -36,6 +36,7 @@ class Language
             )
         );
 
+        // Should we install (ie create tables and such) the language
         if (!$this->isInstalled()) {
             $this->install();
         }
@@ -147,6 +148,11 @@ class Language
         return self::$all;
     }
 
+    /**
+     * Find a specific language by language code
+     * @param  string $key Language code
+     * @return stdClass    The language's info
+     */
     public static function find(string $key) : \stdClass
     {
         $all = self::all();
