@@ -13,6 +13,9 @@ class App
 
         // Admin
         new Admin\Options();
+
+
+        new Helper\Database();
     }
 
     public function adminEnqueue()
