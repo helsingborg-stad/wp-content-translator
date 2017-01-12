@@ -7,7 +7,8 @@ class Language
     public static $all;
 
     public static $optionKey = array(
-        'installed' => 'wp-content-translator-installed'
+        'installed' => 'wp-content-translator-installed',
+        'active' => 'wp-content-translator-active'
     );
 
     protected $db;
@@ -35,6 +36,7 @@ class Language
             )
         );
 
+        // Should we install (ie create tables and such) the language
         if (!$this->isInstalled()) {
             $this->install();
         }
@@ -146,7 +148,12 @@ class Language
         return self::$all;
     }
 
-    public static function find($key) : \stdClass
+    /**
+     * Find a specific language by language code
+     * @param  string $key Language code
+     * @return stdClass    The language's info
+     */
+    public static function find(string $key) : \stdClass
     {
         $all = self::all();
 
@@ -168,6 +175,7 @@ class Language
 
         foreach ($keys as $key) {
             $search = self::find($key);
+
             if ($search) {
                 $installed[$key] = $search;
             }
@@ -198,6 +206,33 @@ class Language
      */
     public static function active() : array
     {
-        return (array)self::all();
+        $keys = get_option(\ContentTranslator\Language::$optionKey['active']);
+        $active = array();
+
+        foreach ($keys as $key) {
+            $search = self::find($key);
+
+            if ($search) {
+                $active[$key] = $search;
+            }
+        }
+
+        return $active;
+    }
+
+    /**
+     * Checks if a language is activated
+     * @param  string  $code Langage code
+     * @return boolean
+     */
+    public static function isActive(string $code) : bool
+    {
+        $active = self::active();
+
+        if (isset($active[$code])) {
+            return true;
+        }
+
+        return false;
     }
 }
