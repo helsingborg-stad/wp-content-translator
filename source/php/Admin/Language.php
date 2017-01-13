@@ -24,7 +24,7 @@ class Language
             //Remove current lang
             $get_var = $_GET;
             if (isset($get_var['lang'])) {
-                unset($get_var['lang'])
+                unset($get_var['lang']);
             }
 
             foreach (\ContentTranslator\Language::installed() as $installedLanguage) {
