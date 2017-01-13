@@ -69,25 +69,15 @@ class Post
         if (!$exists) {
             remove_filter('wp_insert_post_data', array($this, 'save'), 10);
 
+            // Set import_id tp post_id if not revision
+            // This will force the post to be saved with the same
+            // id as in the default wp_posts table
+            if ($data['post_type'] !== 'revision') {
+                $data['import_id'] = $postarr['post_ID'];
+            }
+
             // Insert the post
             $insertedPostID = wp_insert_post($data, true);
-
-            // Update the post id to match the original
-            if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
-                $wpdb->update(
-                    $wpdb->posts,
-                    // Update
-                    array(
-                        'ID' => (int) $postarr['post_ID']
-                    ),
-                    // Where
-                    array(
-                        'ID' => $insertedPostID
-                    ),
-                    array('%d'),
-                    array('%d')
-                );
-            }
 
             add_filter('wp_insert_post_data', array($this, 'save'), 10, 2);
         }
