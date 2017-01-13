@@ -12,12 +12,17 @@ class Meta Extends Entity\Translate
         if (\ContentTranslator\Switcher::isLanguageSet()) {
             $this->lang = \ContentTranslator\Switcher::$currentLanguage['code'];
             add_filter('get_post_metadata', array($this,'get'), 4, 1);
+            add_filter('update_post_metadata', array($this,'save'), 4, 1);
+            add_filter('add_post_metadata', array($this,'save'), 4, 1);
         }
     }
 
-    public function save(null, $object_id, $meta_key, $single )
+    public function save(null, $object_id, $meta_key, $meta_value)
     {
-
+        if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
+            update_post_meta( $object_id, $this->createLangualMetaKey($meta_key), $meta_value);
+            return true;
+        }
         return null;
     }
 
@@ -38,6 +43,7 @@ class Meta Extends Entity\Translate
         }
 
         return null;
+
     }
 
     private function shouldTranslate($meta_key)
