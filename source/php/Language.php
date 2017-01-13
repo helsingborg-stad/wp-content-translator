@@ -25,14 +25,11 @@ class Language
         $this->code = $code;
         $this->language = self::find($code);
 
+        // Tables to create
         $this->tables = array(
             $this->db->posts => array(
                 'name' => $this->db->posts . '_' . $this->code,
                 'auto_increment' => 'ID'
-            ),
-            $this->db->postmeta => array(
-                'name' => $this->db->postmeta . '_' . $this->code,
-                'auto_increment' => 'meta_id'
             )
         );
 
@@ -50,8 +47,6 @@ class Language
      */
     public static function getTable(string $table = null, string $lang = null) : array
     {
-        global $wpdb;
-
         $suffix = '';
         if (!self::isDefault() && \ContentTranslator\Switcher::isLanguageSet()) {
             $suffix = '_' . \ContentTranslator\Switcher::$currentLanguage->code;
@@ -59,12 +54,8 @@ class Language
 
         $tables = array(
             'posts' => array(
-                'name' => $wpdb->posts . $suffix,
+                'name' => \ContentTranslator\App::$defaultWpdbTables['posts'] . $suffix,
                 'auto_increment' => 'ID'
-            ),
-            'postmeta' => array(
-                'name' => $wpdb->postmeta . $suffix,
-                'auto_increment' => 'meta_id'
             )
         );
 

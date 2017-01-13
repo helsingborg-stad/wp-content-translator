@@ -4,9 +4,10 @@ namespace ContentTranslator;
 
 class App
 {
+    public static $defaultWpdbTables;
+
     public function __construct()
     {
-
         /*  Hook format:
             wp-content-translator/option/translate_fallback
         */
@@ -19,6 +20,12 @@ class App
         add_action('init', array($this, 'metaConfiguration'));
         add_action('init', array($this, 'postConfiguration'));
         add_action('init', array($this, 'optionConfiguration'));
+
+        //
+        global $wpdb;
+        self::$defaultWpdbTables = array(
+            'posts' => $wpdb->posts
+        );
 
         // Core
         new Switcher();
