@@ -154,10 +154,7 @@ class Language
     public static function default() : \stdClass
     {
         $locale = get_locale();
-        $locale = explode('_', $locale);
-        $identifier = $locale[0];
-
-        return self::find($identifier);
+        return self::find($locale);
     }
 
     /**
@@ -185,9 +182,26 @@ class Language
             return self::$all;
         }
 
-        $json = file_get_contents(WPCONTENTTRANSLATOR_LANGUAGES_JSON_PATH);
-        self::$all = json_decode($json);
+        $languages = array();
 
+        require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
+        $translations = json_decode(json_encode(wp_get_available_translations()));
+
+        foreach ($translations as $key => $translation) {
+            $languages[$key] = array(
+                'code' => $translation->language,
+                'name' => $translation->english_name,
+                'nativeName' => $translation->native_name
+            );
+        }
+
+        uasort($languages, function ($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
+
+        $languages = json_decode(json_encode($languages));
+
+        self::$all = $languages;
         return self::$all;
     }
 
