@@ -62,7 +62,8 @@ class App
 
         define('TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/ranslatable_meta', array(
             '_aioseop_title',
-            '_aioseop_description'
+            '_aioseop_description',
+            '_aioseop_titleatr'
         )));
 
     }
