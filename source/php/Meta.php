@@ -21,15 +21,26 @@ class Meta Extends Entity\Translate
     }
 
     public function get(null, $object_id, $meta_key, $single ) {
+
         if(!$this->isLangualMeta($meta_key)) {
-            return get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
+
+            $translation =  get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
+
+            if (!TRANSLATE_FALLBACK && $translation == "") {
+                return "";      // Abort and return empty
+            } elseif (TRANSLATE_FALLBACK && $translation == "") {
+                return null;    // Continiue normal procedure
+            } {
+                return $translation; // Not empty, return value
+            }
+
         }
 
         return null;
     }
 
     private function isLangualMeta($meta_key) {
-        return substr($meta_key, -strlen("_".$this->lang)) == TRANSLATE_DELIMITER.$this->lang ? true : false;
+        return substr($meta_key, -strlen(TRANSLATE_DELIMITER.$this->lang)) == TRANSLATE_DELIMITER.$this->lang ? true : false;
     }
 
     private function createLangualMetaKey ($meta_key) {
