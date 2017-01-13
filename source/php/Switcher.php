@@ -20,4 +20,9 @@ class Switcher
 
         self::$currentLanguage = \ContentTranslator\Language::find($code);
     }
+
+    public static function isLanguageSet()
+    {
+        return isset(self::$currentLanguage) && !is_null(self::$currentLanguage) && !empty(self::$currentLanguage);
+    }
 }

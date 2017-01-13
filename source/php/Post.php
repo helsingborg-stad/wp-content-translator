@@ -6,12 +6,10 @@ class Post
 {
     public function __construct()
     {
-        if (isset(\ContentTranslator\Switcher::$currentLanguage) && !is_null(\ContentTranslator\Switcher::$currentLanguage) && !empty(\ContentTranslator\Switcher::$currentLanguage)) {
-            add_action('admin_enqueue_scripts', function () {
-                global $post;
-                $post = $this->get($post);
-            });
+        if (\ContentTranslator\Switcher::isLanguageSet()) {
+            add_action('admin_enqueue_scripts', array($this, 'globalPost'));
 
+            add_action('wp', array($this, 'globalPost'));
             add_filter('posts_results', array($this, 'postsResults'));
         }
     }
@@ -85,5 +83,18 @@ class Post
         }
 
         return $posts;
+    }
+
+    /**
+     * Translate the global WP_Post $post object
+     * @return void
+     */
+    public function globalPost()
+    {
+        global $post;
+
+        if (is_a($post, 'WP_Post')) {
+            $post = $this->get($post);
+        }
     }
 }
