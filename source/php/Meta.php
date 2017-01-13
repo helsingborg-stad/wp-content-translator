@@ -5,17 +5,14 @@ namespace ContentTranslator;
 class Meta Extends Entity\Translate
 {
 
+    protected $lang;
+
     public function __construct()
     {
-
-        // Get actions
-        add_filter('get_post_metadata',array($this,'get'),4,1);
-
-        // Add and update actions
-        foreach (array('add','update') as $action) {
-            add_filter($action . '_post_metadata', array($this, 'save'));
+        if (\ContentTranslator\Switcher::isLanguageSet()) {
+            $this->lang = \ContentTranslator\Switcher::$currentLanguage['code'];
+            add_filter('get_post_metadata', array($this,'get'), 4, 1);
         }
-
     }
 
     public function save(null, $object_id, $meta_key, $single ) {
@@ -23,20 +20,19 @@ class Meta Extends Entity\Translate
         return null;
     }
 
-    public function get(null, $object_id, $meta_key, $single )
-    {
+    public function get(null, $object_id, $meta_key, $single ) {
         if(!$this->isLangualMeta($meta_key)) {
             return get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
         }
+
         return null;
     }
 
     private function isLangualMeta($meta_key) {
-        return substr($meta_key, -strlen("_".\ContentTranslator\Switcher::$currentLanguage->code) == "_".\ContentTranslator\Switcher::$currentLanguage->code ? true : false;
+        return substr($meta_key, -strlen("_".$this->lang)) == "_".$this->lang ? true : false;
     }
 
     private function createLangualMetaKey ($meta_key) {
-        return $meta_key."_".\ContentTranslator\Switcher::$currentLanguage->code;
+        return $meta_key."_".$this->lang;
     }
-
 }

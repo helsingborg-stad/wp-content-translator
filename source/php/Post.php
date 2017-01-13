@@ -6,12 +6,12 @@ class Post
 {
     public function __construct()
     {
-        add_action('admin_enqueue_scripts', function () {
-            global $post;
-            $post = $this->get($post);
-        });
+        if (\ContentTranslator\Switcher::isLanguageSet()) {
+            add_action('admin_enqueue_scripts', array($this, 'globalPost'));
 
-        add_filter('posts_results', array($this, 'postsResults'));
+            add_action('wp', array($this, 'globalPost'));
+            add_filter('posts_results', array($this, 'postsResults'));
+        }
     }
 
     /**
@@ -44,8 +44,9 @@ class Post
     public function getTranslationPosts(array $posts) : array
     {
         global $wpdb;
+        $table = \ContentTranslator\Language::getTable('posts');
+        $table = $table['name'];
 
-        $table = $wpdb->posts . '_' . \ContentTranslator\Switcher::$currentLanguage->code;
         $postIds = implode(',', $posts);
 
         $results = $wpdb->get_results("SELECT * FROM $table WHERE ID IN ($postIds)");
@@ -83,5 +84,18 @@ class Post
         }
 
         return $posts;
+    }
+
+    /**
+     * Translate the global WP_Post $post object
+     * @return void
+     */
+    public function globalPost()
+    {
+        global $post;
+
+        if (is_a($post, 'WP_Post')) {
+            $post = $this->get($post);
+        }
     }
 }
