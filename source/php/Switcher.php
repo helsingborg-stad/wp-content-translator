@@ -11,7 +11,32 @@ class Switcher
     {
         if ($lang = $this->getRequestedLang()) {
             $this->switchToLanguage($lang);
+            add_filter('locale', array($this, 'swithcLocale'));
         }
+    }
+
+    /**
+     * Finds and switches WP locale to the current language (not in admin)
+     * @param  string $lang Lang code
+     * @return string       New lang code
+     */
+    public function swithcLocale(string $lang) : string
+    {
+        if (is_admin()) {
+            return $lang;
+        }
+
+        require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+        $translations = wp_get_available_translations();
+        $current = self::$currentLanguage;
+
+        foreach ($translations as $key => $translation) {
+            if (array_values($translation['iso'])[0] === $current->code) {
+                return $key;
+            }
+        }
+
+        return $lang;
     }
 
     /**
