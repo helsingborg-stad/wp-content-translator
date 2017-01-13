@@ -4,8 +4,6 @@ namespace ContentTranslator;
 
 class Post
 {
-    private $useFilter = true;
-
     public function __construct()
     {
         if (\ContentTranslator\Switcher::isLanguageSet()) {
@@ -14,7 +12,7 @@ class Post
             add_action('wp', array($this, 'globalPost'));
             add_filter('posts_results', array($this, 'postsResults'));
 
-            add_filter('wp_insert_post_data', array($this, 'save'), 10, 3);
+            add_filter('wp_insert_post_data', array($this, 'save'), 10, 2);
         }
     }
 
@@ -54,10 +52,6 @@ class Post
      */
     public function save(array $data, array $postarr)
     {
-        if (!$this->useFilter) {
-            return $data;
-        }
-
         global $wpdb;
 
         $table = \ContentTranslator\Language::getTable('posts');
@@ -67,17 +61,22 @@ class Post
 
         $exists = 0;
 
-        if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
+        if ($data['post_type'] !== 'revision' && isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
             $exists = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
             $exists = (int) $exists;
         }
 
         if (!$exists) {
             remove_filter('wp_insert_post_data', array($this, 'save'), 10);
-            $this->useFilter = false;
 
             // Insert the post
             $insertedPostID = wp_insert_post($data, true);
+
+            if ($data['post_type'] === 'revision') {
+                var_dump($table);
+                var_dump($insertedPostID);
+                exit;
+            }
 
             // Update the post id to match the original
             if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
@@ -96,7 +95,7 @@ class Post
                 );
             }
 
-            add_filter('wp_insert_post_data', array($this, 'save'), 10, 3);
+            add_filter('wp_insert_post_data', array($this, 'save'), 10, 2);
         }
 
         return $data;
