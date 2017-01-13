@@ -83,7 +83,32 @@ class Language
         $installed = get_option(self::$optionKey['installed'], array());
         $installed[] = $this->code;
 
-        update_option('wp-content-translator-installed', $installed);
+        update_option(self::$optionKey['installed'], $installed);
+
+        return true;
+    }
+
+    public function uninstall() : bool
+    {
+        foreach ($this->tables as $source => $target) {
+            $this->dropTable($target['name']);
+        }
+
+        // Remove from activated
+        $active = get_option(self::$optionKey['active'], array());
+        if ($index = array_search($this->code, $active)) {
+            unset($active[$index]);
+        }
+
+        update_option(self::$optionKey['activa'], $installed);
+
+        // Remove from installed
+        $installed = get_option(self::$optionKey['installed'], array());
+        if ($index = array_search($this->code, $installed)) {
+            unset($installed[$index]);
+        }
+
+        update_option(self::$optionKey['installed'], $installed);
 
         return true;
     }
@@ -114,6 +139,32 @@ class Language
         dbDelta($sql);
 
         $this->db->query("ALTER TABLE $target CHANGE $ai $ai BIGINT(20) UNSIGNED NOT NULL");
+
+        return true;
+    }
+
+    /**
+     * Drop a table
+     * Note: Can only drop tables created by this plugin for saftey reasons
+     * @param  string $table Table name
+     * @return bool
+     */
+    public function dropTable(string $table) : bool
+    {
+        $droppable = false;
+        foreach ($this->tables as $droppableTable) {
+            if ($droppableTable['name'] === $table) {
+                $droppable = true;
+                break;
+            }
+        }
+
+        if (!$droppable) {
+            throw new \Exception("Ooopsidopsi. Can't do it.", 1);
+        }
+
+        global $wpdb;
+        $wpdb->query("DROP TABLE $table");
 
         return true;
     }
@@ -154,10 +205,7 @@ class Language
     public static function default() : \stdClass
     {
         $locale = get_locale();
-        $locale = explode('_', $locale);
-        $identifier = $locale[0];
-
-        return self::find($identifier);
+        return self::find($locale);
     }
 
     /**
@@ -185,9 +233,26 @@ class Language
             return self::$all;
         }
 
-        $json = file_get_contents(WPCONTENTTRANSLATOR_LANGUAGES_JSON_PATH);
-        self::$all = json_decode($json);
+        $languages = array();
 
+        require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
+        $translations = json_decode(json_encode(wp_get_available_translations()));
+
+        foreach ($translations as $key => $translation) {
+            $languages[$key] = array(
+                'code' => $translation->language,
+                'name' => $translation->english_name,
+                'nativeName' => $translation->native_name
+            );
+        }
+
+        uasort($languages, function ($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
+
+        $languages = json_decode(json_encode($languages));
+
+        self::$all = $languages;
         return self::$all;
     }
 

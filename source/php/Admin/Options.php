@@ -8,6 +8,7 @@ class Options
     {
         add_action('admin_menu', array($this, 'addOptionsPage'));
         add_action('admin_init', array($this, 'saveOptions'));
+        add_action('admin_init', array($this, 'removeLang'));
     }
 
     public function addOptionsPage()
@@ -30,6 +31,11 @@ class Options
         );
 
         do_action('wp-content-translator/after_add_options_page');
+    }
+
+    public function removeLang()
+    {
+
     }
 
     public function saveOptions()

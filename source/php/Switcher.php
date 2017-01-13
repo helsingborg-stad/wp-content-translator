@@ -83,8 +83,7 @@ class Switcher
     public function switchToLanguage(string $code) : bool
     {
         if (!is_admin() && !\ContentTranslator\Language::isActive($code)) {
-            $lang = \ContentTranslator\Language::find($code);
-            throw new \Exception("WP Content Translator: Can't switch language to '" . $lang->name . "' because it's not activated.", 1);
+            return $this->switchToDefaultLang();
         }
 
         self::$currentLanguage = \ContentTranslator\Language::find($code);
@@ -92,6 +91,14 @@ class Switcher
         if (self::$currentLanguage !== false) {
             setcookie(self::$cookieKey, $code, time() + (3600 * 24 * 30), '/', COOKIE_DOMAIN);
         }
+
+        return true;
+    }
+
+    public function switchToDefaultLang() : bool
+    {
+        unset($_COOKE[self::$cookieKey]);
+        setcookie(self::$cookieKey, null, -1, '/', COOKIE_DOMAIN);
 
         return true;
     }
