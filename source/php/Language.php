@@ -43,6 +43,39 @@ class Language
     }
 
     /**
+     * Get table names for current language
+     * @param  string $table Table to get (posts|postmeta)
+     * @param  string $lang  Language code
+     * @return array         Table
+     */
+    public static function getTable($table = null, $lang = null) : array
+    {
+        global $wpdb;
+
+        $suffix = '';
+        if (!self::isDefault() && \ContentTranslator\Switcher::isLanguageSet()) {
+            $suffix = '_' . \ContentTranslator\Switcher::$currentLanguage->code;
+        }
+
+        $tables = array(
+            'posts' => array(
+                'name' => $wpdb->posts . $suffix,
+                'auto_increment' => 'ID'
+            ),
+            'postmeta' => array(
+                'name' => $wpdb->postmeta . $suffix,
+                'auto_increment' => 'meta_id'
+            )
+        );
+
+        if (is_null($table)) {
+            return $tables;
+        }
+
+        return isset($tables[$table]) ? $tables[$table] : array();
+    }
+
+    /**
      * Installs the language if needed
      * @return boolean
      */
