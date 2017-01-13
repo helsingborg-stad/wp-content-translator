@@ -33,6 +33,7 @@ class App
 
         // Admin
         new Admin\Options();
+        new Admin\Language();
 
         // Helpers
         new Helper\Database();
