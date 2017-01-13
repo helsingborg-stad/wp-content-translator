@@ -17,7 +17,7 @@ class Language
     private $language;
     private $tables;
 
-    public function __construct($code)
+    public function __construct(string $code)
     {
         global $wpdb;
         $this->db = $wpdb;
@@ -48,7 +48,7 @@ class Language
      * @param  string $lang  Language code
      * @return array         Table
      */
-    public static function getTable($table = null, $lang = null) : array
+    public static function getTable(string $table = null, string $lang = null) : array
     {
         global $wpdb;
 
@@ -99,7 +99,7 @@ class Language
      * @param  string $target Table name to create
      * @return boolean
      */
-    public function duplicateTable($source, $target) : bool
+    public function duplicateTable(string $source, string $target) : bool
     {
         if (!$this->tableExist($source)) {
             throw new \Exception("Table '" . $source . "' does not exist.", 1);
@@ -128,7 +128,7 @@ class Language
      * @param  string $table Table name
      * @return boolean
      */
-    public function tableExist($table) : bool
+    public function tableExist(string $table) : bool
     {
         if ($this->db->get_var("SHOW TABLES LIKE '$table'") !== $table) {
             return false;
@@ -165,6 +165,11 @@ class Language
         return self::find($identifier);
     }
 
+    /**
+     * Check if current language or given langauge is the default language
+     * @param  string|null $code Langauge code
+     * @return boolean
+     */
     public static function isDefault(string $code = null)
     {
         if (is_null($code)) {

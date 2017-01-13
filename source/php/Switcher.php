@@ -4,13 +4,31 @@ namespace ContentTranslator;
 
 class Switcher
 {
+    public static $cookieKey = 'wp_content_translator_language';
     public static $currentLanguage;
 
     public function __construct()
     {
-        if (isset($_GET['lang']) && !empty($_GET['lang'])) {
-            $this->switchToLanguage($_GET['lang']);
+        if ($lang = $this->getRequestedLang()) {
+            $this->switchToLanguage($lang);
         }
+    }
+
+    /**
+     * Check get param and cookie for language
+     * @return mixed
+     */
+    public function getRequestedLang()
+    {
+        if (isset($_GET['lang']) && !empty($_GET['lang'])) {
+            return $_GET['lang'];
+        }
+
+        if (isset($_COOKIE[self::$cookieKey]) && !empty($_COOKIE[self::$cookieKey])) {
+            return $_COOKIE[self::$cookieKey];
+        }
+
+        return false;
     }
 
     /**
@@ -28,7 +46,7 @@ class Switcher
         self::$currentLanguage = \ContentTranslator\Language::find($code);
 
         if (self::$currentLanguage !== false) {
-            setcookie('wp_content_translator_language', $code, MONTH_IN_SECONDS, '/', COOKIE_DOMAIN);
+            setcookie(self::$cookieKey, $code, time() + (3600 * 24 * 30), '/', COOKIE_DOMAIN);
         }
 
         return true;
