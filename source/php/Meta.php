@@ -18,7 +18,7 @@ class Meta Extends Entity\Translate
 
     }
 
-    public function get(null, $object_id, $meta_key, $single ) {
+    public function get(null, $object_id, $meta_key, $single) {
         if (!$this->isLangualMeta($meta_key)) {
             return get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
         }
