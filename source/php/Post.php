@@ -43,6 +43,10 @@ class Post
      */
     public function getTranslationPosts(array $posts) : array
     {
+        if (empty($posts)) {
+            return array();
+        }
+
         global $wpdb;
         $table = \ContentTranslator\Language::getTable('posts');
         $table = $table['name'];
@@ -68,7 +72,7 @@ class Post
      * @param  array $posts Posts in result
      * @return array
      */
-    public function postsResults($posts) : array
+    public function postsResults(array $posts) : array
     {
         global $wpdb;
 
