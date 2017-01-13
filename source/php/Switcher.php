@@ -8,10 +8,17 @@ class Switcher
 
     public function __construct()
     {
-        $this->switchToLanguage('en');
+        if (isset($_GET['lang']) && !empty($_GET['lang'])) {
+            $this->switchToLanguage($_GET['lang']);
+        }
     }
 
-    public function switchToLanguage(string $code)
+    /**
+     * Switches language and sets user cookie
+     * @param  string $code Code of language to swtich to
+     * @return bool
+     */
+    public function switchToLanguage(string $code) : bool
     {
         if (!\ContentTranslator\Language::isActive($code)) {
             $lang = \ContentTranslator\Language::find($code);
@@ -19,6 +26,12 @@ class Switcher
         }
 
         self::$currentLanguage = \ContentTranslator\Language::find($code);
+
+        if (self::$currentLanguage !== false) {
+            setcookie('wp_content_translator_language', $code, MONTH_IN_SECONDS, '/', COOKIE_DOMAIN);
+        }
+
+        return true;
     }
 
     /**
