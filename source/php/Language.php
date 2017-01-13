@@ -219,6 +219,10 @@ class Language
         $keys = get_option(\ContentTranslator\Language::$optionKey['active'], array());
         $active = array();
 
+        // Add default lang to active
+        $default = self::default();
+        $active[$default->code] = $default;
+
         foreach ($keys as $key) {
             $search = self::find($key);
 
