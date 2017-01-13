@@ -44,8 +44,9 @@ class Post
     public function getTranslationPosts(array $posts) : array
     {
         global $wpdb;
+        $table = \ContentTranslator\Language::getTable('posts');
+        $table = $table['name'];
 
-        $table = $wpdb->posts . '_' . \ContentTranslator\Switcher::$currentLanguage->code;
         $postIds = implode(',', $posts);
 
         $results = $wpdb->get_results("SELECT * FROM $table WHERE ID IN ($postIds)");
