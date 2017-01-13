@@ -14,6 +14,10 @@ class Switcher
         }
     }
 
+    /**
+     * Check get param and cookie for language
+     * @return mixed
+     */
     public function getRequestedLang()
     {
         if (isset($_GET['lang']) && !empty($_GET['lang'])) {
