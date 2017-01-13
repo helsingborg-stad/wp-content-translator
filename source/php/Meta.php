@@ -8,9 +8,10 @@ class Meta Extends Entity\Translate
 
     public function __construct()
     {
-        $this->lang = \ContentTranslator\Switcher::$currentLanguage['code'];
-
-        add_filter('get_post_metadata',array($this,'get'),4,1);
+        if (\ContentTranslator\Switcher::isLanguageSet()) {
+            $this->lang = \ContentTranslator\Switcher::$currentLanguage['code'];
+            add_filter('get_post_metadata', array($this,'get'), 4, 1);
+        }
     }
 
     public function save() {
@@ -26,10 +27,10 @@ class Meta Extends Entity\Translate
     }
 
     private function isLangualMeta($meta_key) {
-        return substr($meta_key, -strlen("_".$this->lang)) == "_".$this->lang ? true : false;
+        return substr($meta_key, -strlen('_' . $this->lang)) == '_' . $this->lang ? true : false;
     }
 
     private function createLangualMetaKey ($meta_key) {
-        return $meta_key."_".$this->lang;
+        return $meta_key . '_' . $this->lang;
     }
 }
