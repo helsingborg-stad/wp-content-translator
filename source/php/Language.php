@@ -207,10 +207,15 @@ class Language
      * Get languages in use (both active and inactive)
      * @return array Languages
      */
-    public static function installed() : array
+    public static function installed($includeDefault = true) : array
     {
         $keys = get_option(\ContentTranslator\Language::$optionKey['installed'], array());
         $installed = array();
+
+        if ($includeDefault) {
+            $default = self::default();
+            $installed[$default->code] = $default;
+        }
 
         foreach ($keys as $key) {
             $search = self::find($key);
