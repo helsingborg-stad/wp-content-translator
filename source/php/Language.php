@@ -83,7 +83,32 @@ class Language
         $installed = get_option(self::$optionKey['installed'], array());
         $installed[] = $this->code;
 
-        update_option('wp-content-translator-installed', $installed);
+        update_option(self::$optionKey['installed'], $installed);
+
+        return true;
+    }
+
+    public function uninstall() : bool
+    {
+        foreach ($this->tables as $source => $target) {
+            $this->dropTable($target['name']);
+        }
+
+        // Remove from activated
+        $active = get_option(self::$optionKey['active'], array());
+        if ($index = array_search($this->code, $active)) {
+            unset($active[$index]);
+        }
+
+        update_option(self::$optionKey['activa'], $installed);
+
+        // Remove from installed
+        $installed = get_option(self::$optionKey['installed'], array());
+        if ($index = array_search($this->code, $installed)) {
+            unset($installed[$index]);
+        }
+
+        update_option(self::$optionKey['installed'], $installed);
 
         return true;
     }
@@ -114,6 +139,32 @@ class Language
         dbDelta($sql);
 
         $this->db->query("ALTER TABLE $target CHANGE $ai $ai BIGINT(20) UNSIGNED NOT NULL");
+
+        return true;
+    }
+
+    /**
+     * Drop a table
+     * Note: Can only drop tables created by this plugin for saftey reasons
+     * @param  string $table Table name
+     * @return bool
+     */
+    public function dropTable(string $table) : bool
+    {
+        $droppable = false;
+        foreach ($this->tables as $droppableTable) {
+            if ($droppableTable['name'] === $table) {
+                $droppable = true;
+                break;
+            }
+        }
+
+        if (!$droppable) {
+            throw new \Exception("Ooopsidopsi. Can't do it.", 1);
+        }
+
+        global $wpdb;
+        $wpdb->query("DROP TABLE $table");
 
         return true;
     }

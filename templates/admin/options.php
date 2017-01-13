@@ -52,7 +52,7 @@
                                         <td class="cb"><input type="checkbox" name="active-languages[]" value="<?php echo $lang->code; ?>" <?php echo \ContentTranslator\Language::isActive($lang->code) ? 'checked' : ''; ?>></td>
                                         <td><?php echo $lang->name; ?></td>
                                         <td><?php echo $lang->code; ?></td>
-                                        <td class="actions"><a href="#" class="submitdelete deletion"><?php _e('Remove'); ?></a></td>
+                                        <td class="actions"><a href="<?php echo wp_nonce_url('', 'remove-lang_' . $lang->code) ?>" class="submitdelete deletion"><?php _e('Remove'); ?></a></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
