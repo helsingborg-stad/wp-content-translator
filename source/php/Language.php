@@ -132,6 +132,16 @@ class Language
         return self::find($identifier);
     }
 
+    public static function isDefault(string $code = null)
+    {
+        if (is_null($code)) {
+            $code = \ContentTranslator\Switcher::$currentLanguage->code;
+        }
+
+        $default = self::default();
+        return $default->code === $code;
+    }
+
     /**
      * Gets all languages
      * @return array Languages
