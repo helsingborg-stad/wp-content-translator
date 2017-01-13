@@ -38,7 +38,7 @@ class Switcher
      */
     public function switchToLanguage(string $code) : bool
     {
-        if (!\ContentTranslator\Language::isActive($code)) {
+        if (!is_admin() && !\ContentTranslator\Language::isActive($code)) {
             $lang = \ContentTranslator\Language::find($code);
             throw new \Exception("WP Content Translator: Can't switch language to '" . $lang->name . "' because it's not activated.", 1);
         }
