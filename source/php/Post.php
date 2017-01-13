@@ -72,12 +72,6 @@ class Post
             // Insert the post
             $insertedPostID = wp_insert_post($data, true);
 
-            if ($data['post_type'] === 'revision') {
-                var_dump($table);
-                var_dump($insertedPostID);
-                exit;
-            }
-
             // Update the post id to match the original
             if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
                 $wpdb->update(
