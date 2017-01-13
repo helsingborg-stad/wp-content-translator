@@ -59,25 +59,56 @@ class Post
 
         $wpdb->posts = $table;
 
-        $exists = 0;
+        $existing = false;
 
+        // Check for existing post on the same post id as the one we want to create
         if ($data['post_type'] !== 'revision' && isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
-            $exists = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
-            $exists = (int) $exists;
+            $existing = $wpdb->get_row("SELECT ID, post_type FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
+
+            // If there's an existing post and it's a revision, update
+            // the ID of the revision to a unused ID to be able to syncronize ID
+            // between translation post and default post
+            if ($existing && $existing->post_type === 'revision') {
+                $what = $wpdb->get_row("SHOW TABLE STATUS LIKE '$wpdb->posts'");
+                $autoIncrement = $what->Auto_increment + 1;
+
+                $wpdb->update(
+                    $wpdb->posts,
+                    array('ID' => $autoIncrement),
+                    array('ID' => $postarr['post_ID']),
+                    array('%d'),
+                    array('%d')
+                );
+
+                // Reset existing to false since we now
+                // have changed the postid of the existing
+                // revision post
+                $existing = false;
+            }
         }
 
-        if (!$exists) {
+        if (!$existing) {
             remove_filter('wp_insert_post_data', array($this, 'save'), 10);
-
-            // Set import_id tp post_id if not revision
-            // This will force the post to be saved with the same
-            // id as in the default wp_posts table
-            if ($data['post_type'] !== 'revision') {
-                $data['import_id'] = $postarr['post_ID'];
-            }
 
             // Insert the post
             $insertedPostID = wp_insert_post($data, true);
+
+            // Update the post id to match the original
+            if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
+                $wpdb->update(
+                    $wpdb->posts,
+                    // Update
+                    array(
+                        'ID' => (int) $postarr['post_ID']
+                    ),
+                    // Where
+                    array(
+                        'ID' => $insertedPostID
+                    ),
+                    array('%d'),
+                    array('%d')
+                );
+            }
 
             add_filter('wp_insert_post_data', array($this, 'save'), 10, 2);
         }
@@ -102,7 +133,7 @@ class Post
 
         $postIds = implode(',', $posts);
 
-        $results = $wpdb->get_results("SELECT * FROM $table WHERE ID IN ($postIds)");
+        $results = $wpdb->get_results("SELECT * FROM $table WHERE ID IN ($postIds) AND post_type != 'revision'");
 
         if (empty($results)) {
             return array();
@@ -127,6 +158,10 @@ class Post
 
         $postIds = array();
         foreach ($posts as $post) {
+            if ($post->post_type === 'revision') {
+                continue;
+            }
+
             $postIds[] = $post->ID;
         }
 
