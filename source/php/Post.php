@@ -4,6 +4,8 @@ namespace ContentTranslator;
 
 class Post
 {
+    private $useFilter = true;
+
     public function __construct()
     {
         if (\ContentTranslator\Switcher::isLanguageSet()) {
@@ -11,6 +13,8 @@ class Post
 
             add_action('wp', array($this, 'globalPost'));
             add_filter('posts_results', array($this, 'postsResults'));
+
+            add_filter('wp_insert_post_data', array($this, 'save'), 10, 3);
         }
     }
 
@@ -33,7 +37,69 @@ class Post
         $post->post_title = $translations[$post->ID]->post_title;
         $post->post_content = $translations[$post->ID]->post_content;
 
-        return $post;
+        /**
+         * Filter translated post object
+         * @param WP_Post $post       The post object
+         * @param array $translations Possible translations
+         */
+        return apply_filters('wp-content-translator/post/get', $post, $translations);
+    }
+
+    /**
+     * Switches db table so that the post is beeing saved in correct lang-table
+     * Inserts or updates (does what needs to be done)
+     * @param  array  $data    [description]
+     * @param  array  $postarr [description]
+     * @return [type]          [description]
+     */
+    public function save(array $data, array $postarr)
+    {
+        if (!$this->useFilter) {
+            return $data;
+        }
+
+        global $wpdb;
+
+        $table = \ContentTranslator\Language::getTable('posts');
+        $table = $table['name'];
+
+        $wpdb->posts = $table;
+
+        $exists = 0;
+
+        if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
+            $exists = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
+            $exists = (int) $exists;
+        }
+
+        if (!$exists) {
+            remove_filter('wp_insert_post_data', array($this, 'save'), 10);
+            $this->useFilter = false;
+
+            // Insert the post
+            $insertedPostID = wp_insert_post($data, true);
+
+            // Update the post id to match the original
+            if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
+                $wpdb->update(
+                    $wpdb->posts,
+                    // Update
+                    array(
+                        'ID' => (int) $postarr['post_ID']
+                    ),
+                    // Where
+                    array(
+                        'ID' => $insertedPostID
+                    ),
+                    array('%d'),
+                    array('%d')
+                );
+            }
+
+            add_filter('wp_insert_post_data', array($this, 'save'), 10, 3);
+        }
+
+        return $data;
     }
 
     /**
