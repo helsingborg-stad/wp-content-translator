@@ -20,13 +20,13 @@ class Post
      * @param  array|null $translations Array with translations
      * @return \WP_Post                 Translated post object
      */
-    protected function get(\WP_Post $post, $translations = null) : \WP_Post
+    protected function get(\WP_Post $post, array $translations = null) : \WP_Post
     {
         if (is_null($translations)) {
             $translations = $this->getTranslationPosts(array($post->ID));
         }
 
-        if (empty($translations)) {
+        if (empty($translations) || !isset($translations[$post->ID])) {
             return $post;
         }
 
