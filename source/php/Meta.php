@@ -4,13 +4,11 @@ namespace ContentTranslator;
 
 class Meta Extends Entity\Translate
 {
-
     protected $lang;
 
     public function __construct()
     {
-
-        $this->lang = "en";
+        $this->lang = \ContentTranslator\Switcher::$currentLanguage['code'];
 
         add_filter('get_post_metadata',array($this,'get'),4,1);
     }
@@ -20,9 +18,10 @@ class Meta Extends Entity\Translate
     }
 
     public function get(null, $object_id, $meta_key, $single ) {
-        if(!$this->isLangualMeta($meta_key)) {
+        if (!$this->isLangualMeta($meta_key)) {
             return get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
         }
+
         return null;
     }
 
@@ -33,5 +32,4 @@ class Meta Extends Entity\Translate
     private function createLangualMetaKey ($meta_key) {
         return $meta_key."_".$this->lang;
     }
-
 }
