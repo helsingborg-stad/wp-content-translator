@@ -31,7 +31,7 @@ class Language
                 $wp_admin_bar->add_node( array(
                     'parent' => 'language_links',
                     'id' => 'language_links_'. $installedLanguage->code,
-                    'title' => $installedLanguage->name . " (". $installedLanguage->nativeName. ")",
+                    'title' => $installedLanguage->name,
                     'href' => "http" . ( is_ssl() ? 's' : '' ) . "://".$_SERVER['HTTP_HOST']. $_SERVER['REQUEST_URI'] . http_build_query(array_merge($get_var, array('lang' => $installedLanguage->code))),
                 ));
             }
