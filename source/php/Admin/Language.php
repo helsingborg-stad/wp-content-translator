@@ -21,12 +21,18 @@ class Language
                 'title' => __('Language', 'wp-content-translator')
             ));
 
+            //Remove current lang
+            $get_var = $_GET;
+            if (isset($get_var['lang'])) {
+                unset($get_var['lang'])
+            }
+
             foreach (\ContentTranslator\Language::installed() as $installedLanguage) {
                 $wp_admin_bar->add_node( array(
                     'parent' => 'language_links',
                     'id' => 'language_links_'. $installedLanguage->code,
                     'title' => $installedLanguage->name . " (". $installedLanguage->nativeName. ")",
-                    'href' => "http" . ( is_ssl() ? 's' : '' ) . "://".$_SERVER['HTTP_HOST']. $_SERVER['REQUEST_URI'].http_build_query(array_merge($_GET,array('lang' => $installedLanguage->code))),
+                    'href' => "http" . ( is_ssl() ? 's' : '' ) . "://".$_SERVER['HTTP_HOST']. $_SERVER['REQUEST_URI'] . http_build_query(array_merge($get_var, array('lang' => $installedLanguage->code))),
                 ));
             }
 
