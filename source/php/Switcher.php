@@ -17,6 +17,7 @@ class Switcher
 
     /**
      * Finds and switches WP locale to the current language (not in admin)
+     * Downloads missing language files as well
      * @param  string $lang Lang code
      * @return string       New lang code
      */
@@ -26,17 +27,35 @@ class Switcher
             return $lang;
         }
 
+        if ($switchToLang = self::identifyLocale()) {
+            return $switchToLang;
+        }
+
+        return $lang;
+    }
+
+    /**
+     * Identifies the real locale key for a specific language code
+     * @param  string $code Language code
+     * @return string|bool  Language code or false
+     */
+    public static function identifyLocale(string $code = null)
+    {
+        if (is_null($code)) {
+            $current = self::$currentLanguage;
+            $code = $current->code;
+        }
+
         require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
         $translations = wp_get_available_translations();
-        $current = self::$currentLanguage;
 
         foreach ($translations as $key => $translation) {
-            if (array_values($translation['iso'])[0] === $current->code) {
+            if (array_values($translation['iso'])[0] === $code) {
                 return $key;
             }
         }
 
-        return $lang;
+        return false;
     }
 
     /**

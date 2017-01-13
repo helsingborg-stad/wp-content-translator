@@ -76,6 +76,10 @@ class Language
             $this->duplicateTable($source, $target['name']);
         }
 
+        if (!in_array(\ContentTranslator\Switcher::identifyLocale($this->code), get_available_languages())) {
+            $download = wp_download_language_pack(\ContentTranslator\Switcher::identifyLocale($this->code));
+        }
+
         $installed = get_option(self::$optionKey['installed'], array());
         $installed[] = $this->code;
 
