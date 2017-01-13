@@ -44,7 +44,7 @@ class App
 
     public function metaConfiguration () {
         define('TRANSLATE_HIDDEN_META', apply_filters('wp-content-translator/option/translate_hidden_meta', false));
-        define('UNTRANSLATEBLE_META', apply_filters('wp-content-translator/option/untranslatable_meta', array()));
+        define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array()));
     }
 
     public function postConfiguration () {
