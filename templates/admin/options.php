@@ -1,10 +1,8 @@
 <div class="wrap" id="modularity-options">
 
-    <h1><?php _e('Administration units', 'municipio-intranet'); ?></h1>
+    <h1><?php _e('Languages', 'wp-content-translator'); ?></h1>
 
     <form method="post">
-        <input type="hidden" name="administration-units-action" value="save">
-
         <?php wp_nonce_field('wp-content-translator-options'); ?>
 
         <div id="poststuff">

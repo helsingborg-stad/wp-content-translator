@@ -21,7 +21,7 @@ class Options
             'languages',
             function () {
                 $defaultLang = \ContentTranslator\Language::default();
-                $installed = \ContentTranslator\Language::installed();
+                $installed = \ContentTranslator\Language::installed(false);
 
                 include WPCONTENTTRANSLATOR_TEMPLATE_PATH . 'admin/options.php';
             },
