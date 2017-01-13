@@ -61,9 +61,13 @@ class Post
 
         $existing = false;
 
+        // Check for existing post on the same post id as the one we want to create
         if ($data['post_type'] !== 'revision' && isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
             $existing = $wpdb->get_row("SELECT ID, post_type FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
 
+            // If there's an existing post and it's a revision, update
+            // the ID of the revision to a unused ID to be able to syncronize ID
+            // between translation post and default post
             if ($existing && $existing->post_type === 'revision') {
                 $what = $wpdb->get_row("SHOW TABLE STATUS LIKE '$wpdb->posts'");
                 $autoIncrement = $what->Auto_increment + 1;
