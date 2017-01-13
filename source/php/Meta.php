@@ -2,22 +2,28 @@
 
 namespace ContentTranslator;
 
-class Meta Extends Entity\Translate
+class Meta
 {
 
     protected $lang;
+    protected $db;
 
     public function __construct()
     {
         if (\ContentTranslator\Switcher::isLanguageSet()) {
-            $this->lang = \ContentTranslator\Switcher::$currentLanguage['code'];
-            add_filter('get_post_metadata', array($this,'get'), 4, 1);
-            add_filter('update_post_metadata', array($this,'save'), 4, 1);
-            add_filter('add_post_metadata', array($this,'save'), 4, 1);
+
+            global $wpdb;
+
+            $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
+            $this->db   = $wpdb;
+
+            add_filter('get_post_metadata', array($this,'get'), 1, 4);
+            //add_filter('update_post_metadata', array($this,'save'), 1, 4);
+            //add_filter('add_post_metadata', array($this,'save'), 1, 4);
         }
     }
 
-    public function save(null, $object_id, $meta_key, $meta_value)
+    public function save($null, $object_id, $meta_key, $meta_value)
     {
         if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
             update_post_meta( $object_id, $this->createLangualMetaKey($meta_key), $meta_value);
@@ -26,19 +32,21 @@ class Meta Extends Entity\Translate
         return null;
     }
 
-    public function get(null, $object_id, $meta_key, $single )
+    public function get($type, $post_id, $meta_key, $single)
     {
 
         if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
 
-            $translation =  get_metadata('post', $object_id, $this->createLangualMetaKey($meta_key), $single);
+            $translation =  $this->db->get_col(
+                                $this->db->prepare( "SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualMetaKey($meta_key))
+                            );
 
-            if (!TRANSLATE_FALLBACK && $translation == "") {
-                return "";      // Abort and return empty
-            } elseif (TRANSLATE_FALLBACK && $translation == "") {
-                return null;    // Continiue normal procedure
+            if (!TRANSLATE_FALLBACK && implode("", $translation) == "") {
+                return "";              // Abort and return empty (no fallback)
+            } elseif (TRANSLATE_FALLBACK && implode("", $translation) == "") {
+                return null;            // Continiue normal procedure (fallback to base lang)
             } {
-                return $translation; // Not empty, return value
+                return $translation;    // Translation found, return value
             }
         }
 
@@ -48,7 +56,12 @@ class Meta Extends Entity\Translate
 
     private function shouldTranslate($meta_key)
     {
-        if(!TRANSLATE_HIDDEN_META && substr($meta_key, 1) == "_") {
+
+        if(in_array($meta_key, TRANSLATABLE_META)) {
+            return true;
+        }
+
+        if(!TRANSLATE_HIDDEN_META && substr($meta_key, 0, 1) == "_") {
             return false;
         }
 

@@ -30,6 +30,7 @@ class App
         // Core
         new Switcher();
         new Post();
+        new Meta();
 
         // Admin
         new Admin\Options();
@@ -51,8 +52,19 @@ class App
     }
 
     public function metaConfiguration () {
+
         define('TRANSLATE_HIDDEN_META', apply_filters('wp-content-translator/option/translate_hidden_meta', false));
-        define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array()));
+
+        define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
+            'modularity-modules',
+            'modularity-sidebar-options'
+        )));
+
+        define('TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/ranslatable_meta', array(
+            '_aioseop_title',
+            '_aioseop_description'
+        )));
+
     }
 
     public function postConfiguration () {
