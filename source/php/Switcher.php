@@ -108,6 +108,69 @@ class Switcher
     }
 
     /**
+     * Renders selector element
+     * @param  array|null   $languages The languages to use in the selector
+     * @param  string|null  $wrapper   The template for the wrapper
+     * @param  string|null  $element   The template for each language item
+     * @param  bool|boolean $echo      Echo or not
+     * @return void|string
+     */
+    public static function selector(string $wrapper = null, string $element = null, bool $echo = true, array $languages = null)
+    {
+        if (is_null($languages)) {
+            $languages = wp_content_translator_languages('active');
+        }
+
+        if (is_null($wrapper)) {
+            $wrapper = '<select>{{ languages }}</select>';
+        }
+
+        if (is_null($element)) {
+            $element = '<option onclick="location.href=\'{{ url }}\';" data-langcode="{{ code }}">{{ nativeName }}</option>';
+        }
+
+        $elements = array();
+        foreach ($languages as $lang) {
+            $thisElement = $element;
+            $thisElement = preg_replace_callback('/\{\{\s?(\w+)\s?\}\}/i', function ($matches) use ($lang) {
+                if (empty($matches)) {
+                    return '';
+                }
+
+                if ($matches[1] === 'isCurrent') {
+                    if ($lang->isCurrent) {
+                        return 'is-current';
+                    }
+
+                    return '';
+                }
+
+                if (!isset($lang->{$matches[1]})) {
+                    return '';
+                }
+
+                return $lang->{$matches[1]};
+            }, $thisElement);
+
+            $elements[] = $thisElement;
+        }
+
+        $output = preg_replace_callback('/\{\{\s?languages\s?\}\}/i', function ($matches) use ($elements) {
+            if (empty($matches)) {
+                return '';
+            }
+
+            return implode("\n", $elements);
+        }, $wrapper);
+
+        if (!$echo) {
+            return $output;
+        }
+
+        echo $output;
+    }
+
+    /**
      * Checks if language is set
      * Also available as public function: wp_content_translator_is_language_set()
      * @return boolean

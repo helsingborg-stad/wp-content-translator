@@ -67,3 +67,10 @@ if (!function_exists('wp_content_translator_unparse_url')) {
         return "//$user$pass$host$port$path$query$fragment";
     }
 }
+
+if (!function_exists('wp_content_translator_language_selector')) {
+    function wp_content_translator_language_selector(string $wrapper = null, string $element = null, bool $echo = true, array $languages = null)
+    {
+        return \ContentTranslator\Switcher::selector($wrapper, $element, $echo, $languages);
+    }
+}
