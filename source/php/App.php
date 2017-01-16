@@ -15,18 +15,13 @@ class App
         // Hooks
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
-        // Configuration
-        //add_action('init', array($this, 'generalConfiguration'));
-        //add_action('init', array($this, 'metaConfiguration'));
-        //add_action('init', array($this, 'postConfiguration'));
-        //add_action('init', array($this, 'optionConfiguration'));
-
+        // Init run
         $this->generalConfiguration();
         $this->metaConfiguration();
         $this->postConfiguration();
         $this->optionConfiguration();
 
-        //
+        // Setup wpdb
         global $wpdb;
         self::$defaultWpdbTables = array(
             'posts' => $wpdb->posts
@@ -44,6 +39,7 @@ class App
 
         // Helpers
         new Helper\Database();
+
     }
 
     public function adminEnqueue()
@@ -59,12 +55,8 @@ class App
 
     public function metaConfiguration () {
 
-        define('WTC_TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
-
         define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
             '_edit_lock',
-
-            //Modularity (move to plugin)
             'modularity-modules',
             'modularity-sidebar-options'
         )));
@@ -75,8 +67,9 @@ class App
             '_aioseop_titleatr'
         )));
 
-        define('WCT_TRANSLATE_META', (bool) apply_filters('wp-content-translator/option/translate_meta', true));
-        define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
+        define('WTC_TRANSLATE_HIDDEN_META',     (bool) apply_filters('wp-content-translator/option/translate_hidden_meta'   , false));
+        define('WCT_TRANSLATE_META',            (bool) apply_filters('wp-content-translator/option/translate_meta'          , true));
+        define('WCT_TRANSLATE_NUMERIC_META',    (bool) apply_filters('wp-content-translator/option/translate_numeric_meta'  , false));
 
     }
 
@@ -114,6 +107,10 @@ class App
         define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/translatable_options', array(
 
         )));
+
+        define('WCT_TRANSLATE_OPTION',          (bool) apply_filters('wp-content-translator/option/translate_option'            , true));
+        define('WCT_TRANSLATE_NUMERIC_OPTION',  (bool) apply_filters('wp-content-translator/option/translate_numeric_option'    , false));
+        define('WTC_TRANSLATE_HIDDEN_OPTION',   (bool) apply_filters('wp-content-translator/option/translate_hidden_option'     , false));
 
     }
 

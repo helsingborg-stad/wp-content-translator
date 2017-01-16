@@ -94,7 +94,7 @@ class Option
             return false;
         }
 
-        if(!WCT_TRANSLATE_NUMERIC_META && is_numeric($value) && $value != null) {
+        if(!WCT_TRANSLATE_NUMERIC_OPTION && is_numeric($value) && $value != null) {
             return false;
         }
 
@@ -111,7 +111,7 @@ class Option
 
         $options = array();
 
-        if (WTC_TRANSLATE_HIDDEN_META) {
+        if (WTC_TRANSLATE_HIDDEN_OPTION) {
             $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options GROUP BY option_name ORDER BY option_name ASC");
         } else {
             $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
