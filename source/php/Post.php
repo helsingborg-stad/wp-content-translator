@@ -29,6 +29,11 @@ class Post
         }
 
         if (empty($translations) || !isset($translations[$post->ID])) {
+            if (!TRANSLATE_FALLBACK) {
+                $post->post_title = '';
+                $post->post_content = '';
+            }
+
             return $post;
         }
 
