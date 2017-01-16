@@ -24,15 +24,19 @@ class AdminBar
             ));
 
             foreach (wp_content_translator_languages('installed') as $installedLanguage) {
-                $wp_admin_bar->add_node( array(
-                    'parent' => 'language_links',
-                    'id' => 'language_links_'. $installedLanguage->code,
-                    'title' => $installedLanguage->name,
-                    'href' => $installedLanguage->url,
-                    'meta' => array(
-                        'class' => $installedLanguage->isCurrent ? 'is-current' : ''
-                    )
-                ));
+
+                if(!empty($installedLanguage->name)) {
+                    $wp_admin_bar->add_node( array(
+                        'parent' => 'language_links',
+                        'id' => 'language_links_'. $installedLanguage->code,
+                        'title' => $installedLanguage->name,
+                        'href' => $installedLanguage->url,
+                        'meta' => array(
+                            'class' => $installedLanguage->isCurrent ? 'is-current' : ''
+                        )
+                    ));
+                }
+
             }
 
         } else {
