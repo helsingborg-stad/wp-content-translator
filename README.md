@@ -12,6 +12,16 @@ Minimalistic content translation in WordPress.
 #### ```wp-content-translator/after_add_admin_menu_item```
 **Action.** Runs after we have added the language item to the admin menu.
 
+### Admin Bar
+
+#### ```wp-content-translator/meta/admin_bar_current_lang```
+**Filter.** Current language in admin bar. 
+
+**Params:**
+
+- *string* $display: The string that is displayed. 
+- *Language* $lang: Current language code (ex: sv_SE).
+
 ### Install language
 
 #### ```wp-content-translator/before_install_language```
