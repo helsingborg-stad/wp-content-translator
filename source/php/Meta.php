@@ -17,7 +17,7 @@ class Meta
 
             add_filter('get_post_metadata', array($this, 'get'), 1, 4);
             add_filter('update_post_metadata', array($this, 'save'), 1, 4);
-            //add_filter('add_post_metadata', array($this, 'save'), 1, 4);
+            add_filter('add_post_metadata', array($this, 'save'), 1, 4);
         }
     }
 
@@ -75,15 +75,15 @@ class Meta
     private function shouldTranslate($meta_key, $meta_value = null)
     {
 
-        if (in_array($meta_key, TRANSLATABLE_META)) {
+        if (in_array($meta_key, WCT_TRANSLATABLE_META)) {
             return true;
         }
 
-        if (!TRANSLATE_HIDDEN_META && substr($meta_key, 0, 1) == "_") {
+        if (in_array($meta_key, WCT_UNTRANSLATEBLE_META)) {
             return false;
         }
 
-        if (in_array($meta_key, UNTRANSLATEBLE_META)) {
+        if (!WTC_TRANSLATE_HIDDEN_META && substr($meta_key, 0, 1) == "_") {
             return false;
         }
 

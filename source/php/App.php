@@ -54,9 +54,9 @@ class App
 
     public function metaConfiguration () {
 
-        define('TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
+        define('WTC_TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
 
-        define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
+        define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
 
             '_edit_lock',
 
@@ -65,7 +65,7 @@ class App
             'modularity-sidebar-options'
         )));
 
-        define('TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/translatable_meta', array(
+        define('WCT_TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/translatable_meta', array(
             '_aioseop_title',
             '_aioseop_description',
             '_aioseop_titleatr'
