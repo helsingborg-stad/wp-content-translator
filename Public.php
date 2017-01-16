@@ -67,3 +67,12 @@ if (!function_exists('wp_content_translator_unparse_url')) {
         return "//$user$pass$host$port$path$query$fragment";
     }
 }
+
+if (!function_exists('wp_content_translator_language_selector')) {
+    function wp_content_translator_language_selector()
+    {
+        return \ContentTranslator\Switcher::selector(
+            wp_content_translator_languages()
+        );
+    }
+}
