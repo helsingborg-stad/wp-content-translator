@@ -67,6 +67,7 @@ class App
             '_aioseop_titleatr'
         )));
 
+        define('WCT_TRANSLATE_META', (bool) apply_filters('wp-content-translator/option/translate_meta', true));
 
         define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
 
