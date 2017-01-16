@@ -115,7 +115,7 @@ class Switcher
      * @param  bool|boolean $echo      Echo or not
      * @return void|string
      */
-    public static function selector(array $languages = null, string $wrapper = null, string $element = null, bool $echo = true)
+    public static function selector(string $wrapper = null, string $element = null, bool $echo = true, array $languages = null)
     {
         if (is_null($languages)) {
             $languages = wp_content_translator_languages('active');
@@ -134,6 +134,14 @@ class Switcher
             $thisElement = $element;
             $thisElement = preg_replace_callback('/\{\{\s?(\w+)\s?\}\}/i', function ($matches) use ($lang) {
                 if (empty($matches)) {
+                    return '';
+                }
+
+                if ($matches[1] === 'isCurrent') {
+                    if ($lang->isCurrent) {
+                        return 'is-current';
+                    }
+
                     return '';
                 }
 
