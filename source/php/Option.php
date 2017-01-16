@@ -86,11 +86,11 @@ class Option
      */
     public function shouldTranslate($key, $value) : bool
     {
-        if (in_array($key, TRANSLATABLE_OPTION)) {
+        if (in_array($key, WTC_TRANSLATABLE_OPTION)) {
             return true;
         }
 
-        if (in_array($key, UNTRANSLATEBLE_OPTION)) {
+        if (in_array($key, WTC_UNTRANSLATEBLE_OPTION)) {
             return false;
         }
 

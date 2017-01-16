@@ -79,7 +79,7 @@ class App
 
     public function optionConfiguration () {
 
-        define('UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
+        define('WTC_UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
             'siteurl',
             'home',
             'users_can_register',
