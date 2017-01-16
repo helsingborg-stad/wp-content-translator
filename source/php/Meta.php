@@ -9,7 +9,7 @@ class Meta
 
     public function __construct()
     {
-        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault() && WCT_TRANSLATE_META) {
+        if (WCT_TRANSLATE_META && \ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
             global $wpdb;
 
             $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
