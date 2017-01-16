@@ -79,7 +79,11 @@ class App
 
     public function postConfiguration () // : void - Waiting for 7.1 enviroments to "be out there".
     {
+        define('WCT_UNTRANSLATEBLE_POST_TYPES',  (bool) apply_filters('wp-content-translator/option/untranslatable_post_types'  , array(
 
+        )));
+
+        define('WCT_TRANSLATE_POSTS',           (bool) apply_filters('wp-content-translator/option/translate_posts'         , true));
     }
 
     public function optionConfiguration () // : void - Waiting for 7.1 enviroments to "be out there".
