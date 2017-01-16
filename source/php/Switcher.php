@@ -11,7 +11,7 @@ class Switcher
     {
         if ($lang = $this->getRequestedLang()) {
             $this->switchToLanguage($lang);
-            add_filter('locale', array($this, 'swithcLocale'));
+            add_filter('locale', array($this, 'switchLocale'));
         }
     }
 
@@ -21,7 +21,7 @@ class Switcher
      * @param  string $lang Lang code
      * @return string       New lang code
      */
-    public function swithcLocale(string $lang) : string
+    public function switchLocale(string $lang) : string
     {
         if (is_admin()) {
             return $lang;
