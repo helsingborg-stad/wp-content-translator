@@ -26,6 +26,7 @@ if (!function_exists('wp_content_translator_languages')) {
 
         foreach ($languages as $language) {
             $url = $currentUrl;
+
             if (isset($url['query'])) {
                 if (strlen($url['query']) > 0) {
                     $url['query'] .= '&';
@@ -35,7 +36,16 @@ if (!function_exists('wp_content_translator_languages')) {
             } else {
                 $url['query'] = http_build_query(array('lang' => $language->code));
             }
-            $language->url = '//' . wp_content_translator_unparse_url($url);
+
+            parse_str($url['query'], $url['query']);
+            $url['query'] = http_build_query($url['query']);
+
+            $language->url = wp_content_translator_unparse_url($url);
+
+            $language->isCurrent = false;
+            if (\ContentTranslator\Switcher::$currentLanguage->code === $language->code) {
+                $language->isCurrent = true;
+            }
         }
 
         return $languages;
@@ -45,7 +55,6 @@ if (!function_exists('wp_content_translator_languages')) {
 if (!function_exists('wp_content_translator_unparse_url')) {
     function wp_content_translator_unparse_url(array $parsed_url)
     {
-        $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
         $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
         $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
         $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
@@ -55,6 +64,6 @@ if (!function_exists('wp_content_translator_unparse_url')) {
         $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
         $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
-        return "$scheme$user$pass$host$port$path$query$fragment";
+        return "//$user$pass$host$port$path$query$fragment";
     }
 }
