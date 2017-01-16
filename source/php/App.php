@@ -57,6 +57,10 @@ class App
         define('TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
 
         define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
+
+            '_edit_lock',
+
+            //Modularity (move to plugin)
             'modularity-modules',
             'modularity-sidebar-options'
         )));

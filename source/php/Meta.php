@@ -17,22 +17,39 @@ class Meta
 
             add_filter('get_post_metadata', array($this, 'get'), 1, 4);
             add_filter('update_post_metadata', array($this, 'save'), 1, 4);
-            add_filter('add_post_metadata', array($this, 'save'), 1, 4);
+            //add_filter('add_post_metadata', array($this, 'save'), 1, 4);
         }
     }
 
     public function save($null, $post_id, $meta_key, $meta_value)
     {
-        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value) && !$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
-            update_post_meta($post_id, $this->createLangualMetaKey($meta_key), $meta_value);
-            return true;
-        } elseif (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value) && $this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
-            //TODO: Activating this also clears base language. IT shoould not.
-            //      Identical to base lang seems to be broken too.
-            //delete_post_meta($post_id, $this->createLangualMetaKey($meta_key));
+
+        //Do not connect to revisions.
+        if(wp_is_post_revision($post_id)) {
+            return null;
+        }
+
+        if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
+
+            //Create meta key
+            $langual_meta_key = $this->createLangualMetaKey($meta_key);
+
+            //Update post meta
+            if (!$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+                update_post_meta($post_id, $langual_meta_key, $meta_value);
+                return true;
+            }
+
+            //Clean meta that equals base language
+            if ($this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+                delete_post_meta($post_id, $langual_meta_key);
+                return true;
+            }
+
         }
 
         return null;
+
     }
 
     public function get($type, $post_id, $meta_key, $single)
