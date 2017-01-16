@@ -111,7 +111,7 @@ class Option
 
         $options = array();
 
-        if (TRANSLATE_HIDDEN_META) {
+        if (WTC_TRANSLATE_HIDDEN_META) {
             $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options GROUP BY option_name ORDER BY option_name ASC");
         } else {
             $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
