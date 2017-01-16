@@ -16,10 +16,15 @@ class App
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
         // Configuration
-        add_action('init', array($this, 'generalConfiguration'));
-        add_action('init', array($this, 'metaConfiguration'));
-        add_action('init', array($this, 'postConfiguration'));
-        add_action('init', array($this, 'optionConfiguration'));
+        //add_action('init', array($this, 'generalConfiguration'));
+        //add_action('init', array($this, 'metaConfiguration'));
+        //add_action('init', array($this, 'postConfiguration'));
+        //add_action('init', array($this, 'optionConfiguration'));
+
+        $this->generalConfiguration();
+        $this->metaConfiguration();
+        $this->postConfiguration();
+        $this->optionConfiguration();
 
         //
         global $wpdb;
@@ -71,7 +76,6 @@ class App
         )));
 
         define('WCT_TRANSLATE_META', (bool) apply_filters('wp-content-translator/option/translate_meta', true));
-
         define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
 
     }
