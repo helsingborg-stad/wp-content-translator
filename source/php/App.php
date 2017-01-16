@@ -57,7 +57,6 @@ class App
         define('WTC_TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
 
         define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
-
             '_edit_lock',
 
             //Modularity (move to plugin)
@@ -108,7 +107,7 @@ class App
             'wp-content-translator-installed'
         )));
 
-        define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/ranslatable_options', array(
+        define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/translatable_options', array(
 
         )));
 
