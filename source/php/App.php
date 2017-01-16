@@ -49,7 +49,7 @@ class App
 
     public function generalConfiguration () {
         define('TRANSLATE_FALLBACK', apply_filters('wp-content-translator/option/translate_fallback', true));
-        define('TRANSLATE_DELIMITER', apply_filters('wp-content-translator/option/translate_fallback', "_"));
+        define('TRANSLATE_DELIMITER', apply_filters('wp-content-translator/option/translate_delimeter', "_"));
     }
 
     public function metaConfiguration () {
