@@ -4,6 +4,9 @@ namespace ContentTranslator\Admin;
 
 class AdminBar
 {
+
+    private $icon;
+
     public function __construct()
     {
         add_action('admin_bar_menu', array($this, 'addSwitcher'), 999);
@@ -20,7 +23,8 @@ class AdminBar
             $wp_admin_bar->add_node( array(
                 'id' => 'language_links',
                 'title' => __('Language', 'wp-content-translator') . apply_filters('wp-content-translator/meta/admin_bar_current_lang', " - " . wp_content_translator_current_language()->name, wp_content_translator_current_language()->code ),
-                'href' => admin_url('admin.php?page=languages')
+                'href' => admin_url('admin.php?page=languages'),
+                'parent' => 'top-secondary'
             ));
 
             foreach (wp_content_translator_languages('installed') as $installedLanguage) {

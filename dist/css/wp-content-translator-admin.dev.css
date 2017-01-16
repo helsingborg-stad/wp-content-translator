@@ -36,7 +36,7 @@
 
 #wp-admin-bar-language_links .is-current a {
   position: relative;
-  background-color: rgba(138, 255, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   padding-right: 30px; }
   #wp-admin-bar-language_links .is-current a::after {
     content: "\f147";
@@ -47,3 +47,7 @@
     top: 50%;
     right: 10px;
     transform: translateY(-50%); }
+
+#wp-admin-bar-language_links > a,
+#wp-admin-bar-language_links > a:hover {
+  background: rgba(0, 0, 0, 0.2); }
