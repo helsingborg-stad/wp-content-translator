@@ -13,8 +13,6 @@ class Option
             add_action('init', array($this, 'hook'));
 
             add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
-            //add_action('update_option', array($this, 'updateOption'), 10, 3);
-            //add_action('add_option', array($this, 'addOption'));
         }
     }
 
@@ -43,7 +41,7 @@ class Option
             return $value;
         }
 
-        remove_filter('option_' . $option, array($this, 'get'));
+        remove_filter('option_' . $option, array($this, 'get'), 10);
         $translated = get_option($this->createLangualKey($option), $value);
         add_filter('option_' . $option, array($this, 'get'), 10, 2);
 
@@ -52,21 +50,27 @@ class Option
 
     /**
      * Handle save options
+     * TODO: For some reason the actions before/after does not work with acf.
+     *
      * @param  mixed $value     The option value
      * @param  string $option   Option name
      * @param  mixed $oldValue  Old option value (before update)
      * @return mixed            Returs the oldValue to tell the parent function to return false
      */
-    public function preUpdateOption($value, $option, $oldValue)
+    public function preUpdateOption($value = null, $option = null, $oldValue = null)
     {
         if ($this->shouldTranslate($option, $value) && !$this->identicalToBaseLang($option, $value)) {
-            add_action('wp-content-translator/option/before_update_option', $option, $value);
+            if (!isset($_POST['acf'])) {
+                add_action('wp-content-translator/option/before_update_option', $option, $value);
+            }
 
-            remove_filter('pre_update_option', array($this, 'preUpdateOption'));
+            remove_filter('pre_update_option', array($this, 'preUpdateOption'), 10);
             update_option($this->createLangualKey($option), $value);
             add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
 
-            add_action('wp-content-translator/option/after_update_option', $option, $value);
+            if (!isset($_POST['acf'])) {
+                add_action('wp-content-translator/option/after_update_option', $option, $value);
+            }
         }
 
         // Return old value to stop make the update_option function
@@ -107,7 +111,7 @@ class Option
 
         $options = array();
 
-        if (TRANSLATE_HIDDEN_META) {
+        if (WTC_TRANSLATE_HIDDEN_META) {
             $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options GROUP BY option_name ORDER BY option_name ASC");
         } else {
             $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
