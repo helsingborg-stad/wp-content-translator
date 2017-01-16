@@ -54,14 +54,14 @@ class App
 
     public function metaConfiguration () {
 
-        define('TRANSLATE_HIDDEN_META', apply_filters('wp-content-translator/option/translate_hidden_meta', false));
+        define('TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
 
         define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
             'modularity-modules',
             'modularity-sidebar-options'
         )));
 
-        define('TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/ranslatable_meta', array(
+        define('TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/translatable_meta', array(
             '_aioseop_title',
             '_aioseop_description',
             '_aioseop_titleatr'
@@ -95,6 +95,8 @@ class App
         define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/ranslatable_options', array(
 
         )));
+
+        define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
 
     }
 
