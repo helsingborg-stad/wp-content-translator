@@ -20,6 +20,8 @@ class App
         $this->metaConfiguration();
         $this->postConfiguration();
         $this->optionConfiguration();
+        $this->userConfiguration();
+        $this->commentConfiguration();
 
         // Setup wpdb
         global $wpdb;
@@ -42,18 +44,20 @@ class App
 
     }
 
-    public function adminEnqueue()
+    public function adminEnqueue() // : void - Waiting for 7.1 enviroments to "be out there".
     {
         wp_enqueue_style('wp-content-translator-admin', WPCONTENTTRANSLATOR_URL . '/dist/css/wp-content-translator-admin.min.css', null, '1.0.0');
         wp_enqueue_script('wp-content-translator-admin', WPCONTENTTRANSLATOR_URL . '/dist/js/wp-content-translator-admin.dev.js', array('jquery'), '1.0.0', true);
     }
 
-    public function generalConfiguration () {
+    public function generalConfiguration () // : void - Waiting for 7.1 enviroments to "be out there".
+    {
         define('TRANSLATE_FALLBACK', apply_filters('wp-content-translator/option/translate_fallback', true));
         define('TRANSLATE_DELIMITER', apply_filters('wp-content-translator/option/translate_delimeter', "_"));
     }
 
-    public function metaConfiguration () {
+    public function metaConfiguration () // : void - Waiting for 7.1 enviroments to "be out there".
+    {
 
         define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
             '_edit_lock',
@@ -73,11 +77,13 @@ class App
 
     }
 
-    public function postConfiguration () {
+    public function postConfiguration () // : void - Waiting for 7.1 enviroments to "be out there".
+    {
 
     }
 
-    public function optionConfiguration () {
+    public function optionConfiguration () // : void - Waiting for 7.1 enviroments to "be out there".
+    {
 
         define('WTC_UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
             'siteurl',
@@ -112,6 +118,16 @@ class App
         define('WCT_TRANSLATE_NUMERIC_OPTION',  (bool) apply_filters('wp-content-translator/option/translate_numeric_option'    , false));
         define('WTC_TRANSLATE_HIDDEN_OPTION',   (bool) apply_filters('wp-content-translator/option/translate_hidden_option'     , false));
 
+    }
+
+    public function userConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
+    {
+        define('WCT_TRANSLATE_USER',            (bool) apply_filters('wp-content-translator/option/translate_user'            , true));
+    }
+
+    public function commentConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
+    {
+        define('WCT_TRANSLATE_COMMENT',         (bool) apply_filters('wp-content-translator/option/translate_comment'         , true));
     }
 
 }
