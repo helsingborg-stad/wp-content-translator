@@ -19,7 +19,7 @@ class AdminBar
 
             $wp_admin_bar->add_node( array(
                 'id' => 'language_links',
-                'title' => __('Language', 'wp-content-translator'),
+                'title' => __('Language', 'wp-content-translator') . " - " . wp_content_translator_current_language()->name,
                 'href' => admin_url('admin.php?page=languages')
             ));
 
