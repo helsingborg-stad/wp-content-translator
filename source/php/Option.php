@@ -63,7 +63,7 @@ class Option
             return false;
         }
 
-        if (is_numeric($value)) {
+        if(!WCT_TRANSLATE_NUMERIC_META && is_numeric($value) && $value != null) {
             return false;
         }
 
