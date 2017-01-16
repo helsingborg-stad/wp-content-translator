@@ -31,6 +31,7 @@ class App
         new Switcher();
         new Post();
         new Meta();
+        new Option();
 
         // Admin
         new Admin\Options();
@@ -64,6 +65,35 @@ class App
             '_aioseop_title',
             '_aioseop_description',
             '_aioseop_titleatr'
+        )));
+
+        define('UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
+            'siteurl',
+            'home',
+            'users_can_register',
+            'permalink_structure',
+            'rewrite_rules',
+            'active_plugins',
+            'template',
+            'stylesheet',
+            'theme_switched',
+            'html_type',
+            'default_role',
+            'default_comments_page',
+            'comment_order',
+            'WPLANG',
+            'cron',
+            'nestedpages_posttypes',
+            'nestedpages_version',
+            'nestedpages_menusync',
+            'modularity-options',
+            'acf_version',
+            'wp-content-translator-active',
+            'wp-content-translator-installed'
+        )));
+
+        define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/ranslatable_options', array(
+
         )));
 
     }
