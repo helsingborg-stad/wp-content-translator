@@ -104,7 +104,7 @@ class App
             'wp-content-translator-installed'
         )));
 
-        define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/translatable_options', array(
+        define('WTC_TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/translatable_options', array(
 
         )));
 

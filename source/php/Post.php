@@ -55,7 +55,7 @@ class Post
      * @param  array  $postarr [description]
      * @return [type]          [description]
      */
-    public function save(array $data, array $postarr)
+    public function save(array $data, array $postarr) : array
     {
         global $wpdb;
 
@@ -183,7 +183,7 @@ class Post
      * Translate the global WP_Post $post object
      * @return void
      */
-    public function globalPost()
+    public function globalPost() // : void - Waiting for 7.1 enviroments to "be out there".
     {
         global $post;
 
