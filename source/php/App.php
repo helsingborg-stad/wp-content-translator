@@ -54,18 +54,33 @@ class App
 
     public function metaConfiguration () {
 
-        define('TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
+        define('WTC_TRANSLATE_HIDDEN_META', (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
 
-        define('UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
+        define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
+            '_edit_lock',
+
+            //Modularity (move to plugin)
             'modularity-modules',
             'modularity-sidebar-options'
         )));
 
-        define('TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/translatable_meta', array(
+        define('WCT_TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/translatable_meta', array(
             '_aioseop_title',
             '_aioseop_description',
             '_aioseop_titleatr'
         )));
+
+        define('WCT_TRANSLATE_META', (bool) apply_filters('wp-content-translator/option/translate_meta', true));
+
+        define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
+
+    }
+
+    public function postConfiguration () {
+
+    }
+
+    public function optionConfiguration () {
 
         define('UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
             'siteurl',
@@ -92,19 +107,9 @@ class App
             'wp-content-translator-installed'
         )));
 
-        define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/ranslatable_options', array(
+        define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/translatable_options', array(
 
         )));
-
-        define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
-
-    }
-
-    public function postConfiguration () {
-
-    }
-
-    public function optionConfiguration () {
 
     }
 

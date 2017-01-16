@@ -9,7 +9,7 @@ class Meta
 
     public function __construct()
     {
-        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
+        if (WCT_TRANSLATE_META && \ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
             global $wpdb;
 
             $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
@@ -23,16 +23,33 @@ class Meta
 
     public function save($null, $post_id, $meta_key, $meta_value)
     {
-        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value) && !$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
-            update_post_meta($post_id, $this->createLangualMetaKey($meta_key), $meta_value);
-            return true;
-        } elseif (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value) && $this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
-            //TODO: Activating this also clears base language. IT shoould not.
-            //      Identical to base lang seems to be broken too.
-            //delete_post_meta($post_id, $this->createLangualMetaKey($meta_key));
+
+        //Do not connect to revisions.
+        if(wp_is_post_revision($post_id)) {
+            return null;
+        }
+
+        if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
+
+            //Create meta key
+            $langual_meta_key = $this->createLangualMetaKey($meta_key);
+
+            //Update post meta
+            if (!$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+                update_post_meta($post_id, $langual_meta_key, $meta_value);
+                return true;
+            }
+
+            //Clean meta that equals base language
+            if ($this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+                delete_post_meta($post_id, $langual_meta_key);
+                return true;
+            }
+
         }
 
         return null;
+
     }
 
     public function get($type, $post_id, $meta_key, $single)
@@ -58,15 +75,15 @@ class Meta
     private function shouldTranslate($meta_key, $meta_value = null)
     {
 
-        if (in_array($meta_key, TRANSLATABLE_META)) {
+        if (in_array($meta_key, WCT_TRANSLATABLE_META)) {
             return true;
         }
 
-        if (!TRANSLATE_HIDDEN_META && substr($meta_key, 0, 1) == "_") {
+        if (in_array($meta_key, WCT_UNTRANSLATEBLE_META)) {
             return false;
         }
 
-        if (in_array($meta_key, UNTRANSLATEBLE_META)) {
+        if (!WTC_TRANSLATE_HIDDEN_META && substr($meta_key, 0, 1) == "_") {
             return false;
         }
 
