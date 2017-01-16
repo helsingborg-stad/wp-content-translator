@@ -95,6 +95,10 @@ class Switcher
         return true;
     }
 
+    /**
+     * Switches to the default WordPress language
+     * @return bool
+     */
     public function switchToDefaultLang() : bool
     {
         unset($_COOKE[self::$cookieKey]);
