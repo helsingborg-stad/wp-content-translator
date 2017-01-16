@@ -36,7 +36,7 @@
 
 #wp-admin-bar-language_links .is-current a {
   position: relative;
-  background-color: #365710;
+  background-color: rgba(138, 255, 0, 0.2);
   padding-right: 30px; }
   #wp-admin-bar-language_links .is-current a::after {
     content: "\f147";
