@@ -21,7 +21,7 @@ class Meta
         }
     }
 
-    public function save($null, $post_id, $meta_key, $meta_value)
+    public function save($null, $post_id, $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
 
         //Do not connect to revisions.
@@ -32,7 +32,7 @@ class Meta
         if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
 
             //Create meta key
-            $langual_meta_key = $this->createLangualMetaKey($meta_key);
+            $langual_meta_key = $this->createLangualKey($meta_key);
 
             //Update post meta
             if (!$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
@@ -52,12 +52,12 @@ class Meta
 
     }
 
-    public function get($type, $post_id, $meta_key, $single)
+    public function get($type, $post_id, $meta_key, $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
 
             $translation =  $this->db->get_col(
-                                $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualMetaKey($meta_key))
+                                $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
                             );
 
             if (!TRANSLATE_FALLBACK && implode("", $translation) == "") {
@@ -72,7 +72,7 @@ class Meta
         return null;
     }
 
-    private function shouldTranslate($meta_key, $meta_value = null)
+    private function shouldTranslate(string $meta_key, $meta_value = null) : bool
     {
 
         if (in_array($meta_key, WCT_TRANSLATABLE_META)) {
@@ -95,20 +95,20 @@ class Meta
 
     }
 
-    private function isLangualMeta($meta_key)
+    private function isLangualMeta(string $meta_key) : bool
     {
         return substr($meta_key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
 
-    private function createLangualMetaKey($meta_key)
+    private function createLangualKey(string $meta_key) : string
     {
-        return $meta_key.TRANSLATE_DELIMITER . $this->lang;
+        return $meta_key . TRANSLATE_DELIMITER . $this->lang;
     }
 
-    private function identicalToBaseLang($meta_key, $meta_value, $post_id)
+    private function identicalToBaseLang($meta_key, $meta_value, $post_id) : bool
     {
         $translation =  $this->db->get_col(
-                            $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualMetaKey($meta_key))
+                            $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
                         );
 
         if (trim($translation) == trim($meta_value)) {
