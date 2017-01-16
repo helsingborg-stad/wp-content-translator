@@ -43,9 +43,13 @@ class Option
     public function preUpdateOption($value, $option, $oldValue)
     {
         if ($this->shouldTranslate($option, $value) && !$this->identicalToBaseLang($option, $value)) {
+            add_action('wp-content-translator/option/before_update_option', $option, $value);
+
             remove_filter('pre_update_option', array($this, 'preUpdateOption'));
             update_option($this->createLangualKey($option), $value);
             add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
+
+            add_action('wp-content-translator/option/after_update_option', $option, $value);
         }
 
         // Return old value to stop make the update_option function

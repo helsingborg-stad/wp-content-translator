@@ -108,3 +108,25 @@ wp_content_translator_language_selector(
 
 - *string* $code: Language code (ex: sv_SE)
 - *Language* $lang: The language objec
+
+## Options
+
+#### ```wp-content-translator/option/before_update_option```
+**Action.** Runs right before an option is updated.
+
+**Params:**
+
+- *string* $option: Option name
+- *mixed* $value: Option value
+
+#### ```wp-content-translator/option/after_update_option```
+**Action.** Runs right after an option is updated.
+
+**Params:**
+
+- *string* $option: Option name
+- *mixed* $value: Option value
+
+#### ```wp-content-translator/option/should_translate_default```
+**Filter.** The default return value for the should translate function.
+
