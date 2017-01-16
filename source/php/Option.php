@@ -18,6 +18,10 @@ class Option
         }
     }
 
+    /**
+     * Hooks get method on all options
+     * @return void
+     */
     public function hook()
     {
         $options =  $this->getOptionNames();
@@ -27,6 +31,12 @@ class Option
         }
     }
 
+    /**
+     * Gets the translated version (if available) of each option field
+     * @param  mixed $value   The default value
+     * @param  string $option The options field key
+     * @return mixed          The translated value
+     */
     public function get($value, $option)
     {
         if (!$this->shouldTranslate($option, $value)) {
@@ -40,6 +50,13 @@ class Option
         return $translated;
     }
 
+    /**
+     * Handle save options
+     * @param  mixed $value     The option value
+     * @param  string $option   Option name
+     * @param  mixed $oldValue  Old option value (before update)
+     * @return mixed            Returs the oldValue to tell the parent function to return false
+     */
     public function preUpdateOption($value, $option, $oldValue)
     {
         if ($this->shouldTranslate($option, $value) && !$this->identicalToBaseLang($option, $value)) {
@@ -57,6 +74,12 @@ class Option
         return $oldValue;
     }
 
+    /**
+     * Tells if a option shoud be translated
+     * @param  string $key   Option name
+     * @param  mixed $value  Option value
+     * @return bool
+     */
     public function shouldTranslate($key, $value) : bool
     {
         if (in_array($key, TRANSLATABLE_OPTION)) {
@@ -109,11 +132,22 @@ class Option
         return $key . TRANSLATE_DELIMITER . $this->lang;
     }
 
+    /**
+     * Check if key is a langual option
+     * @param  string  $key Option key
+     * @return boolean
+     */
     private function isLangualOption($key)
     {
         return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
 
+    /**
+     * Check if the given value is the same value stored in the database
+     * @param  string $key        Option name
+     * @param  mixed  $translated Option value
+     * @return bool
+     */
     private function identicalToBaseLang(string $key, $translated) : bool
     {
         global $wpdb;
