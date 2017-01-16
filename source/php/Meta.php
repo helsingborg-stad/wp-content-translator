@@ -23,10 +23,10 @@ class Meta
 
     public function save($null, $post_id, $meta_key, $meta_value)
     {
-        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key) && !$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value) && !$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
             update_post_meta($post_id, $this->createLangualMetaKey($meta_key), $meta_value);
             return true;
-        } elseif (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key) && $this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+        } elseif (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value) && $this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
             //TODO: Activating this also clears base language. IT shoould not.
             //      Identical to base lang seems to be broken too.
             //delete_post_meta($post_id, $this->createLangualMetaKey($meta_key));
@@ -38,6 +38,7 @@ class Meta
     public function get($type, $post_id, $meta_key, $single)
     {
         if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
+
             $translation =  $this->db->get_col(
                                 $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualMetaKey($meta_key))
                             );
@@ -54,8 +55,9 @@ class Meta
         return null;
     }
 
-    private function shouldTranslate($meta_key)
+    private function shouldTranslate($meta_key, $meta_value = null)
     {
+
         if (in_array($meta_key, TRANSLATABLE_META)) {
             return true;
         }
@@ -68,7 +70,12 @@ class Meta
             return false;
         }
 
+        if(!WCT_TRANSLATE_NUMERIC_META && is_numeric($meta_value) && $meta_value != null) {
+            return false;
+        }
+
         return apply_filters('wp-content-translator/meta/should_translate_default', true, $meta_key);
+
     }
 
     private function isLangualMeta($meta_key)
