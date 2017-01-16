@@ -35,7 +35,15 @@ class Options
 
     public function removeLang()
     {
+        if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'wp-content-translator-remove-lang')) {
+            return;
+        }
 
+        $langCode = sanitize_text_field($_REQUEST['id']);
+        $lang = new \ContentTranslator\Language($langCode, false);
+        $lang->uninstall();
+
+        return;
     }
 
     public function saveOptions()

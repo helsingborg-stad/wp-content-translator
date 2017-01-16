@@ -52,7 +52,9 @@
                                         <td class="cb"><input type="checkbox" name="active-languages[]" value="<?php echo $lang->code; ?>" <?php echo \ContentTranslator\Language::isActive($lang->code) ? 'checked' : ''; ?>></td>
                                         <td><?php echo $lang->name; ?></td>
                                         <td><?php echo $lang->code; ?></td>
-                                        <td class="actions"><a href="<?php echo wp_nonce_url('', 'remove-lang_' . $lang->code) ?>" class="submitdelete deletion"><?php _e('Remove'); ?></a></td>
+                                        <td class="actions">
+                                            <a href="<?php echo wp_nonce_url('//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 'wp-content-translator-remove-lang') ?>&amp;id=<?php echo $lang->code; ?>" class="submitdelete deletion" onclick="return confirm('<?php _e('Do you really want to delete this language and all its translations?', 'wp-content-translator'); ?>');"><?php _e('Remove'); ?></a>
+                                        </td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

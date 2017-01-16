@@ -17,7 +17,7 @@ class Language
     private $language;
     private $tables;
 
-    public function __construct(string $code)
+    public function __construct(string $code, bool $install = true)
     {
         global $wpdb;
         $this->db = $wpdb;
@@ -34,7 +34,7 @@ class Language
         );
 
         // Should we install (ie create tables and such) the language
-        if (!$this->isInstalled()) {
+        if ($install && !$this->isInstalled()) {
             $this->install();
         }
     }
@@ -96,21 +96,24 @@ class Language
 
         // Remove from activated
         $active = get_option(self::$optionKey['active'], array());
-        if ($index = array_search($this->code, $active)) {
+        if (array_search($this->code, $active) !== false) {
+            $index = array_search($this->code, $active);
             unset($active[$index]);
         }
 
-        update_option(self::$optionKey['activa'], $installed);
+        update_option(self::$optionKey['active'], $active);
 
         // Remove from installed
         $installed = get_option(self::$optionKey['installed'], array());
-        if ($index = array_search($this->code, $installed)) {
+        if (array_search($this->code, $installed) !== false) {
+            $index = array_search($this->code, $installed);
             unset($installed[$index]);
         }
 
         update_option(self::$optionKey['installed'], $installed);
 
-        return true;
+        wp_redirect($_SERVER['HTTP_REFERER']);
+        exit;
     }
 
     /**

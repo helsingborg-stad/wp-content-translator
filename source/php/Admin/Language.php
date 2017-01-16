@@ -18,7 +18,8 @@ class Language
 
             $wp_admin_bar->add_node( array(
                 'id' => 'language_links',
-                'title' => __('Language', 'wp-content-translator')
+                'title' => __('Language', 'wp-content-translator'),
+                'href' => admin_url('admin.php?page=languages')
             ));
 
             //Remove current lang
