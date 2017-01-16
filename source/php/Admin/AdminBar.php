@@ -2,11 +2,12 @@
 
 namespace ContentTranslator\Admin;
 
-class Language
+class AdminBar
 {
     public function __construct()
     {
-        add_action('admin_bar_menu', array($this, 'addSwitcher'), 999);    }
+        add_action('admin_bar_menu', array($this, 'addSwitcher'), 999);
+    }
 
     public function addSwitcher()
     {

@@ -34,7 +34,7 @@ class App
 
         // Admin
         new Admin\Options();
-        new Admin\Language();
+        new Admin\AdminBar();
 
         // Helpers
         new Helper\Database();
