@@ -33,3 +33,17 @@
 .wp-content-translator-admin__footer-actions {
   border-top: 1px solid #eee;
   padding: 12px; }
+
+#wp-admin-bar-language_links .is-current a {
+  position: relative;
+  background-color: #365710;
+  padding-right: 30px; }
+  #wp-admin-bar-language_links .is-current a::after {
+    content: "\f147";
+    font-size: 18px;
+    font-family: 'dashicons';
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%); }

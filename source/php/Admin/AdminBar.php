@@ -23,19 +23,15 @@ class AdminBar
                 'href' => admin_url('admin.php?page=languages')
             ));
 
-            //Remove current lang
-            $get_var = $_GET;
-            if (isset($get_var['lang'])) {
-                unset($get_var['lang']);
-            }
-
             foreach (wp_content_translator_languages('installed') as $installedLanguage) {
                 $wp_admin_bar->add_node( array(
                     'parent' => 'language_links',
                     'id' => 'language_links_'. $installedLanguage->code,
                     'title' => $installedLanguage->name,
-                    'href' => $installedLanguage->url
-                    //'href' => "http" . ( is_ssl() ? 's' : '' ) . "://".$_SERVER['HTTP_HOST']. $_SERVER['REQUEST_URI'] . http_build_query(array_merge($get_var, array('lang' => $installedLanguage->code))),
+                    'href' => $installedLanguage->url,
+                    'meta' => array(
+                        'class' => $installedLanguage->isCurrent ? 'is-current' : ''
+                    )
                 ));
             }
 
