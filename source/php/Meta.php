@@ -111,7 +111,7 @@ class Meta
                             $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualMetaKey($meta_key))
                         );
 
-        if ($translation == $meta_value) {
+        if (trim($translation) == trim($meta_value)) {
             return true;
         }
 
