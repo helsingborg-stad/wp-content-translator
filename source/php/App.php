@@ -67,6 +67,17 @@ class App
             '_aioseop_titleatr'
         )));
 
+
+        define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
+
+    }
+
+    public function postConfiguration () {
+
+    }
+
+    public function optionConfiguration () {
+
         define('UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
             'siteurl',
             'home',
@@ -95,16 +106,6 @@ class App
         define('TRANSLATABLE_OPTION', (array) apply_filters('wp-content-translator/option/ranslatable_options', array(
 
         )));
-
-        define('WCT_TRANSLATE_NUMERIC_META', (bool) apply_filters('wp-content-translator/option/translate_numeric_meta', false));
-
-    }
-
-    public function postConfiguration () {
-
-    }
-
-    public function optionConfiguration () {
 
     }
 
