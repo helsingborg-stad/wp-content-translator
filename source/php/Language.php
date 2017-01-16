@@ -255,7 +255,7 @@ class Language
         foreach ($translations as $key => $translation) {
             $languages[$key] = array(
                 'code' => $translation->language,
-                'name' => $translation->english_name,
+                'name' => self::defaultLanguage($translation->english_name),
                 'nativeName' => $translation->native_name
             );
         }
@@ -366,4 +366,18 @@ class Language
 
         return false;
     }
+
+    /**
+     * Gives unnamed langages a name.
+     * @param  string  $lang Langage name
+     * @return string
+     */
+    public static function defaultLanguage(string $lang) : string
+    {
+        if(empty($lang)) {
+            $lang = __("Undefined Language", 'wp-content-translator');
+        }
+        return $lang;
+    }
+
 }
