@@ -72,11 +72,14 @@ class Language
      */
     public function install() : bool
     {
+        do_action('wp-content-translator/before_install_language', $this->code, $this);
+
         foreach ($this->tables as $source => $target) {
             $this->duplicateTable($source, $target['name']);
         }
 
-        if (!in_array(\ContentTranslator\Switcher::identifyLocale($this->code), get_available_languages())) {
+        $download = apply_filters('wp-content-translator/should_download_wp_translation_when_installing', true, $this->code, $this);
+        if ($download && !in_array(\ContentTranslator\Switcher::identifyLocale($this->code), get_available_languages())) {
             $download = wp_download_language_pack(\ContentTranslator\Switcher::identifyLocale($this->code));
         }
 
@@ -85,13 +88,19 @@ class Language
 
         update_option(self::$optionKey['installed'], $installed);
 
+        do_action('wp-content-translator/after_install_language', $this->code, $this);
+
         return true;
     }
 
     public function uninstall() : bool
     {
-        foreach ($this->tables as $source => $target) {
-            $this->dropTable($target['name']);
+        do_action('wp-content-translator/before_uninstall_language', $this->code, $this);
+
+        if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
+            foreach ($this->tables as $source => $target) {
+                $this->dropTable($target['name']);
+            }
         }
 
         // Remove from activated
@@ -112,7 +121,9 @@ class Language
 
         update_option(self::$optionKey['installed'], $installed);
 
-        wp_redirect($_SERVER['HTTP_REFERER']);
+        do_action('wp-content-translator/after_uninstall_language', $this->code, $this);
+
+        wp_redirect(apply_filters('wp-content-translator/redirect_after_uninstall_language', $_SERVER['HTTP_REFERER'], $this->code, $this));
         exit;
     }
 

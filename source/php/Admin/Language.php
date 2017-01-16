@@ -10,7 +10,7 @@ class Language
 
     public function addSwitcher()
     {
-        do_action('wp-content-translator/before_add_language');
+        do_action('wp-content-translator/before_add_admin_menu_item');
 
         global $wp_admin_bar;
 
@@ -45,6 +45,6 @@ class Language
             ));
         }
 
-        do_action('wp-content-translator/after_add_language');
+        do_action('wp-content-translator/after_add_admin_menu_item');
     }
 }
