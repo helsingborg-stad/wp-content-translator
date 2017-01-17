@@ -6,12 +6,15 @@ class Language
 {
     public static $all;
 
-    public static $optionKey = array(
-        'installed' => 'wp-content-translator-installed',
-        'active' => 'wp-content-translator-active'
-    );
-
     protected $db;
+
+    private $components = array(
+        '\ContentTranslator\Post',
+        '\ContentTranslator\Meta',
+        '\ContentTranslator\Option',
+        '\ContentTranslator\SiteOption',
+        '\ContentTranslator\User'
+    );
 
     private $code;
     private $language;
@@ -24,14 +27,6 @@ class Language
 
         $this->code = $code;
         $this->language = self::find($code);
-
-        // Tables to create
-        $this->tables = array(
-            $this->db->posts => array(
-                'name' => $this->db->posts . '_' . $this->code,
-                'auto_increment' => 'ID'
-            )
-        );
 
         // Should we install (ie create tables and such) the language
         if ($install && !$this->isInstalled()) {
@@ -74,19 +69,27 @@ class Language
     {
         do_action('wp-content-translator/before_install_language', $this->code, $this);
 
-        foreach ($this->tables as $source => $target) {
-            Helper\Database::duplicateTable($source, $target['name']);
+        // Install components
+        foreach ($this->components as $component) {
+            if (!method_exists($component, 'install')) {
+                // Method does not exist, continue
+                continue;
+            }
+
+            $component::install($this->code);
         }
 
+        // Download WP language pack for the language
         $download = apply_filters('wp-content-translator/should_download_wp_translation_when_installing', true, $this->code, $this);
         if ($download && !in_array(\ContentTranslator\Switcher::identifyLocale($this->code), get_available_languages())) {
             $download = wp_download_language_pack(\ContentTranslator\Switcher::identifyLocale($this->code));
         }
 
-        $installed = get_option(self::$optionKey['installed'], array());
+        // Add to list of installed languages
+        $installed = get_option(Admin\Options::$optionKey['installed'], array());
         $installed[] = $this->code;
 
-        update_option(self::$optionKey['installed'], $installed);
+        update_option(Admin\Options::$optionKey['installed'], $installed);
 
         do_action('wp-content-translator/after_install_language', $this->code, $this);
 
@@ -97,29 +100,33 @@ class Language
     {
         do_action('wp-content-translator/before_uninstall_language', $this->code, $this);
 
-        if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
-            foreach ($this->tables as $source => $target) {
-                Helper\Database::dropTable($target['name']);
+        // Uninstall components
+        foreach ($this->components as $component) {
+            if (!method_exists($component, 'uninstall')) {
+                // Method does not exist, continue
+                continue;
             }
+
+            $component::uninstall($this->code);
         }
 
         // Remove from activated
-        $active = get_option(self::$optionKey['active'], array());
+        $active = get_option(Admin\Options::$optionKey['active'], array());
         if (array_search($this->code, $active) !== false) {
             $index = array_search($this->code, $active);
             unset($active[$index]);
         }
 
-        update_option(self::$optionKey['active'], $active);
+        update_option(Admin\Options::$optionKey['active'], $active);
 
         // Remove from installed
-        $installed = get_option(self::$optionKey['installed'], array());
+        $installed = get_option(Admin\Options::$optionKey['installed'], array());
         if (array_search($this->code, $installed) !== false) {
             $index = array_search($this->code, $installed);
             unset($installed[$index]);
         }
 
-        update_option(self::$optionKey['installed'], $installed);
+        update_option(Admin\Options::$optionKey['installed'], $installed);
 
         do_action('wp-content-translator/after_uninstall_language', $this->code, $this);
 
@@ -133,13 +140,7 @@ class Language
      */
     public function isInstalled() : bool
     {
-        foreach ($this->tables as $key => $table) {
-            if (!Helper\Database::tableExist($table['name'])) {
-                return false;
-            }
-        }
-
-        return true;
+        return in_array($this->code, self::installed());
     }
 
     /**
@@ -226,7 +227,7 @@ class Language
      */
     public static function installed($includeDefault = true) : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['installed'], array());
+        $keys = get_option(Admin\Options::$optionKey['installed'], array());
         $installed = array();
 
         if ($includeDefault) {
@@ -267,7 +268,7 @@ class Language
      */
     public static function active() : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['active'], array());
+        $keys = get_option(Admin\Options::$optionKey['active'], array());
         $active = array();
 
         // Add default lang to active
