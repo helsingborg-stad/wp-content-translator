@@ -122,13 +122,15 @@ class Option extends Entity\Translate
 
     /**
      * Check if the given value is the same value stored in the database
-     * @param  string $key        Option name
+     * @param  string $option     Option name (key)
      * @param  mixed  $translated Option value
      * @return bool
      */
-    private function identicalToBaseLang(string $key, $translated) : bool
+    private function identicalToBaseLang(string $option, $translated) : bool
     {
-        $default =  $this->db->get_var($this->db->prepare("SELECT option_value FROM {$this->db->options} WHERE option_name = %s LIMIT 1", $key));
+        remove_filter('option_' . $option, array($this, 'get'), 10);
+        $default = get_option($key, $translated);
+        add_filter('option_' . $option, array($this, 'get'), 10, 2);
 
         if ($default === $translated) {
             return true;
