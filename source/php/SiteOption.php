@@ -34,7 +34,7 @@ class SiteOption extends Entity\Translate
      * @param  string $option The options field key
      * @return mixed          The translated value
      */
-    public function get($value, $option, $networkId = null)
+    public function get($value, string $option, int $networkId = null)
     {
         if (!$this->shouldTranslate($option, $value)) {
             return $value;
@@ -52,7 +52,7 @@ class SiteOption extends Entity\Translate
      * @param  WP_Network $network WP_Network object
      * @return WP_Network          Modified WP_Network object
      */
-    public function getNetwork($network) : \WP_Network
+    public function getNetwork(\WP_Network $network) : \WP_Network
     {
         remove_filter('get_network', array($this, 'getNetwork'), 10);
 
@@ -73,7 +73,7 @@ class SiteOption extends Entity\Translate
      * @param  mixed $oldValue  Old option value (before update)
      * @return mixed            Returs the oldValue to tell the parent function to return false
      */
-    public function preUpdateSiteOption($value, $oldValue, $option, $networkId = null)
+    public function preUpdateSiteOption($value, $oldValue, string $option, int $networkId = null)
     {
         if ($this->shouldTranslate($option, $value) && !$this->identicalToBaseLang($option, $value, $networkId)) {
             if (is_null($networkId)) {
@@ -96,7 +96,7 @@ class SiteOption extends Entity\Translate
      * @param  mixed $value  Option value
      * @return bool
      */
-    public function shouldTranslate($key, $value) : bool
+    public function shouldTranslate(string $key, $value) : bool
     {
         if (in_array($key, WTC_TRANSLATABLE_SITE_OPTION)) {
             return true;
