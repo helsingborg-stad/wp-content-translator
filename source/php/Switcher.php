@@ -12,6 +12,8 @@ class Switcher
         if ($lang = $this->getRequestedLang()) {
             $this->switchToLanguage($lang);
             add_filter('locale', array($this, 'switchLocale'));
+        } else {
+            $this->switchToDefaultLang();
         }
     }
 
@@ -101,8 +103,12 @@ class Switcher
      */
     public function switchToDefaultLang() : bool
     {
-        unset($_COOKE[self::$cookieKey]);
-        setcookie(self::$cookieKey, null, -1, '/', COOKIE_DOMAIN);
+        if (isset($_COOKE[self::$cookieKey])) {
+            unset($_COOKE[self::$cookieKey]);
+            setcookie(self::$cookieKey, null, -1, '/', COOKIE_DOMAIN);
+        }
+
+        $this->switchToLanguage(get_locale());
 
         return true;
     }
