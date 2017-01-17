@@ -83,16 +83,16 @@ class Option extends Entity\Translate
      */
     public function shouldTranslate(string $key, $value) : bool
     {
-        if (in_array($key, WTC_TRANSLATABLE_OPTION)) {
-            return true;
-        }
-
         if (in_array($key, WTC_UNTRANSLATEBLE_OPTION)) {
             return false;
         }
 
         if (!WCT_TRANSLATE_NUMERIC_OPTION && is_numeric($value) && $value != null) {
             return false;
+        }
+
+        if (in_array($key, WTC_TRANSLATABLE_OPTION)) {
+            return true;
         }
 
         return apply_filters('wp-content-translator/option/should_translate_default', true, $key);
