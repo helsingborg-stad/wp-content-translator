@@ -20,18 +20,31 @@ class Option extends Entity\Translate
      */
     public static function install(string $language) : bool
     {
-        // Nothing to do for the install
+        do_action('wp-content-translator/option/install', $language);
         return true;
     }
 
     /**
      * Uninstall procedure
+     * Removes meta of the removed language
      * @param  string $language Language to install
      * @return bool]
      */
     public static function uninstall(string $language) : bool
     {
-        // Remove all related meta?
+        do_action('wp-content-translator/option/uninstall', $language);
+
+        // Bail if we should not remove the meta
+        if (!apply_filters('wp-content-translator/option/remove_option_when_uninstalling_language', true)) {
+            return false;
+        }
+
+        global $wpdb;
+
+        $wpdb->query(
+            $wpdb->prepare("DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", '%_' . $language)
+        );
+
         return true;
     }
 
