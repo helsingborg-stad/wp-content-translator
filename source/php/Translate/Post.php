@@ -54,6 +54,11 @@ class Post extends \ContentTranslator\Entity\Translate
         return true;
     }
 
+    /**
+     * Gets table name for posts of the specific language
+     * @param  string $language Language
+     * @return string           Table name
+     */
     public static function getTableName(string $language) : string {
         global $wpdb;
         return strtolower($wpdb->posts . '_' . $language);
