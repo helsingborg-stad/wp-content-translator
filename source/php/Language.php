@@ -269,9 +269,14 @@ class Language
         $keys = get_option(Admin\Options::$optionKey['installed'], array());
         $installed = array();
 
+        $default = self::default();
+
         if ($includeDefault) {
-            $default = self::default();
             $installed[$default->code] = $default;
+        } else {
+            if ($index = array_search($default->code, $keys)) {
+                unset($keys[$index]);
+            }
         }
 
         foreach ($keys as $key) {
