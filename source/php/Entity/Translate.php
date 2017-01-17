@@ -11,7 +11,10 @@ abstract class Translate
     {
         global $wpdb;
         $this->db = $wpdb;
-        $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
+
+        if (isset(\ContentTranslator\Switcher::$currentLanguage->code)) {
+            $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
+        }
     }
 
     /**
