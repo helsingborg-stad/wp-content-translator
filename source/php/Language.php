@@ -75,7 +75,7 @@ class Language
         do_action('wp-content-translator/before_install_language', $this->code, $this);
 
         foreach ($this->tables as $source => $target) {
-            $this->duplicateTable($source, $target['name']);
+            Helper\Database::duplicateTable($source, $target['name']);
         }
 
         $download = apply_filters('wp-content-translator/should_download_wp_translation_when_installing', true, $this->code, $this);
@@ -99,7 +99,7 @@ class Language
 
         if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
             foreach ($this->tables as $source => $target) {
-                $this->dropTable($target['name']);
+                Helper\Database::dropTable($target['name']);
             }
         }
 
@@ -128,83 +128,13 @@ class Language
     }
 
     /**
-     * Duplicates a table
-     * @param  string $source Name of table to duplicate
-     * @param  string $target Table name to create
-     * @return boolean
-     */
-    public function duplicateTable(string $source, string $target) : bool
-    {
-        if (!$this->tableExist($source)) {
-            throw new \Exception("Table '" . $source . "' does not exist.", 1);
-        }
-
-        if ($this->tableExist($target)) {
-            throw new \Exception("Table '" . $target . "' already exist. You will have to manually (with caution) drop the table to continue.", 1);
-        }
-
-        // Find autoincrement column name
-        $ai = $this->tables[$source]['auto_increment'];
-
-        // Create sql
-        $sql = "CREATE TABLE $target LIKE $source;";
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
-
-        $this->db->query("ALTER TABLE $target CHANGE $ai $ai BIGINT(20) UNSIGNED NOT NULL");
-
-        return true;
-    }
-
-    /**
-     * Drop a table
-     * Note: Can only drop tables created by this plugin for saftey reasons
-     * @param  string $table Table name
-     * @return bool
-     */
-    public function dropTable(string $table) : bool
-    {
-        $droppable = false;
-        foreach ($this->tables as $droppableTable) {
-            if ($droppableTable['name'] === $table) {
-                $droppable = true;
-                break;
-            }
-        }
-
-        if (!$droppable) {
-            throw new \Exception("Ooopsidopsi. Can't do it.", 1);
-        }
-
-        global $wpdb;
-        $wpdb->query("DROP TABLE $table");
-
-        return true;
-    }
-
-    /**
-     * Checks if a database table exists
-     * @param  string $table Table name
-     * @return boolean
-     */
-    public function tableExist(string $table) : bool
-    {
-        if ($this->db->get_var("SHOW TABLES LIKE '$table'") !== $table) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Check if tables is installed
      * @return boolean
      */
     public function isInstalled() : bool
     {
         foreach ($this->tables as $key => $table) {
-            if ($this->db->get_var("SHOW TABLES LIKE '" . $table['name'] . "'") !== $table['name']) {
+            if (!Helper\Database::tableExist($table['name'])) {
                 return false;
             }
         }
@@ -230,6 +160,10 @@ class Language
     public static function isDefault(string $code = null)
     {
         if (is_null($code)) {
+            if (!isset(\ContentTranslator\Switcher::$currentLanguage->code)) {
+                return false;
+            }
+
             $code = \ContentTranslator\Switcher::$currentLanguage->code;
         }
 
