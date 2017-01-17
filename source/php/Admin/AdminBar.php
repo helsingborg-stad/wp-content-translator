@@ -19,18 +19,22 @@ class AdminBar
         global $wp_admin_bar;
 
         if (!empty(wp_content_translator_languages('installed'))) {
+            if (is_object(wp_content_translator_current_language())) {
+                $translationNodeTitle =  __('Language', 'wp-content-translator') . apply_filters('wp-content-translator/meta/admin_bar_current_lang', " - " . wp_content_translator_current_language()->name, wp_content_translator_current_language()->code);
+            } else {
+                $translationNodeTitle = __('Language', 'wp-content-translator');
+            }
 
-            $wp_admin_bar->add_node( array(
+            $wp_admin_bar->add_node(array(
                 'id' => 'language_links',
-                'title' => __('Language', 'wp-content-translator') . apply_filters('wp-content-translator/meta/admin_bar_current_lang', " - " . wp_content_translator_current_language()->name, wp_content_translator_current_language()->code ),
+                'title' => $translationNodeTitle,
                 'href' => admin_url('admin.php?page=languages'),
                 'parent' => 'top-secondary'
             ));
 
             foreach (wp_content_translator_languages('installed') as $installedLanguage) {
-
-                if(!empty($installedLanguage->name)) {
-                    $wp_admin_bar->add_node( array(
+                if (!empty($installedLanguage->name)) {
+                    $wp_admin_bar->add_node(array(
                         'parent' => 'language_links',
                         'id' => 'language_links_'. $installedLanguage->code,
                         'title' => $installedLanguage->name,
@@ -40,11 +44,9 @@ class AdminBar
                         )
                     ));
                 }
-
             }
-
         } else {
-            $wp_admin_bar->add_node( array(
+            $wp_admin_bar->add_node(array(
                 'id' => 'language_links',
                 'title' => __('Setup Languages', 'wp-content-translator'),
                 'href' => admin_url('admin.php?page=languages')
