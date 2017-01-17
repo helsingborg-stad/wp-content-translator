@@ -4,6 +4,16 @@ namespace ContentTranslator\Entity;
 
 class Translate
 {
+    protected $lang;
+    protected $db;
+
+    public function __construct()
+    {
+        global $wpdb;
+        $this->db = $wpdb;
+        $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
+    }
+
     /**
      * Creates a language specific meta/options key
      * @param  string $key The meta/option key
