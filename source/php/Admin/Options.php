@@ -4,6 +4,11 @@ namespace ContentTranslator\Admin;
 
 class Options
 {
+    public static $optionKey = array(
+        'installed' => 'wp-content-translator-installed',
+        'active' => 'wp-content-translator-active'
+    );
+
     public function __construct()
     {
         add_action('admin_menu', array($this, 'addOptionsPage'));
@@ -69,6 +74,6 @@ class Options
      */
     public function setActiveLanguages(array $active) : bool
     {
-        return update_option(\ContentTranslator\Language::$optionKey['active'], $active);
+        return update_option(self:$optionKey['active'], $active);
     }
 }

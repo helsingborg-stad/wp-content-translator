@@ -6,11 +6,6 @@ class Language
 {
     public static $all;
 
-    public static $optionKey = array(
-        'installed' => 'wp-content-translator-installed',
-        'active' => 'wp-content-translator-active'
-    );
-
     protected $db;
 
     private $code;
@@ -83,10 +78,10 @@ class Language
             $download = wp_download_language_pack(\ContentTranslator\Switcher::identifyLocale($this->code));
         }
 
-        $installed = get_option(self::$optionKey['installed'], array());
+        $installed = get_option(Admin\Options::$optionKey['installed'], array());
         $installed[] = $this->code;
 
-        update_option(self::$optionKey['installed'], $installed);
+        update_option(Admin\Options::$optionKey['installed'], $installed);
 
         do_action('wp-content-translator/after_install_language', $this->code, $this);
 
@@ -104,22 +99,22 @@ class Language
         }
 
         // Remove from activated
-        $active = get_option(self::$optionKey['active'], array());
+        $active = get_option(Admin\Options::$optionKey['active'], array());
         if (array_search($this->code, $active) !== false) {
             $index = array_search($this->code, $active);
             unset($active[$index]);
         }
 
-        update_option(self::$optionKey['active'], $active);
+        update_option(Admin\Options::$optionKey['active'], $active);
 
         // Remove from installed
-        $installed = get_option(self::$optionKey['installed'], array());
+        $installed = get_option(Admin\Options::$optionKey['installed'], array());
         if (array_search($this->code, $installed) !== false) {
             $index = array_search($this->code, $installed);
             unset($installed[$index]);
         }
 
-        update_option(self::$optionKey['installed'], $installed);
+        update_option(Admin\Options::$optionKey['installed'], $installed);
 
         do_action('wp-content-translator/after_uninstall_language', $this->code, $this);
 
@@ -226,7 +221,7 @@ class Language
      */
     public static function installed($includeDefault = true) : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['installed'], array());
+        $keys = get_option(Admin\Options::$optionKey['installed'], array());
         $installed = array();
 
         if ($includeDefault) {
@@ -267,7 +262,7 @@ class Language
      */
     public static function active() : array
     {
-        $keys = get_option(\ContentTranslator\Language::$optionKey['active'], array());
+        $keys = get_option(Admin\Options::$optionKey['active'], array());
         $active = array();
 
         // Add default lang to active
