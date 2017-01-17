@@ -2,7 +2,7 @@
 
 namespace ContentTranslator\Entity;
 
-class Translate
+abstract class Translate
 {
     protected $lang;
     protected $db;
