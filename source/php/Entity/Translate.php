@@ -37,4 +37,8 @@ abstract class Translate
     {
         return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
+
+    function install(string $language) {}
+    function isInstalled(string $language) {}
+    function uninstall(string $language) {}
 }
