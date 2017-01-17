@@ -74,6 +74,6 @@ class Options
      */
     public function setActiveLanguages(array $active) : bool
     {
-        return update_option(self:$optionKey['active'], $active);
+        return update_option(self::$optionKey['active'], $active);
     }
 }
