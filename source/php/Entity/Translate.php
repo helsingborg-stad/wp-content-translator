@@ -19,7 +19,7 @@ abstract class Translate
      * @param  string $key The meta/option key
      * @return string      Langual meta/option key
      */
-    private function createLangualKey(string $key) : string
+    protected function createLangualKey(string $key) : string
     {
         if ($this->isLangualOption($key)) {
             return $key;
@@ -33,7 +33,7 @@ abstract class Translate
      * @param  string  $key Option key
      * @return boolean
      */
-    private function isLangualOption($key)
+    protected function isLangualOption($key)
     {
         return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
