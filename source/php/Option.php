@@ -105,6 +105,11 @@ class Option extends Entity\Translate
             }
         }
 
+        // If it's an content translator option reutrn the new value
+        if (in_array($option, Admin\Options::$optionKey)) {
+            return $value;
+        }
+
         // Return old value to stop make the update_option function
         // return false
         return $oldValue;

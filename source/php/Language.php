@@ -112,6 +112,7 @@ class Language
 
         // Remove from activated
         $active = get_option(Admin\Options::$optionKey['active'], array());
+
         if (array_search($this->code, $active) !== false) {
             $index = array_search($this->code, $active);
             unset($active[$index]);
