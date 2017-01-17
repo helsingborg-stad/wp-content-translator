@@ -4,10 +4,6 @@ namespace ContentTranslator;
 
 class User Extends Meta
 {
-
-    protected $lang;
-    protected $db;
-
     public function __construct()
     {
         if (WCT_TRANSLATE_USER && \ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {

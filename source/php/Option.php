@@ -4,14 +4,12 @@ namespace ContentTranslator;
 
 class Option extends Entity\Translate
 {
-    protected $lang;
-
     public function __construct()
     {
-        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
-            $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
-            add_action('init', array($this, 'hook'));
+        parent::__construct();
 
+        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
+            add_action('init', array($this, 'hook'));
             add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
         }
     }
@@ -107,14 +105,12 @@ class Option extends Entity\Translate
      */
     public function getOptionNames() : array
     {
-        global $wpdb;
-
         $options = array();
 
         if (WTC_TRANSLATE_HIDDEN_OPTION) {
-            $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options GROUP BY option_name ORDER BY option_name ASC");
+            $options = $this->db->get_results("SELECT option_name FROM $this->db->options GROUP BY option_name ORDER BY option_name ASC");
         } else {
-            $options = $wpdb->get_results("SELECT option_name FROM $wpdb->options WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
+            $options = $this->db->get_results("SELECT option_name FROM $this->db->options WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
         }
 
         $optionsArray = array();
@@ -133,9 +129,7 @@ class Option extends Entity\Translate
      */
     private function identicalToBaseLang(string $key, $translated) : bool
     {
-        global $wpdb;
-
-        $default =  $wpdb->get_var($wpdb->prepare("SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1", $key));
+        $default =  $this->db->get_var($this->db->prepare("SELECT option_value FROM $this->db->options WHERE option_name = %s LIMIT 1", $key));
 
         if ($default === $translated) {
             return true;

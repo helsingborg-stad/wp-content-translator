@@ -4,17 +4,11 @@ namespace ContentTranslator;
 
 class Meta extends Entity\Translate
 {
-    protected $lang;
-    protected $db;
-
     public function __construct()
     {
+        parent::__construct();
+
         if (WCT_TRANSLATE_META && \ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
-            global $wpdb;
-
-            $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
-            $this->db   = $wpdb;
-
             add_filter('get_post_metadata', array($this, 'get'), 1, 4);
             add_filter('update_post_metadata', array($this, 'save'), 1, 4);
             add_filter('add_post_metadata', array($this, 'save'), 1, 4);
