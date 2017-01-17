@@ -1,8 +1,8 @@
 <?php
 
-namespace ContentTranslator;
+namespace ContentTranslator\Translate;
 
-class Meta extends Entity\Translate
+class Meta extends \ContentTranslator\Entity\Translate
 {
 
     private $metaType;

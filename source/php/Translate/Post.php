@@ -1,8 +1,8 @@
 <?php
 
-namespace ContentTranslator;
+namespace ContentTranslator\Translate;
 
-class Post extends Entity\Translate
+class Post extends \ContentTranslator\Entity\Translate
 {
     public function __construct()
     {

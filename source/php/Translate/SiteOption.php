@@ -1,8 +1,8 @@
 <?php
 
-namespace ContentTranslator;
+namespace ContentTranslator\Translate;
 
-class SiteOption extends Entity\Translate
+class SiteOption extends \ContentTranslator\Entity\Translate
 {
     public function __construct()
     {

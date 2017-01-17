@@ -34,11 +34,11 @@ class App
 
         // Translate
         if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
-            new Post();
-            new Meta();
-            new Option();
-            new SiteOption();
-            new User();
+            new Translate\Post();
+            new Translate\Meta();
+            new Translate\Option();
+            new Translate\SiteOption();
+            new Translate\User();
         }
 
         // Admin

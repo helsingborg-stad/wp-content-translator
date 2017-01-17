@@ -9,11 +9,11 @@ class Language
     protected $db;
 
     private $components = array(
-        '\ContentTranslator\Post',
-        '\ContentTranslator\Meta',
-        '\ContentTranslator\Option',
-        '\ContentTranslator\SiteOption',
-        '\ContentTranslator\User'
+        '\ContentTranslator\Translate\Post',
+        '\ContentTranslator\Translate\Meta',
+        '\ContentTranslator\Translate\Option',
+        '\ContentTranslator\Translate\SiteOption',
+        '\ContentTranslator\Translate\User'
     );
 
     private $code;
