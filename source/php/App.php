@@ -42,7 +42,8 @@ class App
             new Translate\Meta();
             new Translate\Option();
             new Translate\SiteOption();
-            new Translate\User();
+            new Translate\UserMeta();
+            new Translate\CommentMeta();
         }
 
         // Admin
@@ -165,5 +166,6 @@ class App
     public function commentConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
         define('WCT_TRANSLATE_COMMENT', (bool) apply_filters('wp-content-translator/option/translate_comment', true));
+        define('WCT_TRANSLATE_COMMENT_META', (bool) apply_filters('wp-content-translator/option/translate_comment_meta', true));
     }
 }
