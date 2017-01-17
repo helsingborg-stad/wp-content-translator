@@ -4,13 +4,28 @@ namespace ContentTranslator;
 
 class Meta extends Entity\Translate
 {
-    public function __construct()
+
+    private $metaType;
+    private $allowedTypes = array('post','user');
+
+    /**
+     * Constructor
+     * @param  string $metaType The metadata type that should be handled. Valid: post, user.
+     * @return void
+     */
+    public function __construct($metaType = 'post')
     {
-        if (WCT_TRANSLATE_META) {
+        if (in_array($metaType, $this->allowedTypes)) {
+            $this->metaType = $metaType;
+        } else {
+            wp_die("An incorrent meta-type was provieded to meta translation.", 'wp-content-translator');
+        }
+
+        if ((WCT_TRANSLATE_META && $metaType == 'post') || (WCT_TRANSLATE_USER_META && $metaType == 'user')) {
             parent::__construct();
-            add_filter('get_post_metadata', array($this, 'get'), 1, 4);
-            add_filter('update_post_metadata', array($this, 'save'), 1, 4);
-            add_filter('add_post_metadata', array($this, 'save'), 1, 4);
+            add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
+            add_filter('update_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
+            add_filter('add_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
         }
     }
 
@@ -51,7 +66,6 @@ class Meta extends Entity\Translate
 
     public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
-
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
 
             //Create meta key
@@ -76,10 +90,9 @@ class Meta extends Entity\Translate
     public function get($type, int $post_id, string $meta_key, bool $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key)) {
-
-            remove_filter('get_post_metadata', array($this, 'get'), 1);
+            remove_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1);
             $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
-            add_filter('get_post_metadata', array($this, 'get'), 1, 4);
+            add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
 
             if (!TRANSLATE_FALLBACK && implode("", $translation) == "") {
                 return "";              // Abort and return empty (no fallback)
@@ -116,9 +129,9 @@ class Meta extends Entity\Translate
 
     private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
     {
-        remove_filter('get_post_metadata', array($this, 'get'), 1);
+        remove_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1);
         $default = get_post_meta($post_id, $meta_key, true);
-        add_filter('get_post_metadata', array($this, 'get'), 1, 4);
+        add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
 
         if (trim($default) == trim($translated)) {
             return true;
