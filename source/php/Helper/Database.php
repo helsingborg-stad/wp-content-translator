@@ -5,7 +5,6 @@ namespace ContentTranslator\Helper;
 
 class Database
 {
-
     protected $db;
 
     public function __construct()
@@ -14,15 +13,19 @@ class Database
         $this->db = $wpdb;
     }
 
-    public function getTableColumns($table) : array
+    /**
+     * Gets all column names of a table
+     * @param  string $table Table name
+     * @return array
+     */
+    public static function getTableColumns(string $table) : array
     {
         $columns = array();
 
-        foreach ( (array) $this->db->get_col( "DESC " . $wpdb->prefix . $table , 0 ) as $column_name) {
+        foreach ((array) $this->db->get_col("DESC " . $wpdb->prefix . $table, 0) as $column_name) {
             $columns[] = $column_name;
         }
 
         return (array) $columns;
-
     }
 }
