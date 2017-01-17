@@ -29,8 +29,13 @@ class App
             'posts' => $wpdb->posts
         );
 
+        // Helpers
+        new Helper\Database();
+
         // Core
         new Switcher();
+
+        new Language('en_GB');
 
         // Translate
         if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
@@ -44,9 +49,6 @@ class App
         // Admin
         new Admin\Options();
         new Admin\AdminBar();
-
-        // Helpers
-        new Helper\Database();
     }
 
     public function adminEnqueue() // : void - Waiting for 7.1 enviroments to "be out there".

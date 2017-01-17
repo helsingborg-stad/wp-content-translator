@@ -69,8 +69,10 @@ class Language
     {
         do_action('wp-content-translator/before_install_language', $this->code, $this);
 
+        $toInstall = $this->checkInstallation('uninstalled');
+
         // Install components
-        foreach ($this->components as $component) {
+        foreach ($toInstall as $component) {
             if (!method_exists($component, 'install')) {
                 // Method does not exist, continue
                 continue;
@@ -88,6 +90,7 @@ class Language
         // Add to list of installed languages
         $installed = get_option(Admin\Options::$optionKey['installed'], array());
         $installed[] = $this->code;
+        $installed = array_unique($installed);
 
         update_option(Admin\Options::$optionKey['installed'], $installed);
 
@@ -141,7 +144,42 @@ class Language
      */
     public function isInstalled() : bool
     {
-        return in_array($this->code, self::installed());
+        $check = $this->checkInstallation();
+        return empty($check['uninstalled']);
+    }
+
+    /**
+     * Checks that the install is complete
+     * @return array Installed and uninstalled components
+     */
+    public function checkInstallation(string $key = null) : array
+    {
+        $installed = array();
+        $uninstalled = array();
+
+        foreach ($this->components as $component) {
+            if (!method_exists($component, 'isInstalled')) {
+                // Method does not exist, continue
+                continue;
+            }
+
+            if ($component::isInstalled($this->code)) {
+                $installed[] = $component;
+            } else {
+                $uninstalled[] = $component;
+            }
+        }
+
+        $installation = array(
+            'installed' => $installed,
+            'uninstalled' => $uninstalled
+        );
+
+        if (is_string($key) && isset($installation[$key])) {
+            return $installation[$key];
+        }
+
+        return $installation;
     }
 
     /**
