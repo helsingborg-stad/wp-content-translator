@@ -2,7 +2,7 @@
 
 namespace ContentTranslator;
 
-class Meta
+class Meta extends Entity\Translate
 {
     protected $lang;
     protected $db;
@@ -25,11 +25,11 @@ class Meta
     {
 
         //Do not connect to revisions.
-        if(wp_is_post_revision($post_id)) {
+        if (wp_is_post_revision($post_id)) {
             return null;
         }
 
-        if(!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
+        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
 
             //Create meta key
             $langual_meta_key = $this->createLangualKey($meta_key);
@@ -45,17 +45,14 @@ class Meta
                 delete_post_meta($post_id, $langual_meta_key);
                 return true;
             }
-
         }
 
         return null;
-
     }
 
     public function get($type, $post_id, $meta_key, $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
-
             $translation =  $this->db->get_col(
                                 $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
                             );
@@ -74,7 +71,6 @@ class Meta
 
     private function shouldTranslate(string $meta_key, $meta_value = null) : bool
     {
-
         if (in_array($meta_key, WCT_TRANSLATABLE_META)) {
             return true;
         }
@@ -87,22 +83,11 @@ class Meta
             return false;
         }
 
-        if(!WCT_TRANSLATE_NUMERIC_META && is_numeric($meta_value) && $meta_value != null) {
+        if (!WCT_TRANSLATE_NUMERIC_META && is_numeric($meta_value) && $meta_value != null) {
             return false;
         }
 
         return apply_filters('wp-content-translator/meta/should_translate_default', true, $meta_key);
-
-    }
-
-    private function isLangualMeta(string $meta_key) : bool
-    {
-        return substr($meta_key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
-    }
-
-    private function createLangualKey(string $meta_key) : string
-    {
-        return $meta_key . TRANSLATE_DELIMITER . $this->lang;
     }
 
     private function identicalToBaseLang($meta_key, $meta_value, $post_id) : bool

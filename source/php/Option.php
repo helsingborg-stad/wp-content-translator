@@ -2,7 +2,7 @@
 
 namespace ContentTranslator;
 
-class Option
+class Option extends Entity\Translate
 {
     protected $lang;
 
@@ -94,7 +94,7 @@ class Option
             return false;
         }
 
-        if(!WCT_TRANSLATE_NUMERIC_OPTION && is_numeric($value) && $value != null) {
+        if (!WCT_TRANSLATE_NUMERIC_OPTION && is_numeric($value) && $value != null) {
             return false;
         }
 
@@ -123,27 +123,6 @@ class Option
         }
 
         return $optionsArray;
-    }
-
-    /**
-     * Creates a language specific meta/options key
-     * TODO: Move to shared functions(?)
-     * @param  string $key The meta/option key
-     * @return string      Langual meta/option key
-     */
-    private function createLangualKey(string $key) : string
-    {
-        return $key . TRANSLATE_DELIMITER . $this->lang;
-    }
-
-    /**
-     * Check if key is a langual option
-     * @param  string  $key Option key
-     * @return boolean
-     */
-    private function isLangualOption($key)
-    {
-        return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
 
     /**
