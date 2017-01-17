@@ -41,6 +41,16 @@ class Meta extends \ContentTranslator\Entity\Translate
     }
 
     /**
+     * Is installed?
+     * @param  string  $language Language to check
+     * @return boolean
+     */
+    public static function isInstalled(string $language) : bool
+    {
+        return apply_filters('wp-content-translator/meta/is_installed', true);
+    }
+
+    /**
      * Uninstall procedure
      * Removes meta of the removed language
      * @param  string $language Language to install

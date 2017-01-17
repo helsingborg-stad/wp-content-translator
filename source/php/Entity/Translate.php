@@ -8,6 +8,7 @@ abstract class Translate
     protected $db;
 
     abstract public static function install(string $language) : bool;
+    abstract public static function isInstalled(string $language) : bool;
     abstract public static function uninstall(string $language) : bool;
 
     public function __construct()

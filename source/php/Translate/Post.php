@@ -23,7 +23,21 @@ class Post extends \ContentTranslator\Entity\Translate
      */
     public static function install(string $language) : bool {
         global $wpdb;
-        Helper\Database::duplicateTable($wpdb->posts, self::getTableName($language));
+        \ContentTranslator\Helper\Database::duplicateTable($wpdb->posts, self::getTableName($language));
+        return true;
+    }
+
+    /**
+     * Is installed?
+     * @param  string  $language Language to check
+     * @return boolean
+     */
+    public static function isInstalled(string $language) : bool
+    {
+        if (!\ContentTranslator\Helper\Database::tableExist(self::getTableName($language))) {
+            return false;
+        }
+
         return true;
     }
 
@@ -42,7 +56,7 @@ class Post extends \ContentTranslator\Entity\Translate
 
     public static function getTableName(string $language) : string {
         global $wpdb;
-        return $wpdb->posts . '_' . $language;
+        return strtolower($wpdb->posts . '_' . $language);
     }
 
     /**
