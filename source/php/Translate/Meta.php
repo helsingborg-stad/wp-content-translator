@@ -6,7 +6,7 @@ class Meta extends \ContentTranslator\Entity\Translate
 {
 
     private $metaType;
-    private $allowedTypes = array('post','user');
+    private $allowedTypes = array('post','user','comment');
 
     /**
      * Constructor

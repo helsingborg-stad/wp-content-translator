@@ -2,7 +2,7 @@
 
 namespace ContentTranslator\Translate;
 
-class User extends Meta
+class UserMeta extends Meta
 {
     public function __construct()
     {
