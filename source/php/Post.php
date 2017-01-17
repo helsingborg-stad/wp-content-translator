@@ -2,7 +2,7 @@
 
 namespace ContentTranslator;
 
-class Post
+class Post extends Entity\Translate
 {
     public function __construct()
     {
@@ -14,6 +14,35 @@ class Post
 
             add_filter('wp_insert_post_data', array($this, 'save'), 10, 2);
         }
+    }
+
+    /**
+     * Install procedure
+     * @param  string $language Language to install
+     * @return bool
+     */
+    public static function install(string $language) : bool {
+        global $wpdb;
+        Helper\Database::duplicateTable($wpdb->posts, self::getTableName($language));
+        return true;
+    }
+
+    /**
+     * Uninstall procedure
+     * @param  string $language Language to uninstall
+     * @return bool
+     */
+    public static function uninstall(string $language) : bool {
+        if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
+            Helper\Database::dropTable(self::getTableName());
+        }
+
+        return true;
+    }
+
+    public static function getTableName(string $language) : string {
+        global $wpdb;
+        return $wpdb->posts . '_' . $language;
     }
 
     /**
