@@ -83,13 +83,13 @@ class Meta extends Entity\Translate
         return apply_filters('wp-content-translator/meta/should_translate_default', true, $meta_key);
     }
 
-    private function identicalToBaseLang(string $meta_key, $meta_value, int $post_id) : bool
+    private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
     {
         remove_filter('get_post_metadata', array($this, 'get'), 1);
-        $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
+        $default = get_post_meta($post_id, $meta_key);
         add_filter('get_post_metadata', array($this, 'get'), 1, 4);
 
-        if (trim($translation) == trim($meta_value)) {
+        if (trim($default) == trim($translated)) {
             return true;
         }
 
