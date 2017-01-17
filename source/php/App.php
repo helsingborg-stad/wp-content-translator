@@ -64,14 +64,15 @@ class App
     {
         define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
             '_edit_lock',
+            '_edit_last',
+            '_wp_page_template',
             'modularity-modules',
             'modularity-sidebar-options'
         )));
 
         define('WCT_TRANSLATABLE_META', (array) apply_filters('wp-content-translator/option/translatable_meta', array(
             '_aioseop_title',
-            '_aioseop_description',
-            '_aioseop_titleatr'
+            '_aioseop_description'
         )));
 
         define('WTC_TRANSLATE_HIDDEN_META',     (bool) apply_filters('wp-content-translator/option/translate_hidden_meta', false));
@@ -131,7 +132,8 @@ class App
 
     public function userConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-        define('WCT_TRANSLATE_USER', (bool) apply_filters('wp-content-translator/option/translate_user', true));
+        //All options exept this will be inherited from meta
+        define('WCT_TRANSLATE_USER',            (bool) apply_filters('wp-content-translator/option/translate_user'            , true));
     }
 
     public function commentConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
