@@ -34,6 +34,7 @@ class App
         new Post();
         new Meta();
         new Option();
+        new SiteOption();
 
         // Admin
         new Admin\Options();
