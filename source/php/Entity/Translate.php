@@ -21,7 +21,7 @@ abstract class Translate
      */
     protected function createLangualKey(string $key) : string
     {
-        if ($this->isLangualOption($key)) {
+        if ($this->isLangual($key)) {
             return $key;
         }
 
@@ -33,7 +33,7 @@ abstract class Translate
      * @param  string  $key Option key
      * @return boolean
      */
-    protected function isLangualOption($key)
+    protected function isLangual($key)
     {
         return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }

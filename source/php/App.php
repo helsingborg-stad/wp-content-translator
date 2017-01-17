@@ -31,10 +31,14 @@ class App
 
         // Core
         new Switcher();
-        new Post();
-        new Meta();
-        new Option();
-        new SiteOption();
+
+        // Translate
+        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
+            new Post();
+            new Meta();
+            new Option();
+            new SiteOption();
+        }
 
         // Admin
         new Admin\Options();
@@ -119,6 +123,7 @@ class App
 
         )));
 
+        define('WCT_TRANSLATE_SITE_OPTION',          (bool) apply_filters('wp-content-translator/option/translate_option'            , true));
         define('WCT_TRANSLATE_NUMERIC_SITE_OPTION',  (bool) apply_filters('wp-content-translator/option/translate_numeric_option'    , false));
         define('WTC_UNTRANSLATEBLE_SITE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array()));
         define('WTC_TRANSLATABLE_SITE_OPTION', (array) apply_filters('wp-content-translator/option/translatable_options', array()));

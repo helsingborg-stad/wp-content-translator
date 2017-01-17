@@ -6,9 +6,8 @@ class Meta extends Entity\Translate
 {
     public function __construct()
     {
-        parent::__construct();
-
-        if (WCT_TRANSLATE_META && \ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
+        if (WCT_TRANSLATE_META) {
+            parent::__construct();
             add_filter('get_post_metadata', array($this, 'get'), 1, 4);
             add_filter('update_post_metadata', array($this, 'save'), 1, 4);
             add_filter('add_post_metadata', array($this, 'save'), 1, 4);
@@ -23,7 +22,7 @@ class Meta extends Entity\Translate
             return null;
         }
 
-        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
+        if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
 
             //Create meta key
             $langual_meta_key = $this->createLangualKey($meta_key);
@@ -46,7 +45,7 @@ class Meta extends Entity\Translate
 
     public function get($type, int $post_id, string $meta_key, bool $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
-        if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
+        if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key)) {
             $translation =  $this->db->get_col(
                                 $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
                             );

@@ -6,9 +6,8 @@ class SiteOption extends Entity\Translate
 {
     public function __construct()
     {
-        parent::__construct();
-
-        if (function_exists('is_multisite') && is_multisite() && \ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
+        if (function_exists('is_multisite') && is_multisite() && WCT_TRANSLATE_SITE_OPTION) {
+            parent::__construct();
             add_action('init', array($this, 'hook'));
             add_filter('get_network', array($this, 'getNetwork'));
         }

@@ -6,7 +6,7 @@ class Post
 {
     public function __construct()
     {
-        if (\ContentTranslator\Switcher::isLanguageSet()) {
+        if (WCT_TRANSLATE_POSTS) {
             add_action('admin_enqueue_scripts', array($this, 'globalPost'));
 
             add_action('wp', array($this, 'globalPost'));

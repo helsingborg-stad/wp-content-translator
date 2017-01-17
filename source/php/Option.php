@@ -6,9 +6,8 @@ class Option extends Entity\Translate
 {
     public function __construct()
     {
-        parent::__construct();
-
-        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
+        if (WCT_TRANSLATE_OPTION) {
+            parent::__construct();
             add_action('init', array($this, 'hook'));
             add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
         }
