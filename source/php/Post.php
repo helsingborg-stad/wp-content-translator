@@ -34,7 +34,7 @@ class Post extends Entity\Translate
      */
     public static function uninstall(string $language) : bool {
         if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
-            Helper\Database::dropTable(self::getTableName());
+            Helper\Database::dropTable(self::getTableName($language));
         }
 
         return true;
