@@ -7,6 +7,9 @@ abstract class Translate
     protected $lang;
     protected $db;
 
+    abstract public static function install(string $language) : bool;
+    abstract public static function uninstall(string $language) : bool;
+
     public function __construct()
     {
         global $wpdb;
@@ -40,8 +43,4 @@ abstract class Translate
     {
         return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
-
-    function install(string $language) {}
-    function isInstalled(string $language) {}
-    function uninstall(string $language) {}
 }

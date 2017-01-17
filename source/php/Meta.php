@@ -14,6 +14,28 @@ class Meta extends Entity\Translate
         }
     }
 
+    /**
+     * Install procedure
+     * @param  string $language Language to install
+     * @return bool
+     */
+    public static function install(string $language) : bool
+    {
+        // Nothing to do for the install
+        return true;
+    }
+
+    /**
+     * Uninstall procedure
+     * @param  string $language Language to install
+     * @return bool]
+     */
+    public static function uninstall(string $language) : bool
+    {
+        // Remove all related meta?
+        return true;
+    }
+
     public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
 

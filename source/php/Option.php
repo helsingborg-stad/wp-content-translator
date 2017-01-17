@@ -14,6 +14,28 @@ class Option extends Entity\Translate
     }
 
     /**
+     * Install procedure
+     * @param  string $language Language to install
+     * @return bool
+     */
+    public static function install(string $language) : bool
+    {
+        // Nothing to do for the install
+        return true;
+    }
+
+    /**
+     * Uninstall procedure
+     * @param  string $language Language to install
+     * @return bool]
+     */
+    public static function uninstall(string $language) : bool
+    {
+        // Remove all related meta?
+        return true;
+    }
+
+    /**
      * Hooks get method on all options
      * @return void
      */
