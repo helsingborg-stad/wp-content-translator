@@ -175,8 +175,8 @@ class Switcher
      * Also available as public function: wp_content_translator_is_language_set()
      * @return boolean
      */
-    public static function isLanguageSet()
+    public static function isLanguageSet() : bool
     {
-        return isset(self::$currentLanguage) && !is_null(self::$currentLanguage) && !empty(self::$currentLanguage);
+        return (bool) isset(self::$currentLanguage) && !is_null(self::$currentLanguage) && !empty(self::$currentLanguage);
     }
 }

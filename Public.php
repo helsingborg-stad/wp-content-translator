@@ -7,7 +7,7 @@ if (!function_exists('wp_content_translator_is_language_set')) {
      */
     function wp_content_translator_is_language_set() : bool
     {
-        return \ContentTranslator\Switcher::isLanguageSet();
+        return (bool) \ContentTranslator\Switcher::isLanguageSet();
     }
 }
 
@@ -16,7 +16,7 @@ if (!function_exists('wp_content_translator_current_language')) {
      * Gets the current language and it's attributes
      * @return \stdClass
      */
-    function wp_content_translator_current_language() : \stdClass
+    function wp_content_translator_current_language() //: \stdClass
     {
         return \ContentTranslator\Switcher::$currentLanguage;
     }
@@ -57,12 +57,16 @@ if (!function_exists('wp_content_translator_languages')) {
             $language->url = wp_content_translator_unparse_url($url);
 
             $language->isCurrent = false;
-            if (\ContentTranslator\Switcher::$currentLanguage->code === $language->code) {
-                $language->isCurrent = true;
+
+
+            if (is_object(\ContentTranslator\Switcher::$currentLanguage)) {
+                if (\ContentTranslator\Switcher::$currentLanguage->code === $language->code) {
+                    $language->isCurrent = true;
+                }
             }
         }
 
-        return $languages;
+        return (array) $languages;
     }
 }
 
