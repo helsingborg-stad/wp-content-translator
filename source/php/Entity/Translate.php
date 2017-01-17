@@ -11,6 +11,10 @@ class Translate
      */
     protected function createLangualKey(string $key) : string
     {
+        if ($this->isLangualOption($key)) {
+            return $key;
+        }
+
         return $key . TRANSLATE_DELIMITER . $this->lang;
     }
 
