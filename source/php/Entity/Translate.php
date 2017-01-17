@@ -32,7 +32,7 @@ abstract class Translate
             return $key;
         }
 
-        return $key . TRANSLATE_DELIMITER . $this->lang;
+        return $key . WTC_TRANSLATE_DELIMITER . $this->lang;
     }
 
     /**
@@ -42,6 +42,6 @@ abstract class Translate
      */
     protected function isLangual($key)
     {
-        return substr($key, -strlen(TRANSLATE_DELIMITER . $this->lang)) == TRANSLATE_DELIMITER . $this->lang ? true : false;
+        return substr($key, -strlen(WTC_TRANSLATE_DELIMITER . $this->lang)) == WTC_TRANSLATE_DELIMITER . $this->lang ? true : false;
     }
 }

@@ -60,8 +60,8 @@ class App
 
     public function generalConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-        define('TRANSLATE_FALLBACK', apply_filters('wp-content-translator/option/translate_fallback', true));
-        define('TRANSLATE_DELIMITER', apply_filters('wp-content-translator/option/translate_delimeter', "_"));
+        define('WCT_TRANSLATE_FALLBACK', apply_filters('wp-content-translator/option/translate_fallback', true));
+        define('WTC_TRANSLATE_DELIMITER', apply_filters('wp-content-translator/option/translate_delimeter', "_"));
     }
 
     public function metaConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".

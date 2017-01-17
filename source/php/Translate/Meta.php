@@ -104,9 +104,9 @@ class Meta extends \ContentTranslator\Entity\Translate
             $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
             add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
 
-            if (!TRANSLATE_FALLBACK && implode("", $translation) == "") {
+            if (!WCT_TRANSLATE_FALLBACK && implode("", $translation) == "") {
                 return "";              // Abort and return empty (no fallback)
-            } elseif (TRANSLATE_FALLBACK && implode("", $translation) == "") {
+            } elseif (WCT_TRANSLATE_FALLBACK && implode("", $translation) == "") {
                 return null;            // Continiue normal procedure (fallback to base lang)
             } else {
                 return $translation;    // Translation found, return value

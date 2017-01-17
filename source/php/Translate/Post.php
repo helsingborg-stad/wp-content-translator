@@ -77,7 +77,7 @@ class Post extends \ContentTranslator\Entity\Translate
         }
 
         if (empty($translations) || !isset($translations[$post->ID])) {
-            if (!TRANSLATE_FALLBACK) {
+            if (!WCT_TRANSLATE_FALLBACK) {
                 $post->post_title = '';
                 $post->post_content = '';
             }
