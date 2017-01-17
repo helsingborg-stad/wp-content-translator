@@ -121,9 +121,9 @@ class SiteOption extends Entity\Translate
     {
         $options = array();
         if (WTC_TRANSLATE_HIDDEN_OPTION) {
-            $options = $this->db->get_results($this->db->prepare("SELECT meta_key FROM $this->db->sitemeta WHERE site_id = %d GROUP BY meta_key ORDER BY meta_key ASC", get_current_network_id()));
+            $options = $this->db->get_results($this->db->prepare("SELECT meta_key FROM {$this->db->sitemeta} WHERE site_id = %d GROUP BY meta_key ORDER BY meta_key ASC", get_current_network_id()));
         } else {
-            $options = $this->db->get_results($this->db->prepare("SELECT meta_key FROM $this->db->sitemeta WHERE site_id = %d AND meta_key NOT LIKE '%s' GROUP BY meta_key ORDER BY meta_key ASC", get_current_network_id(), '\_%'));
+            $options = $this->db->get_results($this->db->prepare("SELECT meta_key FROM {$this->db->sitemeta} WHERE site_id = %d AND meta_key NOT LIKE '%s' GROUP BY meta_key ORDER BY meta_key ASC", get_current_network_id(), '\_%'));
         }
 
         $optionsArray = array();
@@ -146,7 +146,7 @@ class SiteOption extends Entity\Translate
             $networkId = get_current_network_id();
         }
 
-        $default =  $this->db->get_var($this->db->prepare("SELECT meta_value FROM $this->db->sitemeta WHERE site_id = %d AND meta_key = %s LIMIT 1", $networkId, $key));
+        $default =  $this->db->get_var($this->db->prepare("SELECT meta_value FROM {$this->db->sitemeta} WHERE site_id = %d AND meta_key = %s LIMIT 1", $networkId, $key));
 
         if ($default === $translated) {
             return true;

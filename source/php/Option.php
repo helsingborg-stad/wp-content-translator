@@ -108,9 +108,9 @@ class Option extends Entity\Translate
         $options = array();
 
         if (WTC_TRANSLATE_HIDDEN_OPTION) {
-            $options = $this->db->get_results("SELECT option_name FROM $this->db->options GROUP BY option_name ORDER BY option_name ASC");
+            $options = $this->db->get_results("SELECT option_name FROM {$this->db->options} GROUP BY option_name ORDER BY option_name ASC");
         } else {
-            $options = $this->db->get_results("SELECT option_name FROM $this->db->options WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
+            $options = $this->db->get_results("SELECT option_name FROM {$this->db->options} WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
         }
 
         $optionsArray = array();
@@ -129,7 +129,7 @@ class Option extends Entity\Translate
      */
     private function identicalToBaseLang(string $key, $translated) : bool
     {
-        $default =  $this->db->get_var($this->db->prepare("SELECT option_value FROM $this->db->options WHERE option_name = %s LIMIT 1", $key));
+        $default =  $this->db->get_var($this->db->prepare("SELECT option_value FROM {$this->db->options} WHERE option_name = %s LIMIT 1", $key));
 
         if ($default === $translated) {
             return true;
