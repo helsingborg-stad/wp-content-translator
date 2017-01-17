@@ -33,9 +33,8 @@ class App
         new Helper\Database();
 
         // Core
+        $this->initLanguages();
         new Switcher();
-
-        new Language('en_GB');
 
         // Translate
         if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
@@ -49,6 +48,15 @@ class App
         // Admin
         new Admin\Options();
         new Admin\AdminBar();
+    }
+
+    public function initLanguages()
+    {
+        $languages = \ContentTranslator\Language::installed(false);
+
+        foreach ($languages as $lang) {
+            new \ContentTranslator\Language($lang->code);
+        }
     }
 
     public function adminEnqueue() // : void - Waiting for 7.1 enviroments to "be out there".
