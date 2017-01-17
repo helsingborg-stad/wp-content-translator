@@ -16,12 +16,12 @@ class App
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
         // Init run
-        $this->generalConfiguration();
-        $this->metaConfiguration();
-        $this->postConfiguration();
-        $this->optionConfiguration();
-        $this->userConfiguration();
-        $this->commentConfiguration();
+        add_action('plugins_loaded', array($this,'generalConfiguration'), 1);
+        add_action('plugins_loaded', array($this,'metaConfiguration'), 1);
+        add_action('plugins_loaded', array($this,'postConfiguration'), 1);
+        add_action('plugins_loaded', array($this,'optionConfiguration'), 1);
+        add_action('plugins_loaded', array($this,'userConfiguration'), 1);
+        add_action('plugins_loaded', array($this,'commentConfiguration'), 1);
 
         // Setup wpdb
         global $wpdb;
