@@ -33,7 +33,7 @@ class Option extends Entity\Translate
      * @param  string $option The options field key
      * @return mixed          The translated value
      */
-    public function get($value, $option)
+    public function get($value, string $option)
     {
         if (!$this->shouldTranslate($option, $value)) {
             return $value;
@@ -55,7 +55,7 @@ class Option extends Entity\Translate
      * @param  mixed $oldValue  Old option value (before update)
      * @return mixed            Returs the oldValue to tell the parent function to return false
      */
-    public function preUpdateOption($value = null, $option = null, $oldValue = null)
+    public function preUpdateOption($value = null, string $option = null, $oldValue = null)
     {
         if ($this->shouldTranslate($option, $value) && !$this->identicalToBaseLang($option, $value)) {
             if (!isset($_POST['acf'])) {
@@ -82,7 +82,7 @@ class Option extends Entity\Translate
      * @param  mixed $value  Option value
      * @return bool
      */
-    public function shouldTranslate($key, $value) : bool
+    public function shouldTranslate(string $key, $value) : bool
     {
         if (in_array($key, WTC_TRANSLATABLE_OPTION)) {
             return true;

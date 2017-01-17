@@ -15,7 +15,7 @@ class Meta extends Entity\Translate
         }
     }
 
-    public function save($null, $post_id, $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
+    public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
 
         //Do not connect to revisions.
@@ -44,7 +44,7 @@ class Meta extends Entity\Translate
         return null;
     }
 
-    public function get($type, $post_id, $meta_key, $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
+    public function get($type, int $post_id, string $meta_key, bool $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangualMeta($meta_key) && $this->shouldTranslate($meta_key)) {
             $translation =  $this->db->get_col(
@@ -84,7 +84,7 @@ class Meta extends Entity\Translate
         return apply_filters('wp-content-translator/meta/should_translate_default', true, $meta_key);
     }
 
-    private function identicalToBaseLang($meta_key, $meta_value, $post_id) : bool
+    private function identicalToBaseLang(string $meta_key, $meta_value, int $post_id) : bool
     {
         $translation =  $this->db->get_col(
                             $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
