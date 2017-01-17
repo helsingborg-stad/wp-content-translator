@@ -85,9 +85,9 @@ class Meta extends Entity\Translate
 
     private function identicalToBaseLang(string $meta_key, $meta_value, int $post_id) : bool
     {
-        $translation =  $this->db->get_col(
-                            $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
-                        );
+        remove_filter('get_post_metadata', array($this, 'get'), 1);
+        $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
+        add_filter('get_post_metadata', array($this, 'get'), 1, 4);
 
         if (trim($translation) == trim($meta_value)) {
             return true;
