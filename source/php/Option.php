@@ -113,6 +113,10 @@ class Option extends Entity\Translate
             return false;
         }
 
+        if (!WTC_TRANSLATE_HIDDEN_OPTION && substr($key, 0, 1) == "_") {
+            return false;
+        }
+
         if (in_array($key, WTC_TRANSLATABLE_OPTION)) {
             return true;
         }

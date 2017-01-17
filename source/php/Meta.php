@@ -76,9 +76,10 @@ class Meta extends Entity\Translate
     public function get($type, int $post_id, string $meta_key, bool $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key)) {
-            $translation =  $this->db->get_col(
-                                $this->db->prepare("SELECT meta_value FROM {$this->db->postmeta} WHERE post_id = %d AND meta_key = %s", $post_id, $this->createLangualKey($meta_key))
-                            );
+
+            remove_filter('get_post_metadata', array($this, 'get'), 1);
+            $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
+            add_filter('get_post_metadata', array($this, 'get'), 1, 4);
 
             if (!TRANSLATE_FALLBACK && implode("", $translation) == "") {
                 return "";              // Abort and return empty (no fallback)
@@ -116,7 +117,7 @@ class Meta extends Entity\Translate
     private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
     {
         remove_filter('get_post_metadata', array($this, 'get'), 1);
-        $default = get_post_meta($post_id, $meta_key);
+        $default = get_post_meta($post_id, $meta_key, true);
         add_filter('get_post_metadata', array($this, 'get'), 1, 4);
 
         if (trim($default) == trim($translated)) {
