@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Wp Content Translator\n"
-"POT-Creation-Date: 2017-01-13 13:20+0100\n"
-"PO-Revision-Date: 2017-01-13 13:22+0100\n"
+"POT-Creation-Date: 2017-01-17 16:42+0100\n"
+"PO-Revision-Date: 2017-01-17 16:42+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -20,41 +20,47 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: source/php/Admin/Language.php:21 templates/admin/options.php:40
-#: templates/admin/options.php:74
+#: source/php/Admin/AdminBar.php:23 source/php/Admin/AdminBar.php:25
+#: templates/admin/options.php:38 templates/admin/options.php:74
 msgid "Language"
 msgstr "Språk\t"
 
-#: source/php/Admin/Language.php:36
+#: source/php/Admin/AdminBar.php:51
 msgid "Setup Languages"
 msgstr "Ställ in språk"
 
-#: source/php/Admin/Options.php:18 source/php/Admin/Options.php:19
-#: templates/admin/options.php:34
+#: source/php/Admin/Options.php:24 source/php/Admin/Options.php:25
+#: templates/admin/options.php:3 templates/admin/options.php:32
 msgid "Languages"
 msgstr "Språk"
 
-#: templates/admin/options.php:3
-msgid "Administration units"
-msgstr ""
+#: source/php/Language.php:357
+msgid "Undefined Language"
+msgstr "Odefinierat språk"
 
-#: templates/admin/options.php:19 templates/admin/options.php:24
+#: templates/admin/options.php:17 templates/admin/options.php:22
 msgid "Save"
 msgstr "Spara"
 
-#: templates/admin/options.php:39 templates/admin/options.php:73
+#: templates/admin/options.php:37 templates/admin/options.php:73
 msgid "Active"
 msgstr "Aktiv"
 
-#: templates/admin/options.php:41 templates/admin/options.php:75
+#: templates/admin/options.php:39 templates/admin/options.php:75
 msgid "Identifier"
 msgstr "Nyckel"
 
-#: templates/admin/options.php:48
+#: templates/admin/options.php:46
 msgid "Default (WP Setting)"
 msgstr "Grundsråk (Hämtas från WordPress)"
 
-#: templates/admin/options.php:57 templates/admin/options.php:91
+#: templates/admin/options.php:56
+msgid "Do you really want to delete this language and all its translations?"
+msgstr ""
+"Vill du verkligen radera det här språket, inklusive allt översatt "
+"material? Den här åtgärden går inte att ångra. "
+
+#: templates/admin/options.php:56 templates/admin/options.php:91
 msgid "Remove"
 msgstr "Ta bort"
 
