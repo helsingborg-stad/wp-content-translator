@@ -104,7 +104,7 @@ class Meta extends Entity\Translate
     private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
     {
         remove_filter('get_post_metadata', array($this, 'get'), 1);
-        $default = get_post_meta($post_id, $meta_key);
+        $default = get_post_meta($post_id, $meta_key, true);
         add_filter('get_post_metadata', array($this, 'get'), 1, 4);
 
         if (trim($default) == trim($translated)) {
