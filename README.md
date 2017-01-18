@@ -125,9 +125,21 @@ Where to redirect to after a langauge have been uninstalled.
 function my_after_uninstall_redirect(string $url, string $code, \ContentTranslator\Language $language) {
     return 'http://www.helsingborg.se';
 }
-add_filter('wp-content-translator/redirect_after_uninstall_language', 'my_after_uninstall_redirect', 10, 2);
+add_filter('wp-content-translator/redirect_after_uninstall_language', 'my_after_uninstall_redirect', 10, 3);
 ```
 
+#### wp-content-translator/comment/connections
+Set up inheritance for comments. Load comments from multiple languages for a language. Example: Load Swedish, Norwegian and Danish comments if the current language is Swedish.
+
+- ```@param array $connections``` - The default connections
+- ```@param string $code``` - The language code
+
+```php
+function my_comment_connections(array $connections, string $code) {
+    return 'http://www.helsingborg.se';
+}
+add_filter('wp-content-translator/comment/connections', 'my_comment_connections', 10, 2);
+```
 
 
 
