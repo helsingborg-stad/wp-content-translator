@@ -26,12 +26,15 @@ class Meta extends \ContentTranslator\Entity\Translate
             } else {
                 $this->metaConfiguration = $this->configuration->meta;
             }
-
         } else {
             wp_die("An incorrent meta-type was provieded to meta translation.", 'wp-content-translator');
         }
 
-        if (($this->configuration->meta->translate && $metaType == 'post') || ($this->configuration->meta->translate && $metaType == 'user' || ($this->configuration->comment->translate && $metaType == 'comment')) {
+        if (
+            ($this->configuration->meta->translate && $metaType == 'post') ||
+            ($this->configuration->usermeta->translate && $metaType == 'user') ||
+            ($this->configuration->comment->translate && $metaType == 'comment')
+        ) {
             add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
             add_filter('update_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
             add_filter('add_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
