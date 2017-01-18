@@ -26,7 +26,11 @@ $option = (object) array(
         'nestedpages_version',
         'nestedpages_menusync',
         'modularity-options',
-        'acf_version'
+        'acf_version',
+        'recently_activated',
+        'post_count',
+        'fresh_site',
+        'broken-links-detector-db-version'
     ),
     'translatable' => array()
 );
