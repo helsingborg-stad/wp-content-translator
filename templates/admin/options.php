@@ -100,6 +100,50 @@
                     </div>
                 </div>
 
+                <div id="postbox-container-2" class="postbox-container">
+                    <div class="postbox">
+                        <h2 class="hndle ui-sortable-handle" style="cursor:default;"><?php _e('Comments'); ?></h2>
+                        <div class="inside wp-content-translator-admin__manage-languages">
+                            <table class="wp-content-translator-admin__table">
+                                <thead>
+                                    <tr>
+                                        <th width="50%"><?php _e('Language', 'wp-content-translator'); ?></th>
+                                        <th><?php _e('Comments from languages', 'wp-content-translator'); ?></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="vertical-align: top;"><strong><?php _e('Default (WP Setting)', 'wp-content-translator'); ?>:</strong> <?php echo $defaultLang->name; ?></td>
+                                        <td>
+                                            <label style="display:block;"><input type="checkbox" disabled checked> <?php echo $defaultLang->name; ?></label>
+                                            <?php foreach ($installed as $commentLang) : ?>
+                                            <label style="display:block;"><input type="checkbox" name="comments[<?php echo $commentLang->code; ?>][]" name="<?php echo $commentLang->name; ?>"> <?php echo $commentLang->name; ?></label>
+                                            <?php endforeach; ?>
+                                        </td>
+                                    </tr>
+
+                                    <?php foreach ($installed as $lang) : ?>
+                                    <tr>
+                                        <td style="vertical-align: top;"><?php echo $lang->name; ?></td>
+                                        <td>
+                                            <label style="display:block;"><input type="checkbox" disabled checked> <?php echo $lang->name; ?></label>
+                                            <?php
+                                            $avaAllInstalled = array_filter($allInstalled, function ($item) use ($lang) {
+                                                return $item !== $lang->code;
+                                            }, ARRAY_FILTER_USE_KEY);
+                                            foreach ($avaAllInstalled as $commentLang) : ?>
+                                            <label style="display:block;"><input type="checkbox" name="comments[<?php echo $lang->code; ?>][<?php echo $commentLang->code; ?>]" name="<?php echo $commentLang->name; ?>"> <?php echo $commentLang->name; ?></label>
+                                            <?php endforeach; ?>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
