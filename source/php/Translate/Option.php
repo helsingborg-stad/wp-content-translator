@@ -183,7 +183,7 @@ class Option extends \ContentTranslator\Entity\Translate
     private function identicalToBaseLang(string $option, $translated) : bool
     {
         remove_filter('option_' . $option, array($this, 'get'), 10);
-        $default = get_option($key, $translated);
+        $default = get_option($option, $translated);
         add_filter('option_' . $option, array($this, 'get'), 10, 2);
 
         if ($default === $translated) {
