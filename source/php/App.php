@@ -38,12 +38,15 @@ class App
 
         // Translate
         if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
-            new Translate\Post();
-            new Translate\Meta();
-            new Translate\Option();
-            new Translate\SiteOption();
-            new Translate\UserMeta();
-            new Translate\CommentMeta();
+            add_action('plugins_loaded', function () {
+                new Translate\Post();
+                new Translate\Meta();
+                new Translate\Option();
+                new Translate\SiteOption();
+                new Translate\UserMeta();
+                new Translate\Comment();
+                new Translate\CommentMeta();
+            }, 11);
         }
 
         // Admin
