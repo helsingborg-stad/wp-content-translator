@@ -6,7 +6,7 @@ class UserMeta extends Meta
 {
     public function __construct()
     {
-        if (WCT_TRANSLATE_USER_META) {
+        if ($this->configuration->usermeta->translate) {
             parent::__construct('user');
         }
     }

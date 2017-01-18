@@ -7,6 +7,7 @@ class Meta extends \ContentTranslator\Entity\Translate
 
     private $metaType;
     private $allowedTypes = array('post','user','comment');
+    private $metaConfiguration;
 
     /**
      * Constructor
@@ -19,6 +20,12 @@ class Meta extends \ContentTranslator\Entity\Translate
 
         if (in_array($metaType, $this->allowedTypes)) {
             $this->metaType = $metaType;
+
+            if ($metaType == 'user') {
+                $this->metaConfiguration = $this->configuration->usermeta;
+            } else {
+                $this->metaConfiguration = $this->configuration->meta;
+            }
         } else {
             wp_die("An incorrent meta-type was provieded to meta translation.", 'wp-content-translator');
         }
@@ -105,9 +112,9 @@ class Meta extends \ContentTranslator\Entity\Translate
             $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
             add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
 
-            if (!WCT_TRANSLATE_FALLBACK && implode("", $translation) == "") {
+            if (!$this->configuration->general->translate_fallback && implode("", $translation) == "") {
                 return "";              // Abort and return empty (no fallback)
-            } elseif (WCT_TRANSLATE_FALLBACK && implode("", $translation) == "") {
+            } elseif ($this->configuration->general->translate_fallback && implode("", $translation) == "") {
                 return null;            // Continiue normal procedure (fallback to base lang)
             } else {
                 return $translation;    // Translation found, return value
@@ -119,19 +126,19 @@ class Meta extends \ContentTranslator\Entity\Translate
 
     private function shouldTranslate(string $meta_key, $meta_value = null) : bool
     {
-        if (in_array($meta_key, WCT_TRANSLATABLE_META)) {
+        if (in_array($meta_key, $this->metaConfiguration->translatable)) {
             return true;
         }
 
-        if (in_array($meta_key, WCT_UNTRANSLATEBLE_META)) {
+        if (in_array($meta_key, $this->metaConfiguration->untranslatable)) {
             return false;
         }
 
-        if (!WTC_TRANSLATE_HIDDEN_META && substr($meta_key, 0, 1) == "_") {
+        if (!$this->metaConfiguration->translate_hidden && substr($meta_key, 0, 1) == "_") {
             return false;
         }
 
-        if (!WCT_TRANSLATE_NUMERIC_META && is_numeric($meta_value) && $meta_value != null) {
+        if (!$this->metaConfiguration->translate_numeric && is_numeric($meta_value) && $meta_value != null) {
             return false;
         }
 
