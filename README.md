@@ -29,6 +29,13 @@ wp_content_translator_language_selector(
 )
 ```
 
+
+
+
+
+
+
+
 ## Filters
 
 #### wp-content-translator/admin_bar/current_lang
@@ -45,6 +52,35 @@ function my_admin_bar_current_lang($language, $code) {
     return $language;
 }
 add_filter('wp-content-translator/admin_bar/current_lang', 'my_admin_bar_current_lang', 10, 2);
+```
+
+
+
+
+
+
+
+
+## Actions
+
+#### wp-content-translator/admin_bar/before_add_switcher
+Runs before language switcher is added to the admin bar.
+
+```php
+function my_admin_bar_before() {
+    // Do my stuff
+}
+add_action('wp-content-translator/admin_bar/before_add_switcher', 'my_admin_bar_before', 10);
+```
+
+#### wp-content-translator/admin_bar/after_add_switcher
+Runs after language switcher have been added to the admin bar.
+
+```php
+function my_admin_bar_after() {
+    // Do my stuff
+}
+add_action('wp-content-translator/admin_bar/after_add_switcher', 'my_admin_bar_before', 10);
 ```
 
 

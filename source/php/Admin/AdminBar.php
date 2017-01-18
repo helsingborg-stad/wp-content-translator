@@ -18,7 +18,7 @@ class AdminBar
      */
     public function addSwitcher()
     {
-        do_action('wp-content-translator/before_add_admin_menu_item');
+        do_action('wp-content-translator/admin_bar/before_add_switcher');
 
         global $wp_admin_bar;
 
@@ -63,6 +63,6 @@ class AdminBar
             ));
         }
 
-        do_action('wp-content-translator/after_add_admin_menu_item');
+        do_action('wp-content-translator/admin_bar/after_add_switcher');
     }
 }
