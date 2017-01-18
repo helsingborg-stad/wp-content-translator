@@ -6,10 +6,6 @@ class CommentMeta extends Meta
 {
     public function __construct()
     {
-        parent::__construct();
-
-        if ($this->configuration->comment->translate) {
-            parent::__construct('comment');
-        }
+        parent::__construct('comment');
     }
 }
