@@ -5,6 +5,7 @@ namespace ContentTranslator;
 class App
 {
     public static $defaultWpdbTables;
+    public static $configuration;
 
     public function __construct()
     {
@@ -13,14 +14,19 @@ class App
 
     public function init()
     {
+
+        // Add scriots & styles for backend.
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
-        $this->generalConfiguration();
-        $this->metaConfiguration();
-        $this->postConfiguration();
-        $this->optionConfiguration();
-        $this->userConfiguration();
-        $this->commentConfiguration();
+        // Setup global configuration
+        self::$configuration = array(
+            'general' => include('Configuration/General.php'),
+            'post' => include('Configuration/Post.php'),
+            'meta' => include('Configuration/Meta.php'),
+            'option' => include('Configuration/Option.php'),
+            'user' => include('Configuration/User.php'),
+            'comment' => include('Configuration/Comment.php'),
+        );
 
         // Setup wpdb
         global $wpdb;
@@ -49,6 +55,17 @@ class App
         // Admin
         new Admin\Options();
         new Admin\AdminBar();
+
+
+
+        /* Should be removed */
+
+        $this->generalConfiguration();
+        $this->metaConfiguration();
+        $this->postConfiguration();
+        $this->optionConfiguration();
+        $this->userConfiguration();
+        $this->commentConfiguration();
     }
 
     public function initLanguages()
@@ -68,7 +85,6 @@ class App
 
     public function generalConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-
         $generalConfiguration = include('Configuration/General.php');
 
         define('WCT_TRANSLATE_FALLBACK', apply_filters('wp-content-translator/option/translate_fallback', true));
@@ -119,7 +135,6 @@ class App
 
     public function postConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-
         $postConfiguration = include('Configuration/Post.php');
 
 
@@ -134,7 +149,6 @@ class App
 
     public function optionConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-
         $optionConfiguration = include('Configuration/Option.php');
 
 
@@ -182,7 +196,6 @@ class App
 
     public function userConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-
         $userConfiguration = include('Configuration/User.php');
 
         //All options exept this will be inherited from meta
@@ -191,7 +204,6 @@ class App
 
     public function commentConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-
         $optionConfiguration = include('Configuration/Comment.php');
 
         define('WCT_TRANSLATE_COMMENT', (bool) apply_filters('wp-content-translator/option/translate_comment', true));
