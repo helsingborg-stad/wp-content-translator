@@ -25,6 +25,9 @@ class Switcher
      */
     public function switchLocale(string $lang) : string
     {
+        // Only run this filter once
+        remove_filter('locale', array($this, 'switchLocale'));
+
         if (is_admin()) {
             return $lang;
         }
