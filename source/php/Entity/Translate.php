@@ -27,13 +27,13 @@ abstract class Translate
     public function setupConfiguration()
     {
         $this->configuration = (object) array(
-            'general' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/General.php'),
-            'post' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Post.php'),
-            'meta' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Meta.php'),
-            'option' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Option.php'),
-            'siteoption' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/SiteOption.php'),
-            'usermeta' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/UserMeta.php'),
-            'comment' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Comment.php'),
+            'general' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'General.php'),
+            'post' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Post.php'),
+            'meta' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Meta.php'),
+            'option' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Option.php'),
+            'siteoption' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'SiteOption.php'),
+            'usermeta' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'UserMeta.php'),
+            'comment' => include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Comment.php'),
         );
     }
 
