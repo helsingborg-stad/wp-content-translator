@@ -125,7 +125,7 @@ class App
 
     public function postConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-        $postConfiguration = include('Configuration/Post.php');
+        $postConfiguration = include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Post.php');
 
 
         /* Remove this */
@@ -139,7 +139,7 @@ class App
 
     public function optionConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-        $optionConfiguration = include('Configuration/Option.php');
+        $optionConfiguration = include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Option.php');
 
 
         /* REmove this */
@@ -186,7 +186,7 @@ class App
 
     public function userConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-        $userConfiguration = include('Configuration/User.php');
+        $userConfiguration = include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'UserMeta.php');
 
         //All options exept this will be inherited from meta
         define('WCT_TRANSLATE_USER_META', (bool) apply_filters('wp-content-translator/option/translate_user_meta', true));
@@ -194,7 +194,7 @@ class App
 
     public function commentConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
-        $optionConfiguration = include('Configuration/Comment.php');
+        $optionConfiguration = include(WPCONTENTTRANSLATOR_CONFIG_PATH . 'Comment.php');
 
         define('WCT_TRANSLATE_COMMENT', (bool) apply_filters('wp-content-translator/option/translate_comment', true));
         define('WCT_TRANSLATE_COMMENT_META', (bool) apply_filters('wp-content-translator/option/translate_comment_meta', true));

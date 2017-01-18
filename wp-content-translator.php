@@ -20,6 +20,7 @@ if (! defined('WPINC')) {
 
 define('WPCONTENTTRANSLATOR_PATH', plugin_dir_path(__FILE__));
 define('WPCONTENTTRANSLATOR_URL', plugins_url('', __FILE__));
+define('WPCONTENTTRANSLATOR_CONFIG_PATH', WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/');
 define('WPCONTENTTRANSLATOR_TEMPLATE_PATH', WPCONTENTTRANSLATOR_PATH . 'templates/');
 
 load_plugin_textdomain('wp-content-translator', false, plugin_basename(dirname(__FILE__)) . '/languages');
