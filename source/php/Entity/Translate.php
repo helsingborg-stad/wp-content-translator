@@ -6,6 +6,7 @@ abstract class Translate
 {
     protected $lang;
     protected $db;
+    protected $configuration;
 
     abstract public static function install(string $language) : bool;
     abstract public static function isInstalled(string $language) : bool;
@@ -16,9 +17,23 @@ abstract class Translate
         global $wpdb;
         $this->db = $wpdb;
 
+        $this->setupConfiguration();
+
         if (isset(\ContentTranslator\Switcher::$currentLanguage->code)) {
             $this->lang = \ContentTranslator\Switcher::$currentLanguage->code;
         }
+    }
+
+    public function setupConfiguration()
+    {
+        $this->configuration = (object) array(
+            'general' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/General.php'),
+            'post' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Post.php'),
+            'meta' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Meta.php'),
+            'option' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Option.php'),
+            'user' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/User.php'),
+            'comment' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Comment.php'),
+        );
     }
 
     /**

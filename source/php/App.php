@@ -18,16 +18,6 @@ class App
         // Add scriots & styles for backend.
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
-        // Setup global configuration
-        self::$configuration = array(
-            'general' => include('Configuration/General.php'),
-            'post' => include('Configuration/Post.php'),
-            'meta' => include('Configuration/Meta.php'),
-            'option' => include('Configuration/Option.php'),
-            'user' => include('Configuration/User.php'),
-            'comment' => include('Configuration/Comment.php'),
-        );
-
         // Setup wpdb
         global $wpdb;
         self::$defaultWpdbTables = array(
