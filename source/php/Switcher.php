@@ -29,35 +29,11 @@ class Switcher
             return $lang;
         }
 
-        if ($switchToLang = self::identifyLocale()) {
-            return $switchToLang;
+        if (isset(self::$currentLanguage->code)) {
+            return self::$currentLanguage->code;
         }
 
         return $lang;
-    }
-
-    /**
-     * Identifies the real locale key for a specific language code
-     * @param  string $code Language code
-     * @return string|bool  Language code or false
-     */
-    public static function identifyLocale(string $code = null)
-    {
-        if (is_null($code)) {
-            $current = self::$currentLanguage;
-            $code = $current->code;
-        }
-
-        require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-        $translations = wp_get_available_translations();
-
-        foreach ($translations as $key => $translation) {
-            if (array_values($translation['iso'])[0] === $code) {
-                return $key;
-            }
-        }
-
-        return false;
     }
 
     /**
