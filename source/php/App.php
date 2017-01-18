@@ -123,6 +123,7 @@ class App
         define('WTC_UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
             Admin\Options::$optionKey['active'],
             Admin\Options::$optionKey['installed'],
+            Admin\Options::$optionKey['comments'],
             'siteurl',
             'home',
             'users_can_register',

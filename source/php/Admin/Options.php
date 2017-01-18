@@ -6,7 +6,8 @@ class Options
 {
     public static $optionKey = array(
         'installed' => 'wp-content-translator-installed',
-        'active' => 'wp-content-translator-active'
+        'active' => 'wp-content-translator-active',
+        'comments' => 'wp-content-translator-comments-connect'
     );
 
     public function __construct()
@@ -28,6 +29,7 @@ class Options
             function () {
                 $defaultLang = \ContentTranslator\Language::default();
                 $installed = \ContentTranslator\Language::installed(false);
+                $allInstalled = \ContentTranslator\Language::installed(true);
 
                 include WPCONTENTTRANSLATOR_TEMPLATE_PATH . 'admin/options.php';
             },
@@ -38,6 +40,10 @@ class Options
         do_action('wp-content-translator/after_add_options_page');
     }
 
+    /**
+     * Handle remove language
+     * @return void
+     */
     public function removeLang()
     {
         if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'wp-content-translator-remove-lang')) {
@@ -51,6 +57,10 @@ class Options
         return;
     }
 
+    /**
+     * Saves the options on the options page
+     * @return void
+     */
     public function saveOptions()
     {
         if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'wp-content-translator-options')) {
@@ -66,6 +76,21 @@ class Options
         if (isset($_POST['active-languages'])) {
             $this->setActiveLanguages($_POST['active-languages']);
         }
+
+        if (isset($_POST['comments'])) {
+            $this->setCommentsLoading($_POST['comments']);
+        }
+    }
+
+    public function setCommentsLoading($data)
+    {
+        $commentsData = array();
+
+        foreach ($data as $key => $languages) {
+            $commentsData[$key] = array_keys($languages);
+        }
+
+        update_option(self::$optionKey['comments'], $commentsData);
     }
 
     /**
