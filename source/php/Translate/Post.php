@@ -79,7 +79,7 @@ class Post extends \ContentTranslator\Entity\Translate
         }
 
         if (empty($translations) || !isset($translations[$post->ID])) {
-            if (!WCT_TRANSLATE_FALLBACK) {
+            if (!$this->configuration->general->translate_fallback) {
                 $post->post_title = '';
                 $post->post_content = '';
             }
