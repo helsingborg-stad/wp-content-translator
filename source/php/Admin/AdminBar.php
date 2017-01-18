@@ -12,6 +12,10 @@ class AdminBar
         add_action('admin_bar_menu', array($this, 'addSwitcher'), 999);
     }
 
+    /**
+     * Adds language switcher to the admin bar
+     * @return  void
+     */
     public function addSwitcher()
     {
         do_action('wp-content-translator/before_add_admin_menu_item');
@@ -20,7 +24,13 @@ class AdminBar
 
         if (!empty(wp_content_translator_languages('installed'))) {
             if (is_object(wp_content_translator_current_language())) {
-                $translationNodeTitle =  __('Language', 'wp-content-translator') . apply_filters('wp-content-translator/meta/admin_bar_current_lang', " - " . wp_content_translator_current_language()->name, wp_content_translator_current_language()->code);
+                /**
+                 * Filters the name of the current language
+                 * @var string
+                 */
+                $langName = apply_filters('wp-content-translator/admin_bar/current_lang', " - " . wp_content_translator_current_language()->name, wp_content_translator_current_language()->code);
+
+                $translationNodeTitle =  __('Language', 'wp-content-translator') . $langName;
             } else {
                 $translationNodeTitle = __('Language', 'wp-content-translator');
             }

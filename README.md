@@ -29,10 +29,22 @@ wp_content_translator_language_selector(
 )
 ```
 
-## Hooks
+## Filters
 
-### Admin menu
+#### wp-content-translator/admin_bar/current_lang
+Filters the name of the current language in the admin bar.
 
-#### ```wp-content-translator/before_add_admin_menu_item```
-**Action.** Runs before we add the language item to the admin menu.
+- ```@param string $language``` - The key of the styleguide theme
+
+```php
+function my_admin_bar_current_lang($language, $code) {
+    if ($code === 'sv_SE') {
+        return 'Skånska';
+    }
+
+    return $language;
+}
+add_filter('wp-content-translator/admin_bar/current_lang', 'my_admin_bar_current_lang', 10, 2);
+```
+
 
