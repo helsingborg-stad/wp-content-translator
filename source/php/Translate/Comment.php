@@ -8,9 +8,9 @@ class Comment extends \ContentTranslator\Entity\Translate
 
     public function __construct()
     {
-        if (WCT_TRANSLATE_COMMENT) {
-            parent::__construct();
+        parent::__construct();
 
+        if (WCT_TRANSLATE_COMMENT) {
             add_action('comment_post', array($this, 'save'), 10, 3);
             add_action('pre_get_comments', array($this, 'get'));
         }

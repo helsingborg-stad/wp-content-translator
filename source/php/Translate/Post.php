@@ -6,6 +6,8 @@ class Post extends \ContentTranslator\Entity\Translate
 {
     public function __construct()
     {
+        parent::__construct();
+
         if (WCT_TRANSLATE_POSTS) {
             add_action('admin_enqueue_scripts', array($this, 'globalPost'));
 

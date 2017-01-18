@@ -16,6 +16,8 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public function __construct($metaType = 'post')
     {
+        parent::__construct();
+
         if (in_array($metaType, $this->allowedTypes)) {
             $this->metaType = $metaType;
 
@@ -29,7 +31,6 @@ class Meta extends \ContentTranslator\Entity\Translate
         }
 
         if (($this->configuration->meta->translate && $metaType == 'post') || ($this->configuration->meta->translate && $metaType == 'user')) {
-            parent::__construct();
             add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
             add_filter('update_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
             add_filter('add_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
