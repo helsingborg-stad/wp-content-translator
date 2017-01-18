@@ -8,7 +8,7 @@ class SiteOption extends \ContentTranslator\Entity\Translate
     {
         parent::__construct();
 
-        if (function_exists('is_multisite') && is_multisite() && WCT_TRANSLATE_SITE_OPTION) {
+        if (function_exists('is_multisite') && is_multisite() && $this->configuration->siteoption->translate) {
             add_action('init', array($this, 'hook'));
             add_filter('get_network', array($this, 'getNetwork'));
         }
@@ -143,15 +143,15 @@ class SiteOption extends \ContentTranslator\Entity\Translate
      */
     public function shouldTranslate(string $key, $value) : bool
     {
-        if (in_array($key, WTC_TRANSLATABLE_SITE_OPTION)) {
+        if (in_array($key, $this->configuration->siteoption->translatable)) {
             return true;
         }
 
-        if (in_array($key, WTC_UNTRANSLATEBLE_SITE_OPTION)) {
+        if (in_array($key, $this->configuration->siteoption->untranslatable)) {
             return false;
         }
 
-        if (!WCT_TRANSLATE_NUMERIC_SITE_OPTION && is_numeric($value) && $value != null) {
+        if (!$this->configuration->siteoption->translate_numeric && is_numeric($value) && $value != null) {
             return false;
         }
 
@@ -165,7 +165,7 @@ class SiteOption extends \ContentTranslator\Entity\Translate
     public function getOptionNames() : array
     {
         $options = array();
-        if (WTC_TRANSLATE_HIDDEN_OPTION) {
+        if ($this->configuration->siteoption->translate_hidden) {
             $options = $this->db->get_results($this->db->prepare("SELECT meta_key FROM {$this->db->sitemeta} WHERE site_id = %d GROUP BY meta_key ORDER BY meta_key ASC", get_current_network_id()));
         } else {
             $options = $this->db->get_results($this->db->prepare("SELECT meta_key FROM {$this->db->sitemeta} WHERE site_id = %d AND meta_key NOT LIKE '%s' GROUP BY meta_key ORDER BY meta_key ASC", get_current_network_id(), '\_%'));

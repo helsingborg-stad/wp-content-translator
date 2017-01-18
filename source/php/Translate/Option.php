@@ -8,7 +8,7 @@ class Option extends \ContentTranslator\Entity\Translate
     {
         parent::__construct();
 
-        if (WCT_TRANSLATE_OPTION) {
+        if ($this->configuration->option->translate) {
             add_action('init', array($this, 'hook'));
             add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
         }
@@ -134,19 +134,19 @@ class Option extends \ContentTranslator\Entity\Translate
      */
     public function shouldTranslate(string $key, $value) : bool
     {
-        if (in_array($key, WTC_UNTRANSLATEBLE_OPTION)) {
+        if (in_array($key, $this->configuration->option->untranslatable)) {
             return false;
         }
 
-        if (!WCT_TRANSLATE_NUMERIC_OPTION && is_numeric($value) && $value != null) {
+        if (!$this->configuration->option->translate_numeric && is_numeric($value) && $value != null) {
             return false;
         }
 
-        if (!WTC_TRANSLATE_HIDDEN_OPTION && substr($key, 0, 1) == "_") {
+        if (!$this->configuration->option->translate_hidden && substr($key, 0, 1) == "_") {
             return false;
         }
 
-        if (in_array($key, WTC_TRANSLATABLE_OPTION)) {
+        if (in_array($key, $this->configuration->option->translatable)) {
             return true;
         }
 
@@ -161,7 +161,7 @@ class Option extends \ContentTranslator\Entity\Translate
     {
         $options = array();
 
-        if (WTC_TRANSLATE_HIDDEN_OPTION) {
+        if ($this->configuration->option->translate_hidden) {
             $options = $this->db->get_results("SELECT option_name FROM {$this->db->options} GROUP BY option_name ORDER BY option_name ASC");
         } else {
             $options = $this->db->get_results("SELECT option_name FROM {$this->db->options} WHERE option_name NOT LIKE '\_%' GROUP BY option_name ORDER BY option_name ASC");
