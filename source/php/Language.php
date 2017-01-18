@@ -5,6 +5,7 @@ namespace ContentTranslator;
 class Language
 {
     public static $all;
+    public static $defaultLocale;
 
     protected $db;
 
@@ -29,6 +30,8 @@ class Language
 
         $this->code = $code;
         $this->language = self::find($code);
+
+        self::$defaultLocale = get_locale();
 
         // Should we install (ie create tables and such) the language
         if ($install && !$this->isInstalled()) {
@@ -190,8 +193,13 @@ class Language
      */
     public static function default() : \stdClass
     {
-        $locale = get_locale();
-        return self::find($locale);
+        $locale = null;
+
+        if (!self::$defaultLocale) {
+            return self::find(get_locale());
+        }
+
+        return self::find(self::$defaultLocale);
     }
 
     /**
