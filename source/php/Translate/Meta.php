@@ -27,7 +27,7 @@ class Meta extends \ContentTranslator\Entity\Translate
                 $this->metaConfiguration = $this->configuration->meta;
             }
         } else {
-            wp_die("An incorrent meta-type was provieded to meta translation.", 'wp-content-translator');
+            throw new \Exception("An incorrent meta-type was provided to meta translation.", 1);
         }
 
         if (
