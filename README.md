@@ -4,7 +4,7 @@ Minimalistic content translation in WordPress.
 
 ## Translations
 
-The GUI is has base language "english" and is translated to: 
+The GUI is has base language english and is translated to: 
 
 - Swedish
 
