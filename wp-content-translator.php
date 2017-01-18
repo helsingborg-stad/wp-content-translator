@@ -18,6 +18,13 @@ if (! defined('WPINC')) {
     die;
 }
 
+//Require php 7
+register_activation_hook(__FILE__, function () {
+    if (substr(phpversion(), 0, 1) != 7) {
+        die("ERROR: Lowest PHP version supported is 7.0");
+    }
+});
+
 define('WPCONTENTTRANSLATOR_PATH', plugin_dir_path(__FILE__));
 define('WPCONTENTTRANSLATOR_URL', plugins_url('', __FILE__));
 define('WPCONTENTTRANSLATOR_CONFIG_PATH', WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/');
