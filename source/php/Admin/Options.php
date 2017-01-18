@@ -19,7 +19,7 @@ class Options
 
     public function addOptionsPage()
     {
-        do_action('wp-content-translator/before_add_options_page');
+        do_action('wp-content-translator/options/before_add_options_page');
 
         add_menu_page(
             __('Languages', 'wp-content-translator'),
@@ -38,7 +38,7 @@ class Options
             100
         );
 
-        do_action('wp-content-translator/after_add_options_page');
+        do_action('wp-content-translator/options/after_add_options_page');
     }
 
     /**

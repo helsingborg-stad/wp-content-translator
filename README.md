@@ -83,4 +83,24 @@ function my_admin_bar_after() {
 add_action('wp-content-translator/admin_bar/after_add_switcher', 'my_admin_bar_before', 10);
 ```
 
+#### wp-content-translator/options/before_add_options_page
+Runs right before the "language" options page is added to the admin menu.
+
+```php
+function my_options_page_before() {
+    // Do my stuff
+}
+add_action('wp-content-translator/options/before_add_options_page', 'my_options_page_before', 10);
+```
+
+#### wp-content-translator/options/aftere_add_options_page
+Runs right after the "language" options page have been added to the admin menu.
+
+```php
+function my_options_page_after() {
+    // Do my stuff
+}
+add_action('wp-content-translator/options/after_add_options_page', 'my_options_page_after', 10);
+```
+
 
