@@ -8,7 +8,7 @@ class Post extends \ContentTranslator\Entity\Translate
     {
         parent::__construct();
 
-        if (WCT_TRANSLATE_POSTS) {
+        if ($this->configuration->post->translate) {
             add_action('admin_enqueue_scripts', array($this, 'globalPost'));
 
             add_action('wp', array($this, 'globalPost'));

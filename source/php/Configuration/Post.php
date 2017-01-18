@@ -1,10 +1,7 @@
 <?php
 
 $config = (object) array(
-    'translate' => true,
-    'untranslatable_types' => array(
-        'revision'
-    )
+    'translate' => true
 );
 
 return (object) apply_filters('wp-content-translator/configuration/post', $config);
