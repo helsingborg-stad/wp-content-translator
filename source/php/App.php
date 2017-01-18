@@ -74,6 +74,8 @@ class App
 
     public function metaConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
+        $metaConfiguration = include('Configuration/Meta.php');
+
         define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
             '_edit_lock',
             '_edit_last',
