@@ -42,14 +42,17 @@ class App
         new Switcher();
 
         // Translate
-        if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
-            new Translate\Post();
-            new Translate\Meta();
-            new Translate\Option();
-            new Translate\SiteOption();
-            new Translate\UserMeta();
+        if (\ContentTranslator\Switcher::isLanguageSet()) {
+            if (!\ContentTranslator\Language::isDefault()) {
+                new Translate\Post();
+                new Translate\Meta();
+                new Translate\Option();
+                new Translate\SiteOption();
+                new Translate\UserMeta();
+                new Translate\CommentMeta();
+            }
+
             new Translate\Comment();
-            new Translate\CommentMeta();
         }
 
         // Admin
