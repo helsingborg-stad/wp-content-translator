@@ -4,11 +4,15 @@ namespace ContentTranslator\Translate;
 
 class Comment extends \ContentTranslator\Entity\Translate
 {
+    const META_LANG_KEY = 'wp-content-translate-comment-language';
+
     public function __construct()
     {
         if (WCT_TRANSLATE_COMMENT) {
             parent::__construct();
-            add_action('init', array($this, 'commentsTable'));
+
+            add_action('comment_post', array($this, 'save'), 10, 3);
+            add_action('pre_get_comments', array($this, 'get'));
         }
     }
 
@@ -18,8 +22,6 @@ class Comment extends \ContentTranslator\Entity\Translate
      * @return bool
      */
     public static function install(string $language) : bool {
-        global $wpdb;
-        \ContentTranslator\Helper\Database::duplicateTable($wpdb->comments, self::getTableName($language));
         return true;
     }
 
@@ -30,10 +32,6 @@ class Comment extends \ContentTranslator\Entity\Translate
      */
     public static function isInstalled(string $language) : bool
     {
-        if (!\ContentTranslator\Helper\Database::tableExist(self::getTableName($language))) {
-            return false;
-        }
-
         return true;
     }
 
@@ -43,29 +41,73 @@ class Comment extends \ContentTranslator\Entity\Translate
      * @return bool
      */
     public static function uninstall(string $language) : bool {
-        if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
-            Helper\Database::dropTable(self::getTableName($language));
-        }
-
         return true;
     }
 
-    public function commentsTable($query)
+    /**
+     * Modifies the comment query
+     * @param  [type] $query [description]
+     * @return [type]        [description]
+     */
+    public function get($query)
     {
-        global $wpdb;
-        $table = self::getTableName($this->lang);
-        $wpdb->comments = $table;
+        $connections = $this->getConnections();
+        $connections[] = \ContentTranslator\Switcher::$currentLanguage->code;
 
+        $metaQuery = array(
+            'relation' => 'OR'
+        );
+
+        foreach ($connections as $connection) {
+            $metaQuery[] = array(
+                'key' => self::META_LANG_KEY,
+                'value' => $connection,
+                'compare' => '='
+            );
+
+            // Make the default language include comment without language meta
+            if (\ContentTranslator\Language::isDefault($connection)) {
+                $metaQuery[] = array(
+                    'key' => self::META_LANG_KEY,
+                    'compare' => 'NOT EXISTS'
+                );
+            }
+        }
+
+        $query->query_vars['meta_query'] = array_merge((array)$query->query_vars['meta_query'], $metaQuery);
         return $query;
     }
 
     /**
-     * Gets table name for posts of the specific language
-     * @param  string $language Language
-     * @return string           Table name
+     * Add language meta when saving comment
+     * @param  int         $id          Comment id
+     * @param  int|string  $approved    Approved or not
+     * @param  array       $data        Comment data
+     * @return void
      */
-    public static function getTableName(string $language) : string {
-        global $wpdb;
-        return strtolower($wpdb->comments . '_' . $language);
+    public function save(int $id, $approved, array $data)
+    {
+        $language = \ContentTranslator\Switcher::$currentLanguage->code;
+        update_comment_meta($id, self::META_LANG_KEY, $language);
+    }
+
+    /**
+     * Get connection options (from options page)
+     * @param  string|null $lang Language to get
+     * @return array
+     */
+    public function getConnections(string $lang = null) : array
+    {
+        if (is_null($lang)) {
+            $lang = \ContentTranslator\Switcher::$currentLanguage->code;
+        }
+
+        $connections = get_option(\ContentTranslator\Admin\Options::$optionKey['comments'], array());
+
+        if (isset($connections[$lang])) {
+            return apply_filters('wp-content-translator/comment/connections', $connections[$lang], $lang);
+        }
+
+        return apply_filters('wp-content-translator/comment/connections', array(), $lang);
     }
 }

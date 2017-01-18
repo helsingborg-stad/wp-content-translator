@@ -118,7 +118,7 @@
                                         <td>
                                             <label style="display:block;"><input type="checkbox" disabled checked> <?php echo $defaultLang->name; ?></label>
                                             <?php foreach ($installed as $commentLang) : ?>
-                                            <label style="display:block;"><input type="checkbox" name="comments[<?php echo $commentLang->code; ?>][]" name="<?php echo $commentLang->name; ?>"> <?php echo $commentLang->name; ?></label>
+                                            <label style="display:block;"><input type="checkbox" name="comments[<?php echo $defaultLang->code; ?>][<?php echo $commentLang->code; ?>]" name="<?php echo $commentLang->name; ?>" <?php checked(in_array($commentLang->code, isset($commentConnect[$defaultLang->code]) ? $commentConnect[$defaultLang->code] : array()), true); ?>> <?php echo $commentLang->name; ?></label>
                                             <?php endforeach; ?>
                                         </td>
                                     </tr>
@@ -133,7 +133,7 @@
                                                 return $item !== $lang->code;
                                             }, ARRAY_FILTER_USE_KEY);
                                             foreach ($avaAllInstalled as $commentLang) : ?>
-                                            <label style="display:block;"><input type="checkbox" name="comments[<?php echo $lang->code; ?>][<?php echo $commentLang->code; ?>]" name="<?php echo $commentLang->name; ?>"> <?php echo $commentLang->name; ?></label>
+                                            <label style="display:block;"><input type="checkbox" name="comments[<?php echo $lang->code; ?>][<?php echo $commentLang->code; ?>]" name="<?php echo $commentLang->name; ?>" <?php checked(in_array($commentLang->code, isset($commentConnect[$lang->code]) ? $commentConnect[$lang->code] : array()), true); ?>> <?php echo $commentLang->name; ?></label>
                                             <?php endforeach; ?>
                                         </td>
                                     </tr>

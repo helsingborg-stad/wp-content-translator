@@ -30,6 +30,7 @@ class Options
                 $defaultLang = \ContentTranslator\Language::default();
                 $installed = \ContentTranslator\Language::installed(false);
                 $allInstalled = \ContentTranslator\Language::installed(true);
+                $commentConnect = get_option(self::$optionKey['comments'], array());
 
                 include WPCONTENTTRANSLATOR_TEMPLATE_PATH . 'admin/options.php';
             },
@@ -73,13 +74,8 @@ class Options
             }
         }
 
-        if (isset($_POST['active-languages'])) {
-            $this->setActiveLanguages($_POST['active-languages']);
-        }
-
-        if (isset($_POST['comments'])) {
-            $this->setCommentsLoading($_POST['comments']);
-        }
+        $this->setActiveLanguages(isset($_POST['active-languages']) ? $_POST['active-languages'] : array());
+        $this->setCommentsLoading(isset($_POST['comments']) ? $_POST['comments'] : array());
     }
 
     public function setCommentsLoading($data)
@@ -90,7 +86,11 @@ class Options
             $commentsData[$key] = array_keys($languages);
         }
 
-        update_option(self::$optionKey['comments'], $commentsData);
+        if (empty($commentsData)) {
+            return delete_option(self::$optionKey['comments']);
+        }
+
+        return update_option(self::$optionKey['comments'], $commentsData);
     }
 
     /**
