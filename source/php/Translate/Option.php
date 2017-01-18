@@ -134,6 +134,10 @@ class Option extends \ContentTranslator\Entity\Translate
      */
     public function shouldTranslate(string $key, $value) : bool
     {
+        if (empty($value)) {
+            return false;
+        }
+
         if (in_array($key, $this->configuration->option->untranslatable)) {
             return false;
         }

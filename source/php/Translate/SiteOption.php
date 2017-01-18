@@ -143,6 +143,10 @@ class SiteOption extends \ContentTranslator\Entity\Translate
      */
     public function shouldTranslate(string $key, $value) : bool
     {
+        if (empty($value)) {
+            return false;
+        }
+
         if (in_array($key, $this->configuration->siteoption->translatable)) {
             return true;
         }
@@ -151,7 +155,7 @@ class SiteOption extends \ContentTranslator\Entity\Translate
             return false;
         }
 
-        if (!$this->configuration->siteoption->translate_numeric && is_numeric($value) && $value != null) {
+        if (!$this->configuration->siteoption->translate_numeric && is_numeric($value) && !empty($value)) {
             return false;
         }
 
