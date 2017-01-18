@@ -48,7 +48,7 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public static function install(string $language) : bool
     {
-        do_action('wp-content-translator/meta/install', $language);
+        do_action('wp-content-translator/' . $metaType . '/install', $language);
         return true;
     }
 
@@ -59,7 +59,7 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public static function isInstalled(string $language) : bool
     {
-        return apply_filters('wp-content-translator/meta/is_installed', true);
+        return apply_filters('wp-content-translator/' . $metaType . '/is_installed', true, $language);
     }
 
     /**
@@ -70,7 +70,7 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public static function uninstall(string $language) : bool
     {
-        do_action('wp-content-translator/meta/uninstall', $language);
+        do_action('wp-content-translator/' . $metaType . '/uninstall', $language);
 
         // Bail if we should not remove the meta
         if (!apply_filters('wp-content-translator/meta/remove_meta_when_uninstalling_language', true)) {
@@ -146,7 +146,7 @@ class Meta extends \ContentTranslator\Entity\Translate
             return false;
         }
 
-        return apply_filters('wp-content-translator/meta/should_translate_default', true, $meta_key);
+        return apply_filters('wp-content-translator/' . $metaType . '/should_translate_default', true, $meta_key);
     }
 
     private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
