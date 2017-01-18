@@ -68,6 +68,9 @@ class App
 
     public function generalConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
+
+        $generalConfiguration = include('Configuration/General.php');
+
         define('WCT_TRANSLATE_FALLBACK', apply_filters('wp-content-translator/option/translate_fallback', true));
         define('WTC_TRANSLATE_DELIMITER', apply_filters('wp-content-translator/option/translate_delimeter', "_"));
     }
@@ -75,6 +78,11 @@ class App
     public function metaConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
         $metaConfiguration = include('Configuration/Meta.php');
+
+
+
+        /* Remove this */
+
 
         define('WCT_UNTRANSLATEBLE_META', (array) apply_filters('wp-content-translator/option/untranslatable_meta', array(
             '_edit_lock',
@@ -111,6 +119,12 @@ class App
 
     public function postConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
+
+        $postConfiguration = include('Configuration/Post.php');
+
+
+        /* Remove this */
+
         define('WCT_UNTRANSLATEBLE_POST_TYPES', (bool) apply_filters('wp-content-translator/option/untranslatable_post_types', array(
 
         )));
@@ -120,6 +134,12 @@ class App
 
     public function optionConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
+
+        $optionConfiguration = include('Configuration/Option.php');
+
+
+        /* REmove this */
+
         define('WTC_UNTRANSLATEBLE_OPTION', (array) apply_filters('wp-content-translator/option/untranslatable_options', array(
             Admin\Options::$optionKey['active'],
             Admin\Options::$optionKey['installed'],
@@ -161,12 +181,18 @@ class App
 
     public function userConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
+
+        $userConfiguration = include('Configuration/User.php');
+
         //All options exept this will be inherited from meta
         define('WCT_TRANSLATE_USER_META', (bool) apply_filters('wp-content-translator/option/translate_user_meta', true));
     }
 
     public function commentConfiguration() // : void - Waiting for 7.1 enviroments to "be out there".
     {
+
+        $optionConfiguration = include('Configuration/Comment.php');
+
         define('WCT_TRANSLATE_COMMENT', (bool) apply_filters('wp-content-translator/option/translate_comment', true));
         define('WCT_TRANSLATE_COMMENT_META', (bool) apply_filters('wp-content-translator/option/translate_comment_meta', true));
     }

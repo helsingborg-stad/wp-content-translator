@@ -24,10 +24,10 @@ $config = (object) array(
         'modularity-modules',
         'modularity-sidebar-options'
     ),
-    'untranslatable_meta' => array(
+    'translatable_meta' => array(
         '_aioseop_title',
         '_aioseop_description'
     )
 );
 
-return (object) apply_filters('wp-content-translator/option/meta', $config);
+return (object) apply_filters('wp-content-translator/configuration/meta', $config);

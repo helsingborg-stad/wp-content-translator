@@ -88,8 +88,8 @@ class Language
 
         // Download WP language pack for the language
         $download = apply_filters('wp-content-translator/should_download_wp_translation_when_installing', true, $this->code, $this);
-        if ($download && !in_array(\ContentTranslator\Switcher::identifyLocale($this->code), get_available_languages())) {
-            $download = wp_download_language_pack(\ContentTranslator\Switcher::identifyLocale($this->code));
+        if ($download && !in_array($this->code, get_available_languages())) {
+            $download = wp_download_language_pack($this->code);
         }
 
         // Add to list of installed languages

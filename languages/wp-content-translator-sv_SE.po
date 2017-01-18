@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wp Content Translator\n"
 "POT-Creation-Date: 2017-01-17 16:42+0100\n"
-"PO-Revision-Date: 2017-01-17 16:42+0100\n"
+"PO-Revision-Date: 2017-01-18 11:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -78,7 +78,7 @@ msgstr "Lägg till språk"
 
 #. Plugin Name of the plugin/theme
 msgid "Wp Content Translator"
-msgstr "Wordpress Översättningsverktyg (Wp Content Translator)"
+msgstr "WordPress översättningsverktyg (Wp Content Translator)"
 
 #. Plugin URI of the plugin/theme
 msgid "https://github.com/helsingborg-stad/wp-content-translator"
