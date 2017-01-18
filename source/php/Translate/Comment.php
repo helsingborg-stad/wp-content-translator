@@ -2,12 +2,13 @@
 
 namespace ContentTranslator\Translate;
 
-class Comment
+class Comment extends \ContentTranslator\Entity\Translate
 {
     public function __construct()
     {
         if (WCT_TRANSLATE_COMMENT) {
-
+            parent::__construct();
+            add_action('init', array($this, 'commentsTable'));
         }
     }
 
@@ -47,6 +48,15 @@ class Comment
         }
 
         return true;
+    }
+
+    public function commentsTable($query)
+    {
+        global $wpdb;
+        $table = self::getTableName($this->lang);
+        $wpdb->comments = $table;
+
+        return $query;
     }
 
     /**
