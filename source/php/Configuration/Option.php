@@ -1,6 +1,6 @@
 <?php
 
-$option = (object) array(
+$config = (object) array(
     'translate' => true,
     'translate_numeric' => false,
     'translate_hidden' => false,
@@ -36,4 +36,4 @@ $option = (object) array(
     'translatable' => array()
 );
 
-return (object) apply_filters('wp-content-translator/configuration/option', $option);
+return (object) apply_filters('wp-content-translator/configuration/option', $config);
