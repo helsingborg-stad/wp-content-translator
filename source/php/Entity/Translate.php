@@ -31,7 +31,8 @@ abstract class Translate
             'post' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Post.php'),
             'meta' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Meta.php'),
             'option' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Option.php'),
-            'user' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/User.php'),
+            'siteoption' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/SiteOption.php'),
+            'usermeta' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/UserMeta.php'),
             'comment' => include(WPCONTENTTRANSLATOR_PATH . 'source/php/Configuration/Comment.php'),
         );
     }

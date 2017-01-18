@@ -1,8 +1,8 @@
 <?php
 
 $config = (object) array(
-    'translate_posts' => true,
-    'untranslatable_post_types' => array(
+    'translate' => true,
+    'untranslatable_types' => array(
         'revision'
     )
 );

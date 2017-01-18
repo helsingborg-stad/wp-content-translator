@@ -1,10 +1,10 @@
 <?php
 
 $config = (object) array(
-    'translate_user' => true,
-    'translate_hidden_meta' => false,
-    'translate_numeric_meta' => false,
-    'untranslatable_meta' => array(
+    'translate' => true,
+    'translate_hidden' => false,
+    'translate_numeric' => false,
+    'untranslatable' => array(
         'nickname',
         'first_name',
         'last_name',
@@ -19,7 +19,7 @@ $config = (object) array(
         'closedpostboxes_post',
         'metaboxhidden_post'
     ),
-    'translatable_meta' => array()
+    'translatable' => array()
 );
 
 return (object) apply_filters('wp-content-translator/configuration/user', $config);

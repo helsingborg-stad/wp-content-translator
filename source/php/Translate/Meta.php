@@ -21,7 +21,7 @@ class Meta extends \ContentTranslator\Entity\Translate
             wp_die("An incorrent meta-type was provieded to meta translation.", 'wp-content-translator');
         }
 
-        if ((WCT_TRANSLATE_META && $metaType == 'post') || (WCT_TRANSLATE_USER_META && $metaType == 'user')) {
+        if (($this->configuration->meta->translate && $metaType == 'post') || ($this->configuration->meta->translate && $metaType == 'user')) {
             parent::__construct();
             add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
             add_filter('update_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);

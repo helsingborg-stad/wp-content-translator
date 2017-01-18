@@ -1,10 +1,10 @@
 <?php
 
 $config = (object) array(
-    'translate_meta' => true,
-    'translate_hidden_meta' => false,
-    'translate_numeric_meta' => false,
-    'untranslatable_meta' => array(
+    'translate' => true,
+    'translate_hidden' => false,
+    'translate_numeric' => false,
+    'untranslatable' => array(
         '_edit_lock',
         '_edit_last',
         '_wp_page_template',
@@ -24,7 +24,7 @@ $config = (object) array(
         'modularity-modules',
         'modularity-sidebar-options'
     ),
-    'translatable_meta' => array(
+    'translatable' => array(
         '_aioseop_title',
         '_aioseop_description'
     )

@@ -1,10 +1,10 @@
 <?php
 
-$option = array(
-    'translate_option' => true,
-    'translate_numeric_option' => false,
-    'translate_hidden_option' => false,
-    'untranslatable_option' => array(
+$option = (object) array(
+    'translate' => true,
+    'translate_numeric' => false,
+    'translate_hidden' => false,
+    'untranslatable' => array(
         ContentTranslator\Admin\Options::$optionKey['active'],
         ContentTranslator\Admin\Options::$optionKey['installed'],
         'siteurl',
@@ -28,15 +28,7 @@ $option = array(
         'modularity-options',
         'acf_version'
     ),
-    'translatable_option' => array()
+    'translatable' => array()
 );
 
-$siteOption = array(
-    'translate_site_option' => true,
-    'translate_numeric_site_option' => false,
-    'translate_hidden_site_option' => false,
-    'translatable_site_option' => array(),
-    'untranslatable_site_option' => array()
-);
-
-return (object) apply_filters('wp-content-translator/configuration/option', (object) array_merge($option, $siteOption));
+return (object) apply_filters('wp-content-translator/configuration/option', $option);
