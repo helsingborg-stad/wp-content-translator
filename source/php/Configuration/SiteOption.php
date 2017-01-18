@@ -8,7 +8,8 @@ $option = (object) array(
     'untranslatable' => array(
         'active_sitewide_plugins',
         'recently_activated',
-        'WPLANG'
+        'WPLANG',
+        'acf_pro_license'
     )
 );
 

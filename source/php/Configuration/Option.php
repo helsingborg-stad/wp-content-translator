@@ -30,7 +30,8 @@ $option = (object) array(
         'recently_activated',
         'post_count',
         'fresh_site',
-        'broken-links-detector-db-version'
+        'broken-links-detector-db-version',
+        'acf_pro_license'
     ),
     'translatable' => array()
 );
