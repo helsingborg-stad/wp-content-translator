@@ -8,20 +8,19 @@ class App
 
     public function __construct()
     {
-        /*  Hook format:
-            wp-content-translator/option/translate_fallback
-        */
+        add_action('plugins_loaded', array($this, 'init'));
+    }
 
-        // Hooks
+    public function init()
+    {
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueue'));
 
-        // Init run
-        add_action('plugins_loaded', array($this,'generalConfiguration'), 10);
-        add_action('plugins_loaded', array($this,'metaConfiguration'), 10);
-        add_action('plugins_loaded', array($this,'postConfiguration'), 10);
-        add_action('plugins_loaded', array($this,'optionConfiguration'), 10);
-        add_action('plugins_loaded', array($this,'userConfiguration'), 10);
-        add_action('plugins_loaded', array($this,'commentConfiguration'), 10);
+        $this->generalConfiguration();
+        $this->metaConfiguration();
+        $this->postConfiguration();
+        $this->optionConfiguration();
+        $this->userConfiguration();
+        $this->commentConfiguration();
 
         // Setup wpdb
         global $wpdb;
@@ -38,15 +37,13 @@ class App
 
         // Translate
         if (\ContentTranslator\Switcher::isLanguageSet() && !\ContentTranslator\Language::isDefault()) {
-            add_action('plugins_loaded', function () {
-                new Translate\Post();
-                new Translate\Meta();
-                new Translate\Option();
-                new Translate\SiteOption();
-                new Translate\UserMeta();
-                new Translate\Comment();
-                new Translate\CommentMeta();
-            }, 11);
+            new Translate\Post();
+            new Translate\Meta();
+            new Translate\Option();
+            new Translate\SiteOption();
+            new Translate\UserMeta();
+            new Translate\Comment();
+            new Translate\CommentMeta();
         }
 
         // Admin
