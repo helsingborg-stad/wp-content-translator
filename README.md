@@ -2,6 +2,12 @@
 
 Minimalistic content translation in WordPress.
 
+## Translations
+
+The GUI is has base language "english" and is translated to: 
+
+- Swedish
+
 ## Language selector
 
 You can easily use the default language selector (a basic html ```<select>```element) or create a language selector from custom markup.
