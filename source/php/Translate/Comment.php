@@ -10,7 +10,7 @@ class Comment extends \ContentTranslator\Entity\Translate
     {
         parent::__construct();
 
-        if (WCT_TRANSLATE_COMMENT) {
+        if ($this->configuration->comment->translate) {
             add_action('comment_post', array($this, 'save'), 10, 3);
             add_action('pre_get_comments', array($this, 'get'));
         }
