@@ -130,3 +130,157 @@ wp_content_translator_language_selector(
 #### ```wp-content-translator/option/should_translate_default```
 **Filter.** The default return value for the should translate function.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+stdClass Object
+(
+    [general] => stdClass Object
+        (
+            [translate_fallback] => 1
+            [translate_delimeter] => _
+        )
+
+    [post] => stdClass Object
+        (
+            [translate_posts] => 1
+            [untranslatable_post_types] => Array
+                (
+                    [0] => revision
+                )
+
+        )
+
+    [meta] => stdClass Object
+        (
+            [translate_meta] => 1
+            [translate_hidden_meta] => 
+            [translate_numeric_meta] => 
+            [untranslatable_meta] => Array
+                (
+                    [0] => _edit_lock
+                    [1] => _edit_last
+                    [2] => _wp_page_template
+                    [3] => nickname
+                    [4] => first_name
+                    [5] => last_name
+                    [6] => rich_editing
+                    [7] => comment_shortcuts
+                    [8] => admin_color
+                    [9] => show_admin_bar_front
+                    [10] => show_welcome_panel
+                    [11] => session_tokens
+                    [12] => closedpostboxes_page
+                    [13] => metaboxhidden_page
+                    [14] => closedpostboxes_post
+                    [15] => metaboxhidden_post
+                    [16] => modularity-modules
+                    [17] => modularity-sidebar-options
+                )
+
+            [translatable_meta] => Array
+                (
+                    [0] => _aioseop_title
+                    [1] => _aioseop_description
+                )
+
+        )
+
+    [option] => stdClass Object
+        (
+            [translate_option] => 1
+            [translate_numeric_option] => 
+            [translate_hidden_option] => 
+            [untranslatable_option] => Array
+                (
+                    [0] => wp-content-translator-active
+                    [1] => wp-content-translator-installed
+                    [2] => siteurl
+                    [3] => home
+                    [4] => users_can_register
+                    [5] => permalink_structure
+                    [6] => rewrite_rules
+                    [7] => active_plugins
+                    [8] => template
+                    [9] => stylesheet
+                    [10] => theme_switched
+                    [11] => html_type
+                    [12] => default_role
+                    [13] => default_comments_page
+                    [14] => comment_order
+                    [15] => WPLANG
+                    [16] => cron
+                    [17] => nestedpages_posttypes
+                    [18] => nestedpages_version
+                    [19] => nestedpages_menusync
+                    [20] => modularity-options
+                    [21] => acf_version
+                )
+
+            [translatable_option] => Array
+                (
+                )
+
+            [translate_site_option] => 1
+            [translate_numeric_site_option] => 
+            [translate_hidden_site_option] => 
+            [translatable_site_option] => Array
+                (
+                )
+
+            [untranslatable_site_option] => Array
+                (
+                )
+
+        )
+
+    [user] => stdClass Object
+        (
+            [translate_user] => 1
+            [translate_hidden_meta] => 
+            [translate_numeric_meta] => 
+            [untranslatable_meta] => Array
+                (
+                    [0] => nickname
+                    [1] => first_name
+                    [2] => last_name
+                    [3] => rich_editing
+                    [4] => comment_shortcuts
+                    [5] => admin_color
+                    [6] => show_admin_bar_front
+                    [7] => show_welcome_panel
+                    [8] => session_tokens
+                    [9] => closedpostboxes_page
+                    [10] => metaboxhidden_page
+                    [11] => closedpostboxes_post
+                    [12] => metaboxhidden_post
+                )
+
+            [translatable_meta] => Array
+                (
+                )
+
+        )
+
+    [comment] => stdClass Object
+        (
+            [translate_comment] => 1
+            [translate_comment_meta] => 1
+        )
+
+)
+-
+
