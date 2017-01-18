@@ -13,7 +13,9 @@ class Language
         '\ContentTranslator\Translate\Meta',
         '\ContentTranslator\Translate\Option',
         '\ContentTranslator\Translate\SiteOption',
-        '\ContentTranslator\Translate\User'
+        '\ContentTranslator\Translate\User',
+        '\ContentTranslator\Translate\Comment',
+        '\ContentTranslator\Translate\CommentMeta'
     );
 
     private $code;
