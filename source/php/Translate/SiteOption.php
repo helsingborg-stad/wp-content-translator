@@ -21,7 +21,7 @@ class SiteOption extends \ContentTranslator\Entity\Translate
      */
     public static function install(string $language) : bool
     {
-        do_action('wp-content-translator/site_option/install', $language);
+        do_action('wp-content-translator/siteoption/install', $language);
         return true;
     }
 
@@ -32,7 +32,7 @@ class SiteOption extends \ContentTranslator\Entity\Translate
      */
     public static function isInstalled(string $language) : bool
     {
-        return apply_filters('wp-content-translator/site_option/is_installed', true);
+        return apply_filters('wp-content-translator/siteoption/is_installed', true);
     }
 
     /**
@@ -43,10 +43,10 @@ class SiteOption extends \ContentTranslator\Entity\Translate
      */
     public static function uninstall(string $language) : bool
     {
-        do_action('wp-content-translator/site_option/uninstall', $language);
+        do_action('wp-content-translator/siteoption/uninstall', $language);
 
         // Bail if we should not remove the meta
-        if (!apply_filters('wp-content-translator/site_option/remove_meta_when_uninstalling_language', true)) {
+        if (!apply_filters('wp-content-translator/siteoption/remove_when_uninstalling', true)) {
             return false;
         }
 
@@ -159,7 +159,7 @@ class SiteOption extends \ContentTranslator\Entity\Translate
             return false;
         }
 
-        return apply_filters('wp-content-translator/option/should_translate_default', true, $key);
+        return apply_filters('wp-content-translator/siteoption/should_translate_default', true, $key);
     }
 
     /**

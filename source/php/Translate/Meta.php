@@ -73,7 +73,7 @@ class Meta extends \ContentTranslator\Entity\Translate
         do_action('wp-content-translator/' . $metaType . '/uninstall', $language);
 
         // Bail if we should not remove the meta
-        if (!apply_filters('wp-content-translator/meta/remove_meta_when_uninstalling_language', true)) {
+        if (!apply_filters('wp-content-translator/' . $metaType . '/remove_when_uninstalling', true)) {
             return false;
         }
 
