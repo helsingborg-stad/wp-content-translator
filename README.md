@@ -1,16 +1,16 @@
 # Wp Content Translator
+Minimalistic content translation in WordPress. The plugin handles translations for posts, postmeta, options, siteoptions (multisite) and usermeta.
 
-Minimalistic content translation in WordPress.
+While the plugin also handles comments and commentmeta they are not translated. Comments are mapped to a specific language (the langauge active when posting the comment) and will be displayed for that specific language. There's also an option to make languages inherit comments from other languages. Forinstance the nordic languages is very similar, so we want to load Danish and Norwegian comments along with the Swedish comments.
 
 ## Translations
-
 The GUI is has base language english and is translated to: 
 
 - Swedish
 
 ## Language selector
 
-You can easily use the default language selector (a basic html ```<select>```element) or create a language selector from custom markup.
+You can easily use the default language selector (a basic html ```<select>```element) or create a language selector with custom markup.
 
 Use the ```wp_content_translator_language_selector()``` function to display a language selector. If you want to use the default selector just run the function without any paramters. If you want to create a custom selector there's an option to pass markup for the wrapper and the "language rows".
 
