@@ -4,9 +4,11 @@ Minimalistic content translation in WordPress. The plugin handles translations f
 While the plugin also handles comments and commentmeta they are not translated. Comments are mapped to a specific language (the langauge active when posting the comment) and will be displayed for that specific language. There's also an option to make languages inherit comments from other languages. Forinstance the nordic languages is very similar, so we want to load Danish and Norwegian comments along with the Swedish comments.
 
 ## Translations
-The GUI is has base language english and is translated to: 
+The GUI is is available in:
 
+- English
 - Swedish
+- Norwegian
 
 ## Language selector
 
