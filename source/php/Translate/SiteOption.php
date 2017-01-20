@@ -147,12 +147,12 @@ class SiteOption extends \ContentTranslator\Entity\Translate
             return false;
         }
 
-        if (in_array($key, $this->configuration->siteoption->translatable)) {
-            return true;
-        }
-
         if (in_array($key, $this->configuration->siteoption->untranslatable)) {
             return false;
+        }
+
+        if (in_array($key, $this->configuration->siteoption->translatable)) {
+            return true;
         }
 
         if (!$this->configuration->siteoption->translate_numeric && is_numeric($value) && !empty($value)) {

@@ -130,12 +130,16 @@ class Meta extends \ContentTranslator\Entity\Translate
 
     private function shouldTranslate(string $meta_key, $meta_value = null) : bool
     {
-        if (in_array($meta_key, $this->metaConfiguration->translatable)) {
-            return true;
+        if (empty($value)) {
+            return false;
         }
 
         if (in_array($meta_key, $this->metaConfiguration->untranslatable)) {
             return false;
+        }
+
+        if (in_array($meta_key, $this->metaConfiguration->translatable)) {
+            return true;
         }
 
         if (!$this->metaConfiguration->translate_hidden && substr($meta_key, 0, 1) == "_") {

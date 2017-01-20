@@ -147,16 +147,16 @@ class Option extends \ContentTranslator\Entity\Translate
             return false;
         }
 
+        if (in_array($key, $this->configuration->option->translatable)) {
+            return true;
+        }
+
         if (!$this->configuration->option->translate_numeric && is_numeric($value) && $value != null) {
             return false;
         }
 
         if (!$this->configuration->option->translate_hidden && substr($key, 0, 1) == "_") {
             return false;
-        }
-
-        if (in_array($key, $this->configuration->option->translatable)) {
-            return true;
         }
 
         return apply_filters('wp-content-translator/option/should_translate_default', true, $key);
