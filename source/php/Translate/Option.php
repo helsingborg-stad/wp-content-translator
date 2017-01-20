@@ -102,28 +102,34 @@ class Option extends \ContentTranslator\Entity\Translate
      */
     public function preUpdateOption($value = null, string $option = null, $oldValue = null)
     {
-        if ($this->shouldTranslate($option, $value) && !$this->identicalToBaseLang($option, $value)) {
-            if (!isset($_POST['acf'])) {
-                add_action('wp-content-translator/option/before_update_option', $option, $value);
+        if (!$this->isLangual($option) && $this->shouldTranslate($option, $value)) {
+
+            //Create option key
+            $langual_option_key = $this->createLangualKey($option);
+
+            //Update option value
+            if (!$this->identicalToBaseLang($option, $value)) {
+                if (!isset($_POST['acf'])) {
+                    add_action('wp-content-translator/option/before_update_option', $option, $value);
+                }
+
+                remove_filter('pre_update_option', array($this, 'preUpdateOption'), 10);
+                update_option($this->createLangualKey($option), $value);
+                add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
+
+                if (!isset($_POST['acf'])) {
+                    add_action('wp-content-translator/option/after_update_option', $option, $value);
+                }
             }
 
-            remove_filter('pre_update_option', array($this, 'preUpdateOption'), 10);
-            update_option($this->createLangualKey($option), $value);
-            add_filter('pre_update_option', array($this, 'preUpdateOption'), 10, 3);
-
-            if (!isset($_POST['acf'])) {
-                add_action('wp-content-translator/option/after_update_option', $option, $value);
+            //Clean option that equals base language
+            if ($this->identicalToBaseLang($option, $value)) {
+                delete_option($langual_option_key);
+                return $value;
             }
         }
 
-        // If it's an content translator option reutrn the new value
-        if (in_array($option, \ContentTranslator\Admin\Options::$optionKey)) {
-            return $value;
-        }
-
-        // Return old value to stop make the update_option function
-        // return false
-        return $oldValue;
+        return $value;
     }
 
     /**
