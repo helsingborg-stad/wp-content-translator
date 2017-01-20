@@ -120,10 +120,9 @@ class Option extends \ContentTranslator\Entity\Translate
                 if (!isset($_POST['acf'])) {
                     add_action('wp-content-translator/option/after_update_option', $option, $value);
                 }
-            }
 
-            //Clean option that equals base language
-            if ($this->identicalToBaseLang($option, $value)) {
+                return $oldValue;
+            } else {
                 delete_option($langual_option_key);
                 return $value;
             }
