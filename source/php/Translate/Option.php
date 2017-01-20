@@ -46,7 +46,7 @@ class Option extends \ContentTranslator\Entity\Translate
         do_action('wp-content-translator/option/uninstall', $language);
 
         // Bail if we should not remove the meta
-        if (!apply_filters('wp-content-translator/option/remove_option_when_uninstalling_language', true)) {
+        if (!apply_filters('wp-content-translator/option/remove_when_uninstalling', true)) {
             return false;
         }
 

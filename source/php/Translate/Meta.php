@@ -5,7 +5,7 @@ namespace ContentTranslator\Translate;
 class Meta extends \ContentTranslator\Entity\Translate
 {
 
-    private $metaType;
+    private static $metaType;
     private $allowedTypes = array('post','user','comment');
     private $metaConfiguration;
 
@@ -19,7 +19,7 @@ class Meta extends \ContentTranslator\Entity\Translate
         parent::__construct();
 
         if (in_array($metaType, $this->allowedTypes)) {
-            $this->metaType = $metaType;
+            self::$metaType = $metaType;
 
             if ($metaType == 'user') {
                 $this->metaConfiguration = $this->configuration->usermeta;
@@ -35,9 +35,9 @@ class Meta extends \ContentTranslator\Entity\Translate
             ($this->configuration->usermeta->translate && $metaType == 'user') ||
             ($this->configuration->comment->translate && $metaType == 'comment')
         ) {
-            add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
-            add_filter('update_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
-            add_filter('add_'. $this->metaType .'_metadata', array($this, 'save'), 1, 4);
+            add_filter('get_'. self::$metaType .'_metadata', array($this, 'get'), 1, 4);
+            add_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
+            add_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
         }
     }
 
@@ -48,7 +48,7 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public static function install(string $language) : bool
     {
-        do_action('wp-content-translator/' . $metaType . '/install', $language);
+        do_action('wp-content-translator/' . self::$metaType . '/install', $language);
         return true;
     }
 
@@ -59,7 +59,7 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public static function isInstalled(string $language) : bool
     {
-        return apply_filters('wp-content-translator/' . $metaType . '/is_installed', true, $language);
+        return apply_filters('wp-content-translator/' . self::$metaType . '/is_installed', true, $language);
     }
 
     /**
@@ -70,10 +70,10 @@ class Meta extends \ContentTranslator\Entity\Translate
      */
     public static function uninstall(string $language) : bool
     {
-        do_action('wp-content-translator/' . $metaType . '/uninstall', $language);
+        do_action('wp-content-translator/' . self::$metaType . '/uninstall', $language);
 
         // Bail if we should not remove the meta
-        if (!apply_filters('wp-content-translator/meta/remove_meta_when_uninstalling_language', true)) {
+        if (!apply_filters('wp-content-translator/' . self::$metaType . '/remove_when_uninstalling', true)) {
             return false;
         }
 
@@ -112,9 +112,9 @@ class Meta extends \ContentTranslator\Entity\Translate
     public function get($type, int $post_id, string $meta_key, bool $single) // : ?string - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key)) {
-            remove_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1);
+            remove_filter('get_'. self::$metaType .'_metadata', array($this, 'get'), 1);
             $translation = get_post_meta($post_id, $this->createLangualKey($meta_key));
-            add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
+            add_filter('get_'. self::$metaType .'_metadata', array($this, 'get'), 1, 4);
 
             if (!$this->configuration->general->translate_fallback && implode("", $translation) == "") {
                 return "";              // Abort and return empty (no fallback)
@@ -146,14 +146,14 @@ class Meta extends \ContentTranslator\Entity\Translate
             return false;
         }
 
-        return apply_filters('wp-content-translator/' . $metaType . '/should_translate_default', true, $meta_key);
+        return apply_filters('wp-content-translator/' . self::$metaType . '/should_translate_default', true, $meta_key);
     }
 
     private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
     {
-        remove_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1);
+        remove_filter('get_'. self::$metaType .'_metadata', array($this, 'get'), 1);
         $default = get_post_meta($post_id, $meta_key, true);
-        add_filter('get_'. $this->metaType .'_metadata', array($this, 'get'), 1, 4);
+        add_filter('get_'. self::$metaType .'_metadata', array($this, 'get'), 1, 4);
 
         if (trim($default) == trim($translated)) {
             return true;

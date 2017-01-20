@@ -1,16 +1,18 @@
 # Wp Content Translator
+Minimalistic content translation in WordPress. The plugin handles translations for posts, postmeta, options, siteoptions (multisite) and usermeta.
 
-Minimalistic content translation in WordPress.
+While the plugin also handles comments and commentmeta they are not translated. Comments are mapped to a specific language (the langauge active when posting the comment) and will be displayed for that specific language. There's also an option to make languages inherit comments from other languages. Forinstance the nordic languages is very similar, so we want to load Danish and Norwegian comments along with the Swedish comments.
 
 ## Translations
+The GUI is is available in:
 
-The GUI is has base language english and is translated to: 
-
+- English
 - Swedish
+- Norwegian
 
 ## Language selector
 
-You can easily use the default language selector (a basic html ```<select>```element) or create a language selector from custom markup.
+You can easily use the default language selector (a basic html ```<select>```element) or create a language selector with custom markup.
 
 Use the ```wp_content_translator_language_selector()``` function to display a language selector. If you want to use the default selector just run the function without any paramters. If you want to create a custom selector there's an option to pass markup for the wrapper and the "language rows".
 
@@ -64,7 +66,7 @@ Available configurations:
 Available configurations:
 - *bool* translate - Use the component or not
 
-#### wp-content-translator/configuration/[comment/meta/user/option/siteoption]
+#### wp-content-translator/configuration/{comment/meta/user/option/siteoption}
 
 Available configurations:
 - *bool* translate - Use the component or not
@@ -141,6 +143,62 @@ function my_comment_connections(array $connections, string $code) {
 add_filter('wp-content-translator/comment/connections', 'my_comment_connections', 10, 2);
 ```
 
+#### wp-content-translator/{$component}/is_installed
+Is the meta type translate component installed or not?
+
+Available components: post, comment, option, siteoption, meta (postmeta), user (usermeta), comment (commentmeta)
+
+- ```@param bool $isInstalled``` - The default is installed value
+- ```@param string $code``` - The langauge code
+
+```php
+function my_is_usermeta_installed(bool $isInstalled, string $code) {
+    if ($code === 'sv_SE') {
+        return true;
+    }
+
+    return $isInstalled;
+}
+add_filter('wp-content-translator/user/is_installed', 'my_is_usermeta_installed', 10, 2);
+```
+
+#### wp-content-translator/{$component}/remove_when_uninstalling
+Whether to remove metadata when uninstalling the translation component.
+
+Available components: post, comment, option, siteoption, meta (postmeta), user (usermeta), comment (commentmeta)
+
+- ```@param bool $shouldRemove``` - The default should remove value
+- ```@param string $code``` - The langauge code
+
+```php
+function my_should_remove_meta(bool $shouldRemove, string $code) {
+    if ($code === 'sv_SE') {
+        return true;
+    }
+
+    return $shouldRemove;
+}
+add_filter('wp-content-translator/user/remove_meta_when_uninstalling_language', 'my_should_remove_meta', 10, 2);
+```
+
+#### wp-content-translator/{$component}/should_translate_default
+Default return value for ```shouldTranslate``` method
+
+Available components: post, comment, option, siteoption, meta (postmeta), user (usermeta), comment (commentmeta)
+
+- ```@param bool $shouldTranslate``` - The default should translate value
+- ```@param string $code``` - The langauge code
+
+```php
+function my_should_translate_default(bool $shouldTranslate, string $code) {
+    if ($code === 'sv_SE') {
+        return true;
+    }
+
+    return $shouldTranslate;
+}
+add_filter('wp-content-translator/user/should_translate_default', 'my_should_translate_default', 10, 2);
+```
 
 
 
@@ -241,4 +299,31 @@ function my_options_page_after() {
 add_action('wp-content-translator/options/after_add_options_page', 'my_options_page_after', 10);
 ```
 
+#### wp-content-translator/{$component}/install
+Runs when installing a translation component.
+
+Available components: post, comment, option, siteoption, meta (postmeta), user (usermeta), comment (commentmeta)
+
+- ```@param string $code``` - The langauge code
+
+```php
+function my_user_meta_install(string $code) {
+    // Do my stuff
+}
+add_action('wp-content-translator/user/install', 'my_user_meta_install', 10);
+```
+
+#### wp-content-translator/{$component}/uninstall
+Runs when uninstalling a meta type translate component.
+
+Available components: post, comment, option, siteoption, meta (postmeta), user (usermeta), comment (commentmeta)
+
+- ```@param string $code``` - The langauge code
+
+```php
+function my_user_meta_install(string $code) {
+    // Do my stuff
+}
+add_action('wp-content-translator/user/uninstall', 'my_user_meta_uninstall', 10);
+```
 

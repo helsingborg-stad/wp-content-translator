@@ -14,12 +14,12 @@
 
                 <div id="postbox-container-1" class="postbox-container">
                     <div class="postbox">
-                        <h2 class="ui-sortable-handle"><?php _e('Save', 'municipio-intranet'); ?></h2>
+                        <h2 class="ui-sortable-handle"><?php _e('Save', 'wp-content-translator'); ?></h2>
                         <div class="inside">
                             <div id="major-publishing-actions" style="margin: -7px -12px -12px;">
                                 <div id="publishing-action">
                                     <span class="spinner"></span>
-                                    <input type="submit" value="<?php _e('Save', 'municipio-intranet'); ?>" class="button button-primary button-large" id="publish" name="publish">
+                                    <input type="submit" value="<?php _e('Save', 'wp-content-translator'); ?>" class="button button-primary button-large" id="publish" name="publish">
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -29,7 +29,7 @@
 
                 <div id="postbox-container-2" class="postbox-container">
                     <div class="postbox">
-                        <h2 class="hndle ui-sortable-handle" style="cursor:default;"><?php _e('Languages', 'municipio-intranet'); ?></h2>
+                        <h2 class="hndle ui-sortable-handle" style="cursor:default;"><?php _e('Languages', 'wp-content-translator'); ?></h2>
                         <div class="inside wp-content-translator-admin__manage-languages">
                             <table class="wp-content-translator-admin__table">
                                 <thead>
@@ -65,7 +65,7 @@
 
                 <div id="postbox-container-2" class="postbox-container">
                     <div class="postbox">
-                        <h2 class="hndle ui-sortable-handle" style="cursor:default;"><?php _e('Add languages', 'municipio-intranet'); ?></h2>
+                        <h2 class="hndle ui-sortable-handle" style="cursor:default;"><?php _e('Add languages', 'wp-content-translator'); ?></h2>
                         <div class="inside wp-content-translator-admin__manage-languages">
                             <table class="wp-content-translator-admin__table wp-content-translator-admin__table__add-lang">
                                 <thead>
