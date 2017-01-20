@@ -114,16 +114,13 @@ class Option extends \ContentTranslator\Entity\Translate
             if (!isset($_POST['acf'])) {
                 add_action('wp-content-translator/option/after_update_option', $option, $value);
             }
+
+            // Return old value to stop make the update_option function stop
+            // The original field will not get updated
+            return $oldValue;
         }
 
-        // If it's an content translator option reutrn the new value
-        if (in_array($option, \ContentTranslator\Admin\Options::$optionKey)) {
-            return $value;
-        }
-
-        // Return old value to stop make the update_option function
-        // return false
-        return $oldValue;
+        return $value;
     }
 
     /**
