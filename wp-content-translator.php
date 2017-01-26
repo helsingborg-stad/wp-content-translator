@@ -4,7 +4,7 @@
  * Plugin Name:       Wp Content Translator
  * Plugin URI:        https://github.com/helsingborg-stad/wp-content-translator
  * Description:       Minimalistic content translation in WordPress.
- * Version:           0.0.2
+ * Version:           1.0.0
  * Author:            Sebastian Thulin, Kristoffer Svanmark
  * Author URI:        http://helsingborg.se
  * License:           MIT
