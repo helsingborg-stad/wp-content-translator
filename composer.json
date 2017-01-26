@@ -1,0 +1,13 @@
+{
+    "name": "helsingborg-stad/wp-content-translator",
+    "description": "Minimalistic content translation in WordPress.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kristoffer Svanmark",
+            "email": "kristoffer.svanmark@lexiconitkonsult.se"
+        }
+    ],
+    "require": {}
+}
