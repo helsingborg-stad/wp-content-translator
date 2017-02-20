@@ -49,7 +49,7 @@ class Language
     {
         $suffix = '';
         if (!self::isDefault() && \ContentTranslator\Switcher::isLanguageSet()) {
-            $suffix = '_' . \ContentTranslator\Switcher::$currentLanguage->code;
+            $suffix = '_' . strtolower(\ContentTranslator\Switcher::$currentLanguage->code);
         }
 
         $tables = array(
