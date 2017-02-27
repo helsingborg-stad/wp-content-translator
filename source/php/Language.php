@@ -363,10 +363,10 @@ class Language
      */
     public static function defaultLanguage(string $lang) : string
     {
-        if(empty($lang)) {
+        if (empty($lang)) {
             $lang = __("Undefined Language", 'wp-content-translator');
         }
+
         return $lang;
     }
-
 }
