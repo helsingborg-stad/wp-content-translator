@@ -11,7 +11,7 @@ class WpApi
 
     public function endpoints()
     {
-        register_rest_route('content-translator/v1', 'active', array(
+        register_rest_route('content-translator/v1', 'available', array(
             'methods' => 'GET',
             'callback' => '\ContentTranslator\Language::active',
         ));
