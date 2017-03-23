@@ -234,7 +234,8 @@ class Language
         $languages = array();
 
         require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
-        $translations = json_decode(json_encode(wp_get_available_translations()));
+        $translations = @wp_get_available_translations();
+        $translations = json_decode(json_encode($translations));
 
         foreach ($translations as $key => $translation) {
             $languages[$key] = array(
