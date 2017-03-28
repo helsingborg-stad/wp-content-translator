@@ -111,6 +111,8 @@ class Meta extends \ContentTranslator\Entity\Translate
                     )
                 ));
 
+                $meta_value = maybe_serialize($meta_value);
+
                 if ($meta_id) {
                     // Update existing meta
                     $this->db->update(
