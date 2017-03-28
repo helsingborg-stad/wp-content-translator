@@ -91,6 +91,10 @@ class Meta extends \ContentTranslator\Entity\Translate
     public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
+            if (wp_is_post_revision($post_id)) {
+                return null;
+            }
+
             //Create meta key
             $langual_meta_key = $this->createLangualKey($meta_key);
             $identical = $this->identicalToBaseLang($meta_key, $meta_value, $post_id);
