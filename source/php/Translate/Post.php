@@ -23,7 +23,8 @@ class Post extends \ContentTranslator\Entity\Translate
      * @param  string $language Language to install
      * @return bool
      */
-    public static function install(string $language) : bool {
+    public static function install(string $language) : bool
+    {
         global $wpdb;
         \ContentTranslator\Helper\Database::duplicateTable($wpdb->posts, self::getTableName($language));
         return true;
@@ -48,7 +49,8 @@ class Post extends \ContentTranslator\Entity\Translate
      * @param  string $language Language to uninstall
      * @return bool
      */
-    public static function uninstall(string $language) : bool {
+    public static function uninstall(string $language) : bool
+    {
         if (apply_filters('wp-content-translator/should_drop_table_when_uninstalling_language', true)) {
             Helper\Database::dropTable(self::getTableName($language));
         }
@@ -61,7 +63,8 @@ class Post extends \ContentTranslator\Entity\Translate
      * @param  string $language Language
      * @return string           Table name
      */
-    public static function getTableName(string $language) : string {
+    public static function getTableName(string $language) : string
+    {
         global $wpdb;
         return strtolower($wpdb->posts . '_' . $language);
     }
@@ -116,8 +119,9 @@ class Post extends \ContentTranslator\Entity\Translate
 
         $existing = false;
 
+
         // Check for existing post on the same post id as the one we want to create
-        if ($data['post_type'] !== 'revision' && isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
+        if ($this->isTranslatablePostType($data['post_type']) && isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
             $existing = $wpdb->get_row("SELECT ID, post_type FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
 
             // If there's an existing post and it's a revision, update
@@ -213,7 +217,7 @@ class Post extends \ContentTranslator\Entity\Translate
 
         $postIds = array();
         foreach ($posts as $post) {
-            if ($post->post_type === 'revision') {
+            if (!$this->isTranslatablePostType($post)) {
                 continue;
             }
 
@@ -240,5 +244,14 @@ class Post extends \ContentTranslator\Entity\Translate
         if (is_a($post, 'WP_Post')) {
             $post = $this->get($post);
         }
+    }
+
+    public function isTranslatablePostType($postType) : bool
+    {
+        if (is_a($postType, 'WP_Post')) {
+            $postType = $postType->post_type;
+        }
+
+        return !in_array($postType, $this->configuration->post->untranslatable_post_types);
     }
 }
