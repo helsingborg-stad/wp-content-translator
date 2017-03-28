@@ -26,6 +26,7 @@ class App
 
         // Helpers
         new Helper\Database();
+        new WpApi();
 
         // Core
         $this->initLanguages();

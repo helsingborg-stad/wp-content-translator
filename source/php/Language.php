@@ -49,7 +49,7 @@ class Language
     {
         $suffix = '';
         if (!self::isDefault() && \ContentTranslator\Switcher::isLanguageSet()) {
-            $suffix = '_' . \ContentTranslator\Switcher::$currentLanguage->code;
+            $suffix = '_' . strtolower(\ContentTranslator\Switcher::$currentLanguage->code);
         }
 
         $tables = array(
@@ -234,7 +234,8 @@ class Language
         $languages = array();
 
         require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
-        $translations = json_decode(json_encode(wp_get_available_translations()));
+        $translations = @wp_get_available_translations();
+        $translations = json_decode(json_encode($translations));
 
         foreach ($translations as $key => $translation) {
             $languages[$key] = array(
@@ -363,10 +364,10 @@ class Language
      */
     public static function defaultLanguage(string $lang) : string
     {
-        if(empty($lang)) {
+        if (empty($lang)) {
             $lang = __("Undefined Language", 'wp-content-translator');
         }
+
         return $lang;
     }
-
 }
