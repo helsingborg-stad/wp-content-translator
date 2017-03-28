@@ -36,8 +36,8 @@ class Meta extends \ContentTranslator\Entity\Translate
             ($this->configuration->comment->translate && $metaType == 'comment')
         ) {
             add_filter('get_'. self::$metaType .'_metadata', array($this, 'get'), 1, 4);
-            add_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
-            add_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
+            add_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1000, 4);
+            add_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1000, 4);
         }
     }
 
@@ -87,25 +87,69 @@ class Meta extends \ContentTranslator\Entity\Translate
     public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
-
             //Create meta key
             $langual_meta_key = $this->createLangualKey($meta_key);
+            $identical = $this->identicalToBaseLang($meta_key, $meta_value, $post_id);
+
+            $meta_table = self::$metaType . 'meta';
+            $meta_table = $this->db->$meta_table;
+
+            $metaIdColumn = 'meta_id';
+            switch (self::$metaType) {
+                case 'user':
+                    $metaIdColumn = 'umeta_id';
+                    break;
+            }
 
             //Update post meta
-            if (!$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
-                remove_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1);
-                remove_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1);
-                update_post_meta($post_id, $langual_meta_key, $meta_value);
-                add_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
-                add_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
+            if (!$identical) {
+                $meta_id = $this->db->get_var($this->db->prepare(
+                    "SELECT {$metaIdColumn} FROM {$meta_table} WHERE post_id = %d AND meta_key = %s",
+                    array(
+                        $post_id,
+                        $langual_meta_key
+                    )
+                ));
 
-                return true;
+                if ($meta_id) {
+                    // Update existing meta
+                    $this->db->update(
+                        $meta_table,
+                        array(
+                            'meta_value' => $meta_value
+                        ),
+                        array(
+                            $metaIdColumn => $meta_id
+                        ),
+                        array(
+                            '%s'
+                        ),
+                        array(
+                            '%d'
+                        )
+                    );
+                } else {
+                    // Create new meta
+                    $this->db->insert(
+                        $meta_table,
+                        array(
+                            self::$metaType . '_id' => $post_id,
+                            'meta_key' => $langual_meta_key,
+                            'meta_value' => $meta_value
+                        ),
+                        array(
+                            '%s'
+                        )
+                    );
+                }
+
+                return false;
             }
 
             //Clean meta that equals base language
-            if ($this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+            if ($identical) {
                 delete_post_meta($post_id, $langual_meta_key);
-                return true;
+                return false;
             }
         }
 
