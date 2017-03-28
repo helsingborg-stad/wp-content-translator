@@ -77,10 +77,8 @@ class Meta extends \ContentTranslator\Entity\Translate
             return false;
         }
 
-        global $wpdb;
-
-        $wpdb->query(
-            $wpdb->prepare("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", '%_' . $language)
+        $this->db->query(
+            $wpdb->prepare("DELETE FROM {$this->db->postmeta} WHERE meta_key LIKE %s", '%_' . $language)
         );
 
         return true;
@@ -95,7 +93,12 @@ class Meta extends \ContentTranslator\Entity\Translate
 
             //Update post meta
             if (!$this->identicalToBaseLang($meta_key, $meta_value, $post_id)) {
+                remove_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1);
+                remove_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1);
                 update_post_meta($post_id, $langual_meta_key, $meta_value);
+                add_filter('update_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
+                add_filter('add_'. self::$metaType .'_metadata', array($this, 'save'), 1, 4);
+
                 return true;
             }
 
