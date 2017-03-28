@@ -130,7 +130,7 @@ class Meta extends \ContentTranslator\Entity\Translate
 
     private function shouldTranslate(string $meta_key, $meta_value = null) : bool
     {
-        if (!is_null($meta_value) && empty($value)) {
+        if (!is_null($meta_value) && empty($meta_value)) {
             return false;
         }
 
