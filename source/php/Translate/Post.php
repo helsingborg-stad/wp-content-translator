@@ -116,14 +116,19 @@ class Post extends \ContentTranslator\Entity\Translate
     {
         global $wpdb;
 
+        if (!$this->isTranslatablePostType($data['post_type'])) {
+            return $data;
+        }
+
         $table = \ContentTranslator\Language::getTable('posts');
         $table = $table['name'];
 
+        $wpdb->posts = $table;
         $existing = false;
 
         // Check for existing post on the same post id as the one we want to create
-        if ($this->isTranslatablePostType($data['post_type']) && isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
-            $wpdb->posts = $table;
+        if (isset($postarr['post_ID']) && !empty($postarr['post_ID'])) {
+
             $existing = $wpdb->get_row("SELECT ID, post_type FROM $wpdb->posts WHERE ID = " . $postarr['post_ID']);
 
             // If there's an existing post and it's a revision, update
