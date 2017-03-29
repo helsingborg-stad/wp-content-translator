@@ -39,6 +39,11 @@ if (!function_exists('wp_content_translator_languages')) {
         $currentUrl = parse_url($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         foreach ($languages as $language) {
+
+            if (empty($language)) {
+                continue;
+            }
+
             $url = $currentUrl;
 
             if (isset($url['query'])) {

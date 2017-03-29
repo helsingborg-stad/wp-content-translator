@@ -238,11 +238,13 @@ class Language
         $translations = json_decode(json_encode($translations));
 
         foreach ($translations as $key => $translation) {
-            $languages[$key] = array(
-                'code' => $translation->language,
-                'name' => self::defaultLanguage($translation->english_name),
-                'nativeName' => $translation->native_name
-            );
+            if (!empty($translation)) {
+                $languages[$key] = array(
+                    'code' => $translation->language,
+                    'name' => self::defaultLanguage($translation->english_name),
+                    'nativeName' => $translation->native_name
+                );
+            }
         }
 
         uasort($languages, function ($a, $b) {

@@ -55,8 +55,10 @@ class App
     {
         $languages = \ContentTranslator\Language::installed(false);
 
-        foreach ($languages as $lang) {
-            new \ContentTranslator\Language($lang->code);
+        foreach ((array) $languages as $lang) {
+            if (!empty($lang) && isset($lang->code)) {
+                new \ContentTranslator\Language($lang->code);
+            }
         }
     }
 
