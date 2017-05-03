@@ -10,6 +10,17 @@ The GUI is is available in:
 - Swedish
 - Norwegian
 
+## REDIS & Memcached
+If you are using redis or memcached, you want to define a hash-key depending on selected language. The hash key cannot be changed at runtime after it has been set (defined as constant). Add this to your configuration: 
+
+```php
+if (isset($_COOKIE['wp_content_translator_language']) && !empty($_COOKIE['wp_content_translator_language'])) {
+    define('WP_CACHE_KEY_SALT', NONCE_KEY.$_COOKIE['wp_content_translator_language']);
+} else {
+    define('WP_CACHE_KEY_SALT', NONCE_KEY);
+}
+```
+
 ## Language selector
 
 You can easily use the default language selector (a basic html ```<select>```element) or create a language selector with custom markup.
