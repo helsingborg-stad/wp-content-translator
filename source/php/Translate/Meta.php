@@ -189,6 +189,13 @@ class Meta extends \ContentTranslator\Entity\Translate
         return null;
     }
 
+    /**
+     * Checks to decide if the meta_key should be translated or not depending on the configuration object
+     * @param  string $meta_key the meta key
+     * @param  string $meta_value the value that may be translated
+     * @return bool
+     */
+
     private function shouldTranslate(string $meta_key, $meta_value = null) : bool
     {
         if (!is_null($meta_value) && empty($meta_value)) {
@@ -213,6 +220,14 @@ class Meta extends \ContentTranslator\Entity\Translate
 
         return apply_filters('wp-content-translator/' . $this->thisMetaType . '/should_translate_default', true, $meta_key);
     }
+
+    /**
+     * Check if translation is identical to base language
+     * @param  string $meta_key the meta key
+     * @param  string $translated the value that may be translated
+     * @param  int $post_id the id of the post being saved
+     * @return bool Always false
+     */
 
     private function identicalToBaseLang(string $meta_key, $translated, int $post_id) : bool
     {
@@ -242,7 +257,17 @@ class Meta extends \ContentTranslator\Entity\Translate
                 if (!empty($field_data) && $field_data['name'] == $meta_key) {
                     //Fix counter for repeater fields
                     if ($field_data['type'] == "repeater") {
+
+                        //Translate to numeric
                         $meta_value = count($_POST['acf'][$field_data['key']]);
+
+                        //Allow translation by default on repeater
+                        apply_filters('wp-content-translator/configuration/meta', function ($config) {
+
+                            array_push($config->translatable, $field_data['name']);
+
+                            return $config;
+                        });
                     } else {
                         $meta_value = $_POST['acf'][$field_data['key']];
                     }
