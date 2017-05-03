@@ -31,7 +31,9 @@ $config = (object) array(
         'post_count',
         'fresh_site',
         'broken-links-detector-db-version',
-        'acf_pro_license'
+        'acf_pro_license',
+        'custom_css_input',
+        'custom_js_input'
     ),
     'translatable' => array()
 );

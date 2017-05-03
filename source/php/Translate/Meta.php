@@ -19,6 +19,7 @@ class Meta extends \ContentTranslator\Entity\Translate
     {
         parent::__construct();
 
+        //Create local settings object
         if (in_array($metaType, $this->allowedTypes)) {
             $this->thisMetaType = $metaType;
             $this->thisMetaType = $metaType;
@@ -32,6 +33,7 @@ class Meta extends \ContentTranslator\Entity\Translate
             throw new \Exception("An incorrent meta-type was provided to meta translation.", 1);
         }
 
+        //Enable translation if enabled on some of these
         if (
             ($this->configuration->meta->translate && $metaType == 'post') ||
             ($this->configuration->usermeta->translate && $metaType == 'user') ||
@@ -90,7 +92,7 @@ class Meta extends \ContentTranslator\Entity\Translate
 
     public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
-        $meta_value = $this->polyfillAcfFields($meta_value);
+        $meta_value = $this->polyfillAcfFields($meta_value, $post_id);
 
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
 
@@ -243,31 +245,37 @@ class Meta extends \ContentTranslator\Entity\Translate
     }
 
     /**
-     * Fix acf fields & repeaters
+     * Fix acf fields & repeaters [ACF Polyfill]
      * @param  string $meta_value the original meta value (pass-troiugh variable)
      * @return string, array, object, bool
      */
 
-    private function polyfillAcfFields($meta_value)
+    private function polyfillAcfFields($meta_value, $post_id)
     {
-        //Translate ACF fields to meta key. Polyfill.
+
+        /* Add fields to translatable configuration */
+        if (!function_exists('get_field_objects')) {
+            return;
+        }
+
+        $fields = get_field_objects($post_id);
+
+        if (is_array($fields) && !empty($fields)) {
+            foreach ($fields as $key => $field) {
+                if (in_array($field['type'], array("repeater"))) {
+                    array_push($this->metaConfiguration->translatable, $field['name']);
+                }
+            }
+        }
+
+        /* Translate ACF fields to meta key. Polyfill. */
         if (isset($_POST['acf']) && !empty($_POST['acf'])) {
             foreach ((array) $_POST['acf'] as $field_key => $field_key) {
                 $field_data = get_field_object($field_key);
                 if (!empty($field_data) && $field_data['name'] == $meta_key) {
                     //Fix counter for repeater fields
-                    if ($field_data['type'] == "repeater") {
-
-                        //Translate to numeric
+                    if (in_array($field_data['type'], array("repeater"))) {
                         $meta_value = count($_POST['acf'][$field_data['key']]);
-
-                        //Allow translation by default on repeater
-                        apply_filters('wp-content-translator/configuration/meta', function ($config) {
-
-                            array_push($config->translatable, $field_data['name']);
-
-                            return $config;
-                        });
                     } else {
                         $meta_value = $_POST['acf'][$field_data['key']];
                     }
