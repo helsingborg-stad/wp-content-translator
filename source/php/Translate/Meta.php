@@ -90,18 +90,11 @@ class Meta extends \ContentTranslator\Entity\Translate
 
     public function save($null, int $post_id, string $meta_key, $meta_value) // : ?bool  - Waiting for 7.1 enviroments to "be out there".
     {
-
-        //Translate ACF fields to meta key. Polyfill.
-        if (isset($_POST['acf']) && !empty($_POST['acf'])) {
-            foreach ((array) $_POST['acf'] as $field_key => $field_key) {
-                $field_data = get_field_object($field_key);
-                if (!empty($field_data) && $field_data['name'] == $meta_key) {
-                    $meta_value = $_POST['acf'][$field_data['key']];
-                }
-            }
-        }
+        $meta_value = $this->polyfillAcfFields($meta_value);
 
         if (!$this->isLangual($meta_key) && $this->shouldTranslate($meta_key, $meta_value)) {
+
+            //Bail if is revision
             if (wp_is_post_revision($post_id)) {
                 return null;
             }
@@ -232,5 +225,31 @@ class Meta extends \ContentTranslator\Entity\Translate
         }
 
         return false;
+    }
+
+    /**
+     * Fix acf fields & repeaters
+     * @param  string $meta_value the original meta value (pass-troiugh variable)
+     * @return string, array, object, bool
+     */
+
+    private function polyfillAcfFields($meta_value)
+    {
+        //Translate ACF fields to meta key. Polyfill.
+        if (isset($_POST['acf']) && !empty($_POST['acf'])) {
+            foreach ((array) $_POST['acf'] as $field_key => $field_key) {
+                $field_data = get_field_object($field_key);
+                if (!empty($field_data) && $field_data['name'] == $meta_key) {
+                    //Fix counter for repeater fields
+                    if ($field_data['type'] == "repeater") {
+                        $meta_value = count($_POST['acf'][$field_data['key']]);
+                    } else {
+                        $meta_value = $_POST['acf'][$field_data['key']];
+                    }
+                }
+            }
+        }
+
+        return $meta_value;
     }
 }
