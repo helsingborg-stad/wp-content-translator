@@ -9,12 +9,27 @@ class Switcher
 
     public function __construct()
     {
+        add_action('admin_init', array($this, 'switchToDefaultWhenCreating'));
+
         if ($lang = $this->getRequestedLang()) {
             $this->switchToLanguage($lang);
             add_filter('locale', array($this, 'switchLocale'));
         } else {
             $this->switchToDefaultLang();
         }
+    }
+
+    public function switchToDefaultWhenCreating()
+    {
+        if (basename($_SERVER["SCRIPT_FILENAME"]) !== 'post-new.php' || \ContentTranslator\Language::isDefault(self::$currentLanguage->code)) {
+            return;
+        }
+
+        $this->switchToDefaultLang();
+        add_action('admin_notices', function () {
+            echo '<div class="notice notice-info is-dismissible"><p>' . __('You can\'t create a new posts in a translation. Switched to the default language for you.') . '</p></div>';
+        });
+        return;
     }
 
     /**
