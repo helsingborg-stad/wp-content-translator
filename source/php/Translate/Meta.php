@@ -237,7 +237,7 @@ class Meta extends \ContentTranslator\Entity\Translate
         $default = get_post_meta($post_id, $meta_key, true);
         add_filter('get_'. $this->thisMetaType .'_metadata', array($this, 'get'), 1, 4);
 
-        if (trim($default) == trim($translated)) {
+        if (is_string($default) && is_string($translated) && trim($default) == trim($translated)) {
             return true;
         }
 
