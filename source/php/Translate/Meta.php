@@ -83,8 +83,11 @@ class Meta extends \ContentTranslator\Entity\Translate
 
         $metaTable = self::$metaType . 'table';
 
-        $this->db->query(
-            $wpdb->prepare("DELETE FROM {$this->db->$metaTable} WHERE meta_key LIKE %s", '%_' . $language)
+
+        global $wpdb;
+
+        $wpdb->query(
+            $wpdb->prepare("DELETE FROM {$metaTable} WHERE meta_key LIKE %s", '%_' . $language)
         );
 
         return true;
